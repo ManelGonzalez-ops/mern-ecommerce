@@ -1,0 +1,62 @@
+
+@import "./cart.scss";
+
+
+header{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0.7rem;
+
+    .logo{
+        font-size: 1.5rem;
+    }
+
+    .burger{
+        display: block;
+    }
+
+    nav{
+        display: none;
+        li{
+            list-style: none;
+        }
+    }
+}
+
+
+@media(min-width: 500px){
+
+    header{
+        align-items: baseline;
+        justify-content: flex-start;
+
+        .logo{
+
+            flex-grow: 1;
+        }
+
+        .burger{
+
+            display: none;
+        }
+    
+        nav{
+
+            display: block;
+
+            ul{
+                display: flex;
+
+                li{
+
+                    margin: auto 10px;
+                }
+            }
+            
+        }
+    }
+    
+    
+}
