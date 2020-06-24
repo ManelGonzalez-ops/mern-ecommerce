@@ -1,3 +1,5 @@
+
+
 const data = require("./data")
 //1h perdida por no importal y ejecutarlo en la misma linea.
 const dotenv = require("dotenv").config()
@@ -12,6 +14,7 @@ const bodyParser = require("body-parser")
 
 
 const MONGODB_URL = config.MONGODB_URL
+console.log(MONGODB_URL)
 console.log(MONGODB_URL, "djsdfjsdn")
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
@@ -36,6 +39,8 @@ app.use("/products", productRouter)
 //     res.send(producto)
 // })
 
-app.listen("8000", ()=>{
+let PORT = process.env.PORT || 8000
+
+app.listen(PORT, ()=>{
     console.log("server listening")
 })
