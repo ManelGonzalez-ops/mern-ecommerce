@@ -18,7 +18,7 @@ export default function Checkout({ match }) {
 
             try {
                 const rawData =
-                    await fetch(`http://localhost:8000/orders/order/${orderId}`, {
+                    await fetch(`https://nodeecommerce.herokuapp.com/orders/order/${orderId}`, {
                         headers: {
                             "Authorization": `Bearer ${userInfo}`
                         }

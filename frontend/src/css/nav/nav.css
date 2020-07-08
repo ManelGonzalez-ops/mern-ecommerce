@@ -68,6 +68,10 @@ header nav .dropdown-list {
   header nav .nav-list .nav-item a {
     text-decoration: none;
     color: white;
+    transition: color 0.2s ease;
+  }
+  header nav .nav-list .nav-item a:hover {
+    color: orange;
   }
   header nav .nav-list .nav-item .dropdown-list {
     position: absolute;

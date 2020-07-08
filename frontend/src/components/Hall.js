@@ -150,11 +150,12 @@ function App() {
                         </div>
 
                         <p className={openAside ? "categories close" : "categories"}
+                       
                             onClick={() => { setOpenAside(true) }}
                         ><stong>Categories &#8594;</stong></p>
                         <aside className={openAside ? "aside open" : "aside"}>
                             <header className="header-aside">
-                                <h3>Categories</h3>
+                                <h3  style={{color: "orange"}}>Categories</h3>
                                 <span
                                     onClick={() => { setOpenAside(false) }}>
                                     <CloseBtnAside /></span>

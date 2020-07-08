@@ -53,7 +53,7 @@ export default function UserView() {
             try {
 
                 const rawData =
-                    await fetch(`http://localhost:8000/orders/completed/${userInfo._id}`, {
+                    await fetch(`https://nodeecommerce.herokuapp.com/orders/completed/${userInfo._id}`, {
                         headers: {
                             "Authorization": `Bearer ${userInfo}`
                         }

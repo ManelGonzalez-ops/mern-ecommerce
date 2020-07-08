@@ -7,7 +7,7 @@ const userActionsSignin = (email, password) => async (dispatch) => {
 
     try {
         dispatch({ type: USER_LOGIN_REQUEST })
-        const rawData = await fetch("http://localhost:8000/users/login", {
+        const rawData = await fetch("https://nodeecommerce.herokuapp.com/users/login", {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -36,7 +36,7 @@ const userActionsSignup = (name, email, password) => async (dispatch) => {
 
     try {
         dispatch({ type: USER_REGISTER_REQUEST })
-        const rawData = await fetch("http://localhost:8000/users/register ", {
+        const rawData = await fetch("https://nodeecommerce.herokuapp.com/users/register ", {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -71,7 +71,7 @@ const userUpdateInfo = (newInfo)=> async (dispatch, getState)=>{
         dispatch({type: USER_UPDATE_REQUEST})
         const {userSignin: {userInfo}} = getState()
 
-        const rawData = await fetch("http://localhost:8000/users/updateAccount", {
+        const rawData = await fetch("https://nodeecommerce.herokuapp.com/users/updateAccount", {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userInfo.token}`

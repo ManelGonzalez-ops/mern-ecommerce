@@ -4,7 +4,7 @@ import Cookie from "js-cookie"
 const listProducts = () => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST })
-        const rawData = await fetch("http://localhost:8000/products");
+        const rawData = await fetch("https://nodeecommerce.herokuapp.com/products");
         //extraemos directamente el valor de la key products 
         const { data } = await rawData.json();
         console.log("MMMMMMMMMMMMMAMAMAMAMAMAM", data)     
@@ -21,7 +21,7 @@ const listProducts = () => async (dispatch) => {
 const detailsProduct = (productId) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId })
-        const rawData = await fetch(`http://localhost:8000/products/${productId}`)
+        const rawData = await fetch(`https://nodeecommerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
         console.log(data, "maamaa")
         dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
@@ -40,7 +40,7 @@ const saveProduct = (product) => async (dispatch, getState) => {
         const { userSignin: { userInfo } } = getState()
 
         if (product.delete) {
-            const rawData = await fetch("http://localhost:8000/products", {
+            const rawData = await fetch("https://nodeecommerce.herokuapp.com/products", {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${userInfo.token}`
@@ -58,7 +58,7 @@ const saveProduct = (product) => async (dispatch, getState) => {
             if (product._id) {
 
                 console.log(product._id, "thee id")
-                const rawData = await fetch("http://localhost:8000/products/update", {
+                const rawData = await fetch("https://nodeecommerce.herokuapp.com/products/update", {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${userInfo.token}`
@@ -72,7 +72,7 @@ const saveProduct = (product) => async (dispatch, getState) => {
 
             else {
 
-                const rawData = await fetch("http://localhost:8000/products", {
+                const rawData = await fetch("https://nodeecommerce.herokuapp.com/products", {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${userInfo.token}`
@@ -97,7 +97,7 @@ const addReview = (productId, review, rating, author) => async (dispatch) => {
     try {
         dispatch({ type: REVIEW_ADD_REQUEST })
 
-        const rawData = await fetch("http://localhost:8000/products/review", {
+        const rawData = await fetch("https://nodeecommerce.herokuapp.com/products/review", {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -181,7 +181,7 @@ const searchByCartegory =(category)=> async (dispatch, getState)=>{
     try{
         
         dispatch({type: "CATEGORY_LOOKUP_REQUEST"})
-        const rawData = await fetch("http://localhost:8000/products");
+        const rawData = await fetch("https://nodeecommerce.herokuapp.com/products");
         const {data} = await rawData.json()
        
         const newArr = data.filter(item=>item.category[0] === category)

@@ -1,3 +1,8 @@
+
+.hall__container{
+    min-height: 85vh;
+}
+
 .product-grid {
     width: 85%;
     display: grid;
@@ -61,7 +66,7 @@ align-items: end;
                 width: 30px;
                 height: 30px;
                 transform: scale(0.8);
-                transition: transform 0.2s ease-in-out, fill 0.2s ease-in-out;
+                transition: all 0.2s ease-in;
                 //combinacion para centrar
                 position: absolute;
                 top: 0;
@@ -69,6 +74,8 @@ align-items: end;
                 bottom: 0;
                 right: 0;
                 margin: auto;
+                fill: #444054;
+                cursor: pointer;
             }
 
             &:before {
@@ -97,24 +104,24 @@ align-items: end;
         &.hovered {
             .pseudo-wrap {
                 .cartt {
-                    fill: blue;
+                    fill: #eeedee;
                     transform: scale(1);
                 }
 
                 &:before {
                     transform: scale(1);
-                    background-color: white;
+                    background-color: #444054;
                 }
 
                 &.hovered {
                     .cartt {
-                        fill: white;
+                        fill: black;
                         transform: scale(1);
                     }
 
                     &:before {
                         transform: scale(1);
-                        background-color: red;
+                        background-color: white;
                     }
                 }
             }
@@ -254,10 +261,15 @@ align-items: end;
         padding: 0;
 
         li {
-            list-style: none;
-            text-decoration: underline;
+            list-style: none;           
             margin-bottom: 1rem;
             color: white;
+            cursor: pointer;
+            transition: color 0.1s ease-in;
+
+            &:hover{
+                color: orange;
+            }
         }
     }
 }
