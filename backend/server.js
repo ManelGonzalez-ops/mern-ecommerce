@@ -10,6 +10,8 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const UserRouter = require("./routes/userRoutes")
 const productRouter = require("./routes/productRoute")
+const orderRouter = require("./routes/orderRoutes")
+const PaymentRouter = require("./routes/paymentRoutes")
 const bodyParser = require("body-parser")
 
 
@@ -28,9 +30,11 @@ mongoose.connect(MONGODB_URL, {
 const app = express()
 app.use(cors())
 app.use(express.json())
-// app.use(bodyParser.json())
+
 app.use("/users", UserRouter)
 app.use("/products", productRouter)
+app.use("/orders", orderRouter)
+app.use("/secret", PaymentRouter)
 // app.use("", productRouter)
 
 // app.get("/product/:id", (req, res)=>{
@@ -39,7 +43,7 @@ app.use("/products", productRouter)
 //     res.send(producto)
 // })
 
-let PORT = process.env.PORT || 8000
+let PORT = 8000
 
 app.listen(PORT, ()=>{
     console.log("server listening")

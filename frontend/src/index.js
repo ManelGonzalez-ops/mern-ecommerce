@@ -1,3 +1,4 @@
+import "core-js" //ojo que nos puede cagar
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

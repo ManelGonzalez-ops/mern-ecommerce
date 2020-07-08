@@ -12,7 +12,20 @@ const userSchema = new mongoose.Schema({
     },
     isAdmin:{
         type: Boolean, required: true, default: false,
-    }
+    },
+    address:{
+        type: String, required: false
+    },
+    city:{
+        type: String, required: false
+    },
+    postal:{
+        type: String, required: false
+    },
+    country:{
+        type: String, required: false
+    },
+
 })
 
 const userModel = mongoose.model("User", userSchema)

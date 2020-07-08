@@ -1,47 +1,80 @@
 import React, { useEffect, Fragment, useState } from 'react'
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { cartProduct, cartModification } from "../actions/cartActions"
+import isEmpty from "../utils/emptyObject"
+import Cookie from "js-cookie"
+
 
 export default function Cart(props) {
+    
     const { productId } = props.match.params
     const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
     const { cartItems, loading, error } = useSelector(state => state.cart)
 
-    const [newCart, setNewCart] = useState(["", ""])
+
+
+    useEffect(() => {
+        if (!loading) {
+            
+            Cookie.set("cartItems", JSON.stringify(cartItems))
+            console.log("xuuuuuuuuuuupa Nhjaknnkjlshdsjkdhvsbsjgdbuhsjgdbsjdb")
+            console.log(Cookie.getJSON("cartItems"), "PERO QUE COÑO")
+        }
+    }, [loading])
+
 
     const dispatch = useDispatch()
     useEffect(() => {
+       
+
+       
         if (productId) {
             dispatch(cartProduct(productId, qty))
         }
     }, [])
 
+    
+
 
     const updateCart = (e) => {
         const { name, value } = e.target
         // props.history.push(`/cart/${name}?qty=${value}`)
-        if(value){
+        if (value) {
             console.log("ahora...", value, name)
-        dispatch(cartModification(name, value))
+            dispatch(cartModification(name, value))
         }
-        else{
+        else {
             console.log("ahora...", name)
             dispatch(cartModification(name))
         }
     }
 
-    const toCheckout=()=>{
-        // props.history.push("/signin?redirect=shipping")
+    const user = useSelector(state => state.userSignin)
+    const { userInfo } = user
+    const toCheckout = () => {
+        console.log(userInfo, "useeeer info")
+        if (isEmpty(userInfo)) {
+
+            props.history.push("/signin?redirect=shipping")
+
+        }
+
+        else {
+            props.history.push("/shipping")
+        }
+
     }
 
-    
+    const { currentOrder } = useSelector(state => state.currentOrder)
 
-    
+
+
     return (
 
         <div className="cart">
-            {loading ? <p>Loading...</p>
+
+            {loading ? <div>Loading...</div>
                 :
                 error ? <p>{error.message}</p>
                     :
@@ -50,50 +83,52 @@ export default function Cart(props) {
                         <div className="right">
                             <div className="header">
                                 <h1>Shopping Cart</h1>
-                                <p>{cartItems.map(item => item.price * item.qty).reduce((total, valor) => total + valor)} $</p>
+                                <p className="price-title">Price:</p>
                             </div>
                             <hr />
-                            <div>
 
-                                {cartItems.map(item => {
-                                    console.log(item, "aaquuuuuuui")
-                                    return (
-                                        <div key={item.id}>
-                                            <div className="cart-content">
-                                                <img src="https://node-react-ecommerce-app.herokuapp.com/images/p2.jpg" alt="pantalones" />
-                                                <div className="info-cart">
-                                                    <Link to={`/product/${item.id}`}
-                                                    ><h3>{item.name}</h3></Link>
+                            {cartItems && cartItems.map(item => {
+                                console.log(item, "aaquuuuuuui")
+                                return (
 
-                                                    <div className="info-cantidad">
+                                    <div key={item.id} className="cart-content">
+                                        <img src="https://node-react-ecommerce-app.herokuapp.com/images/p2.jpg" alt="pantalones" />
+                                        <div className="info-cart">
+                                            <Link to={`/product/${item.id}`}
+                                            ><h3>{item.name}</h3></Link>
 
-                                                        Qty:
+                                            <div className="info-cantidad">
+
+                                                Qty:
                                                         <select
-                                                            defaultValue={item.qty}
-                                                            onChange={(e) => updateCart(e)}
-                                                            name={item.id}
-                                                        >
-                                                            {[...Array(item.stock).keys()].map((itam, index) => {
+                                                    defaultValue={item.qty}
+                                                    onChange={(e) => updateCart(e)}
+                                                    name={item.id}
+                                                >
+                                                    {[...Array(item.stock).keys()].map((itam, index) => {
 
-                                                                return <option key={index + 1} value={index + 1}>{index + 1}</option>
-                                                            }
-                                                            )}
-                                                        </select>
-                                                        <button className="delete" onClick={(e)=>updateCart(e)}
-                                                        name={item.id}
-                                                        >delete</button>
-                                                    </div>
-                                                </div>
-                                                <p className="cart-price">{item.price}</p>
+                                                        return <option key={index + 1} value={index + 1}>{index + 1}</option>
+                                                    }
+                                                    )}
+                                                </select>
+                                                <button className="delete" onClick={(e) => updateCart(e)}
+                                                    name={item.id}
+                                                >delete</button>
                                             </div>
+
                                         </div>
-                                    )
-                                })}
-                            </div>
+                                        <p className="cart-price">{item.price}</p>
+                                    </div>
+
+                                )
+                            })}
                         </div>
+
                         <div className="left">
+
+
                             <div className="box">
-                                <p>Subtotal
+                                <p className="box-total">Subtotal
                                 (
                                         <span>
                                         {cartItems.reduce((x, y) => x + parseInt(y.qty), 0)}</span>
@@ -102,11 +137,18 @@ export default function Cart(props) {
                                      <span>
                                         {cartItems.map(item => item.price * item.qty).reduce((total, valor) => total + valor)}
                                     </span>$</p>
-
-                                <button 
-                                disabled={cartItems.length === 0}
-                                onClick={toCheckout}
-                                >proceed to checkout</button>
+                                {currentOrder && Object.keys(currentOrder).length !== 0 ?
+                                    <button
+                                        className="button-pnp"
+                                        disabled={cartItems.length === 0}
+                                        onClick={toCheckout}
+                                    >continue checkout</button>
+                                    :
+                                    <button
+                                        className="button-pnp"
+                                        disabled={cartItems.length === 0}
+                                        onClick={toCheckout}
+                                    >proceed to checkout</button>}
                             </div>
                         </div>
                     </Fragment>
@@ -114,3 +156,4 @@ export default function Cart(props) {
         </div>
     )
 }
+

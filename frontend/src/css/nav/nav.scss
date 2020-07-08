@@ -1,0 +1,132 @@
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+    box-sizing: border-box;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+   
+    background-color: #444054;
+
+    .logo {
+      font-size: 1.5rem;
+      color:white;
+    }
+  
+    .burger {
+      cursor: pointer;
+      display: block;
+      transition: transform 0.4s ease;
+      
+
+      &.close{
+        transform: translateY(-70px);
+      }
+    }
+  
+
+    nav {
+      display: none;
+      li {
+        list-style: none;
+        color:white;
+      }
+
+      .dropdown-list{
+       opacity: 0;
+        padding: 0;
+      }
+    }
+  }
+  
+  @media (min-width: 500px) {
+    header {
+      justify-content: flex-start;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      .logo {
+        flex: 2;
+      }
+  
+      .burger {
+        display: none;
+      }
+  
+      nav {
+        display: block;
+        position: relative;
+        flex: 1;
+        .nav-list {
+          display: flex;
+          margin-right: 2rem;
+
+          .nav-item {
+            flex: 1;
+            margin: auto 10px;
+            cursor: pointer;
+            
+            a{
+              text-decoration: none;
+              color:white;
+            }
+
+            .dropdown-list{
+             
+              position: absolute;
+              background-color: lightblue;
+              padding: 1rem;
+              border-radius: 0.5rem;
+              opacity: 0;
+              transition: opacity 0.5s ease;
+    
+             &.open{
+               opacity: 1;
+             }
+    
+              li{
+                margin: 1rem auto;
+              }
+            }
+
+            
+          }
+        }
+        
+      }
+    }
+  }
+
+  .movile-dropdown{
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(280px);
+    width: 200px;
+    background-color: lightblue;
+    animation: fadeInRight 0.4s ease 0.1s forwards;
+    margin-top: 0;
+    padding: 2rem;
+
+    li{
+      list-style: none;
+      cursor: pointer;
+
+      &.arrow{
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  @keyframes fadeInRight{
+
+    from{
+      transform: translateX(200px);
+    }
+
+    to{
+      transform: translateX(0px);
+    }
+  }

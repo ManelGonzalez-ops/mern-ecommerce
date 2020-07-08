@@ -1,0 +1,114 @@
+
+.signin-wrapper{
+
+    min-height: 82vh;
+}
+
+.payment-mask{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: fixed;
+    background: black;   
+    opacity: 0.5;
+    visibility: visible;
+    transition: opacity 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    &.hide{
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
+.modal-payment{
+
+    position: fixed;
+    width: 290px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.5s ease;
+    visibility: visible;
+    opacity: 1;
+   padding: 1rem;
+   background: white;
+
+   .relative-wrapper{
+       position: relative;
+       width: 100%;
+       height: 100%;
+   }
+
+   h1{
+       margin-top: 0.5rem;
+   }
+    &.closed{
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .closebtn{
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 2rem;
+        color: red;
+       
+
+        svg{
+            *{
+                cursor: pointer;
+            }
+        }
+    }
+
+    .pay-btn{
+
+        width: 60%;
+        min-width: 200px;
+        display: block;
+        margin: 0 auto;
+        color: white;
+        background: rgb(84, 105, 212);
+        border: none;
+        outline: none;
+        padding: 0.7rem;
+        border-radius: 4px;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        
+
+        &.closed{
+
+            animation: swallow 0.25s ease forwards;
+        }
+    }
+
+    .error{
+        color: red;
+    }
+}
+
+@media (min-width: 800px){
+
+    .modal-payment{
+
+        width: 500px;
+    }
+
+}
+
+@keyframes swallow {
+
+    0%{
+        transform: scale(1,1);
+    }
+    65%{
+        transform: scale(1,0.2);
+    }
+    100%{
+        transform: scale(0,0);
+    }
+}

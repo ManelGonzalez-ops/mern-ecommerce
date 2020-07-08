@@ -1,54 +1,189 @@
-.cart{
-    display: grid;
-    width: 100%;
-    grid-template-columns: 3fr 1fr;
-    gap: 3rem;
 
-    .right{
+
+
+
+
+
+.cart {
+    min-height: 100vh;
+    *{
+        box-sizing: border-box;
+    }
+    display: grid;
+    grid-template-rows: auto auto;
+        grid-template-columns: auto;
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0 auto;
+        
+       
+    .right {
         width: 100%;
         box-sizing: border-box;
-        padding: 2rem;
         border: 1px solid black;
-        .header{
+        box-sizing: border-box;
+        grid-row: 1/1;
+       
+        
+        .header {
             display: flex;
             justify-content: space-between;
+            height: 100px;
+
+            .price-title {
+                display: flex;
+                flex-direction: column-reverse;
+                font-size: 1.5rem;
+                margin-bottom: 0;
+                transform: translateX(-5px);
+            }
+
+            h1{
+                margin-left: 0.5rem;
+            }
         }
 
-        .cart-content{
-            position: relative;    
+        .cart-content {
+            padding: 1rem 0.5rem;
+            position: relative;
             display: flex;
-
-            img{
-                max-height: 150px;
+            flex-wrap: wrap;
+            width: 100%;
+           
+           
+            &::before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 1px;
+                bottom: -10px;
+                background-color: black;
+                left: -2px;
             }
 
-            .info-cart{
+            img {
+                max-height: 100px;
+            }
 
+            .info-cart {
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
-
-                .info-cantidad{
-
-                    display: flex;
+                margin-left: 1rem;
+                flex-wrap: wrap;
+                flex-basis: auto;
+                h3 {
+                    margin-top: 0;
                 }
 
-               
+                .info-cantidad {
+                    display: flex;
+                    flex-wrap: wrap;
+                }
             }
 
-            .cart-price{
-                
-                position: absolute;
-                right: 0;
+            .cart-price {
+                display: flex;
+                flex-direction: row-reverse;
+                flex: 1 1 0;
+                position: relative;
+                right: 10px;
             }
         }
     }
 
-    .left{
+    .left {
+        box-sizing: border-box;
+        
+        margin: 0 auto;
+        grid-row: 2/-1;
+        .box {
+            padding: 1rem;
+            height: auto;
+            border-radius: 0.4rem;
+            background-color: lightgrey;
+            margin-top: 1rem;
+            margin: 0 auto;
 
-        .box{
+            span{
+                word-break: break-all;
+            }
 
-            border: 1px solid black;
+            .button-pnp{
+
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px;
+                border-radius: 0.3rem;
+                border: 1px solid silver;
+                text-decoration: none;
+                text-align: center;
+                font-size: 16px;
+                font-family: Arial;
+                cursor: pointer;
+            }
+
+            .box-total {
+
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+@media (min-width: 450px) {
+    .cart{
+        width: auto;
+        .right{
+            width: auto;
+            .header{
+                .price-title{
+                    position: relative;
+                    right: 5px;
+                }
+            }
+        }
+        .left{
+            width: 350px;
+        }
+    }
+
+}
+
+@media (min-width: 1000px){
+    
+    .cart{
+        
+    grid-template-columns: 2.5fr 1fr;
+    grid-template-rows: auto;
+    gap: 0;
+    margin: 4rem 1rem;
+    margin-bottom: 0;
+    box-sizing: border-box;
+        
+        .right{
+
+            grid-column: 1/1;
+            grid-row: 1/1;
+            padding: 2rem;
+
+            .header{
+
+                .price-title {
+                    position: relative;
+                    right: 0;
+                }
+            }
+            
+        }
+        .left{
+            grid-column: 2/-1;
+            grid-row: 1/1;
+
+            .box{
+                margin-left: 0.5rem;
+            }
         }
     }
 }

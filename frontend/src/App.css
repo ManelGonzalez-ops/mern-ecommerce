@@ -44,3 +44,7 @@
   opacity: 1;
 }
 
+.error-red{
+  color: red;
+  border: 1px solid red;
+}

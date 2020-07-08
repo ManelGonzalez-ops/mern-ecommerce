@@ -18,7 +18,7 @@ export default function Users(props) {
     const [price, setPrice] = useState("")
     const [brand, setBrand] = useState("")
     const [image, setImage] = useState("")
-    const [category, setCategory] = useState("")
+    const [category, setCategory] = useState("Software")
     const [stock, setStock] = useState("")
     const [description, setDescription] = useState("")
     const [_id, setId] = useState("")
@@ -71,6 +71,8 @@ export default function Users(props) {
     const productLista = useSelector(state => state.productList)
     const { products, loading, error } = productLista
 
+    const categoryList = ["Software", "Toys", "Hardware", "Accesories", "Kitchen & Dining",  "Clothing & Jewelry", "Books", "Baby", "Sports", "Other"]
+
 
 
 
@@ -86,6 +88,7 @@ export default function Users(props) {
     }, [success])
 
     useEffect(()=>{
+        dispatch({type:"SET_CURRENT_PATH", payload: "hide"})
         dispatch(listProducts())
     }, [])
 
@@ -120,9 +123,9 @@ const deleteProduct =(e)=>{
     }
 
     return (
-        <Fragment>
+        <div className="admin-wrapper">
 
-            <button
+            <button className="button-pnp"
                 onClick={createProduct}
 
             >Create product</button>
@@ -130,15 +133,15 @@ const deleteProduct =(e)=>{
 
             {saveLoading && <p>oading ...</p>}
             <p>{saveError && saveError}</p>
-            <a href="/cart/">Cart</a>
+            
 
 
             <div className="form-container"
                 className={openModal ? "modal open" : "modal"}>
-                <button onClick={() => { setOpenModal(false) }}>close</button>
+                
         {/* creates and edits */}
-                <form method="POST" onSubmit={handleCreateorEdit}
-                >
+                <form className="form form-signup" method="POST" onSubmit={handleCreateorEdit}
+                >   <div className="form-responsive-section">
                     <div className="form-group">
                         <label htmlFor="name">Product Name</label>
                         <input id="name" type="text" name="name" value={name} onChange={(e) => { handleInput(e) }}></input>
@@ -147,6 +150,8 @@ const deleteProduct =(e)=>{
                         <label htmlFor="image">Image</label>
                         <input id="image" type="text" name="image" value={image} onChange={(e) => { handleInput(e) }}></input>
                     </div>
+                    </div>
+                    <div className="form-responsive-section">
                     <div className="form-group">
                         <label htmlFor="price">Price</label>
                         <input id="price" type="number" name="price" value={price} onChange={(e) => { handleInput(e) }}></input>
@@ -155,19 +160,27 @@ const deleteProduct =(e)=>{
                         <label htmlFor="brand">Brand</label>
                         <input id="brand" type="text" name="brand" value={brand} onChange={(e) => { handleInput(e) }}></input>
                     </div>
+                    </div>
+                    <div className="form-responsive-section">
                     <div className="form-group">
                         <label htmlFor="category">Category</label>
-                        <input id="category" type="text" name="category" value={category} onChange={(e) => { handleInput(e) }}></input>
+                        <select id="category" type="text" name="category" value={category} onChange={(e) => { handleInput(e) }}>
+                        {categoryList.map((item,index)=>
+                            <option value={item} key={index}>{item}</option>)}
+                            
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="description">Descripcion</label>
                         <textarea id="description" name="description" value={description} onChange={(e) => { handleInput(e) }}></textarea>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="stock">Count in stock</label>
-                        <input id="stock" type="name" name="stock" value={stock} onChange={(e) => { handleInput(e) }}></input>
                     </div>
-                    <button type="submit" ref={signin}>Signin</button>
+                    <div className="form-group stock-field">
+                        <label htmlFor="stock">Count in stock</label>
+                        <input  id="stock" type="number" name="stock" value={stock} onChange={(e) => { handleInput(e) }}></input>
+                    </div>
+                    <button type="submit" className="button-pnp create" ref={signin}>Signin</button>
+                    <button onClick={() => { setOpenModal(false) }}>close</button>
                 </form>
             </div>
             <br /><br />
@@ -220,6 +233,6 @@ const deleteProduct =(e)=>{
 
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 }
