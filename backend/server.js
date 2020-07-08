@@ -43,7 +43,7 @@ app.use("/secret", PaymentRouter)
 //     res.send(producto)
 // })
 
-let PORT = process.env.PORT || 8000
+let PORT = process.env.PORT || 8080
 
 app.listen(PORT, ()=>{
     console.log("server listening")
