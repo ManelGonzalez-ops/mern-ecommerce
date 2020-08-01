@@ -19,23 +19,23 @@ export default function Checkout(props) {
     const shipping = useSelector(state => state.shipping)
     const { shippingInfo } = shipping
 
-    const {currentStep} = useSelector(state =>state.currentStep)
+    const { currentStep } = useSelector(state => state.currentStep)
     const dispatch = useDispatch()
 
     const handleModalMask = () => {
         setModalIsOpen(false)
     }
-    useEffect(()=>{
+    useEffect(() => {
 
-        dispatch({type: "SET_CURRENT_PATH", payload: "show"})
+        dispatch({ type: "SET_CURRENT_PATH", payload: "show" })
         currentStep !== 3 && dispatch({ type: "SET_STEP", payload: 3 })
-        
-            localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
-        
-       
+
+        localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
+
+
         // console.log(props.history.location.pathname, "pagina actual")
         // localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
-    },[])
+    }, [])
 
     useEffect(() => {
         if (modalIsOpen) {
@@ -47,7 +47,7 @@ export default function Checkout(props) {
 
     return (
         <Fragment>
-           
+
             <div className="checkout__wrap">
                 <div className="checkout__container">
                     <div className="info">
@@ -76,10 +76,10 @@ export default function Checkout(props) {
                             <p className="floatedd">Price</p>
 
                             {cartItems && cartItems.length !== 0 &&
-                                cartItems.map(item => {
+                                cartItems.map((item, index) => {
                                     console.log(item)
                                     return (
-                                        <div className="item__table">
+                                        <div key={index} className="item__table">
                                             <img src="https://nodereact-ecommerce-app.herokuapp.com/images/p1.jpg" alt="panalones" />
                                             <div className="cell__2">
                                                 <p>{item.name}</p>
@@ -97,7 +97,7 @@ export default function Checkout(props) {
                         <div className="summary__item">
                             <p>Items</p>
                             <p>{cartItems.reduce((total, item) => total + parseInt(item.qty, 10), 0)} uds</p>
-                            
+
                         </div>
                         <div className="summary__item">
                             <p>Shipping</p>
@@ -109,17 +109,20 @@ export default function Checkout(props) {
                         </div>
                         <div className="summary__item amazone">
                             <h2>Order Total</h2>
-                            <h2>{cartItems.reduce((total, item) => total + (item.qty * item.price), 0)}</h2>
+                            <h2>
+                                {
+                                    parseFloat(cartItems.reduce((total, item) => total + (item.qty * item.price), 0).toFixed(2))
+                                }</h2>
                         </div>
 
                     </div>
                 </div>
             </div>
-            
+
             <div className={modalIsOpen ? "payment-mask" : "payment-mask hide"}
                 ref={mask} ></div>
             <ModalPayment modalOpen={modalIsOpen} setModal={setModalIsOpen} />
-            
+
         </Fragment>
     )
 }

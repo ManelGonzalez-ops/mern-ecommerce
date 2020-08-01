@@ -21,12 +21,13 @@ router.post('/', async (req, res) => {
         if (order.user == req.body.idUser) {
           console.log(order.totalCost, "coooste total")
           const paymentIntent = await stripe.paymentIntents.create({
-            amount: parseFloat(order.totalCost),
+            //multiplicamos x100 porque los anormales de Stripe toman las cifras como céntimos
+            amount: Math.round(order.totalCost * 100),
             currency: 'usd',
             // Verify your integration in this guide by including this parameter
             metadata: { integration_check: 'accept_a_payment' },
           });
-
+          console.log(paymentIntent, "El puto payment intend")
           res.status(201).send({ client_secret: paymentIntent.client_secret })
         }
         else{

@@ -7,7 +7,7 @@ const userActionsSignin = (email, password) => async (dispatch) => {
 
     try {
         dispatch({ type: USER_LOGIN_REQUEST })
-        const rawData = await fetch("https://localhost:8000/users/login", {
+        const rawData = await fetch("http://localhost:8000/users/login", {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -20,12 +20,12 @@ const userActionsSignin = (email, password) => async (dispatch) => {
         //data constains jwt token as well, that we send from server
         const data = await rawData.json()
         //necesario para lanzar el error en casa¡o d que los datos no fuesen correctos 
-        if(data.message === "invalid mail or password") throw "invalid mail or password" 
+        if(data.message && data.message === "invalid mail or password") throw "invalid mail or password" 
         Cookie.set("userInfo", JSON.stringify(data))
         dispatch({ type: USER_LOGIN_SUCCESS, payload: data })
     }
     catch (err) {
-        //id we define custom error, err será como err.message
+        
         dispatch({ type: USER_LOGIN_FAIL, payload: err })
     }
 }
@@ -36,7 +36,7 @@ const userActionsSignup = (name, email, password) => async (dispatch) => {
 
     try {
         dispatch({ type: USER_REGISTER_REQUEST })
-        const rawData = await fetch("https://localhost:8000/users/register ", {
+        const rawData = await fetch("http://localhost:8000/users/register ", {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -71,7 +71,7 @@ const userUpdateInfo = (newInfo)=> async (dispatch, getState)=>{
         dispatch({type: USER_UPDATE_REQUEST})
         const {userSignin: {userInfo}} = getState()
 
-        const rawData = await fetch("https://localhost:8000/users/updateAccount", {
+        const rawData = await fetch("http://localhost:8000/users/updateAccount", {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userInfo.token}`

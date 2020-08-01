@@ -21,6 +21,7 @@ const ModalPayment = (props) => {
                 <h1>Payment</h1>
 
                 <Elements stripe={stripePromise}>
+                  
                     <PaymentComponent />
                 </Elements>
 

@@ -50,6 +50,7 @@ router.post("/login", async (req, res) => {
             res.status(401).send({ message: "invalid mail or password" })
         }
     }
+
     catch (err) {
         console.log(err, "err")
         res.status(401).json({ data: err.message })

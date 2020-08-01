@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Cookie from "js-cookie"
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useSelector, useDispatch } from "react-redux"
 import CardSection from './CardSection';
 import { Spinner2 } from "./Shipping"
+import { useHistory } from "react-router-dom";
 
 
 
+export default function CheckoutForm(props) {
 
-export default function CheckoutForm() {
+  const history = useHistory()
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -17,10 +20,10 @@ export default function CheckoutForm() {
   const [success, setSuccess] = useState(false)
   const [totalSuccess, setTotalSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [toHall, setToHall] = useState(false)
 
   const { _id, name } = Cookie.getJSON("userInfo")
   const { currentOrder } = useSelector(state => state.currentOrder)
-
 
 
 
@@ -35,7 +38,7 @@ export default function CheckoutForm() {
       return;
     }
     setLoading(true)
-    const payment = await fetch("https://localhost:8000/secret", {
+    const payment = await fetch("http://localhost:8000/secret", {
       headers: {
         "Content-Type": "application/json"
       },
@@ -90,7 +93,7 @@ export default function CheckoutForm() {
 
   const fechar = async () => {
     try {
-      const rawData = await fetch("https://localhost:8000/secret/success", {
+      const rawData = await fetch("http://localhost:8000/secret/success", {
         headers: {
           "Content-Type": "application/json"
         },
@@ -105,7 +108,7 @@ export default function CheckoutForm() {
       dispatch({ type: "SET_STEP", payload: 4 })
       Cookie.set("cartItems", JSON.stringify([]))
       Cookie.set("currentOrder", JSON.stringify({}))
-      console.log("cookies eliminadas?")
+
 
     }
     catch (err) {
@@ -117,34 +120,55 @@ export default function CheckoutForm() {
   useEffect(() => {
     let successDelay;
     if (document.getElementById('successAnimation')) {
-     successDelay = setTimeout(()=>{
+      successDelay = setTimeout(() => {
         document.getElementById('successAnimation').classList.add("animated")
+
+        setToHall(true)
       }, 500)
-      
+
     }
 
-    return ()=>{
+    return () => {
       clearTimeout(successDelay)
     }
   }, [totalSuccess])
+
+
+  useEffect(() => {
+   
+    let redirectDelay;
+    if (toHall) {
+      redirectDelay = setTimeout(() => {
+        history.push("/")
+        console.log("reeeeedirecionameeee")
+      }, 2000)
+
+      console.log("redireciiiiona warrraa", toHall)
+    }
+
+    return () => {
+      clearTimeout(redirectDelay)
+    }
+
+  }, [toHall])
 
   return (
     <form onSubmit={handleSubmit}>
       <CardSection />
       <button disabled={!stripe}
-        className={success? "pay-btn closed":"pay-btn"}
+        className={success ? "pay-btn closed" : "pay-btn"}
       >
         Confirm Payment
         </button>
       {!error && loading && <Spinner2 />}
       {error && <p className="error">{error}</p>}
-    
-      {totalSuccess && 
-      <svg id="successAnimation" xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 70 70">
-        <circle id="successAnimationCircle" cx="35" cy="35" r="24" stroke="#00ff00" strokeWidth="2" strokeLinecap="round" fill="transparent" />
-        <polyline id="successAnimationCheck" stroke="#00ff00" strokeWidth="2" points="23 34 34 43 47 27" fill="transparent" />
-      </svg>}
-      
+
+      {totalSuccess &&
+        <svg id="successAnimation" xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 70 70">
+          <circle id="successAnimationCircle" cx="35" cy="35" r="24" stroke="#00ff00" strokeWidth="2" strokeLinecap="round" fill="transparent" />
+          <polyline id="successAnimationCheck" stroke="#00ff00" strokeWidth="2" points="23 34 34 43 47 27" fill="transparent" />
+        </svg>}
+
     </form>
   );
 }

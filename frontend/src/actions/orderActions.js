@@ -17,7 +17,7 @@ export const addOrderDB = (hasLogin) => async (dispatch, getState) => {
     try {
         console.log({ cartItems, userInfo }, "basura de mierdaAAAAAAAAAAAAAAAAAAA")
         dispatch({ type: ADD_ORDERDB_REQUEST })
-        const rawData = await fetch("https://localhost:8000/orders", {
+        const rawData = await fetch("http://localhost:8000/orders", {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userInfo.token}`
@@ -42,7 +42,7 @@ export const showOrderDetails = () => async (dispatch) => {
         dispatch({ type: SHOW_ORDERS_REQUEST })
 
         const rawData = 
-        await fetch(`https://localhost:8000/orders/completed/${userInfo._id}`, {
+        await fetch(`http://localhost:8000/orders/completed/${userInfo._id}`, {
             headers: {
                 "Authorization": `Bearer ${userInfo}`
             }

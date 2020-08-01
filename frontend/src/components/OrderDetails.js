@@ -19,7 +19,7 @@ export default function Checkout({ match }) {
 
             try {
                 const rawData =
-                    await fetch(`https://localhost:8000/orders/order/${orderId}`, {
+                    await fetch(`http://localhost:8000/orders/order/${orderId}`, {
                         headers: {
                             "Authorization": `Bearer ${userInfo}`
                         }

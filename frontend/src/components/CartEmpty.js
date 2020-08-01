@@ -19,7 +19,7 @@ export default function CartEmpty() {
                     <hr />
 
                     <div className="cart-content">
-                        <img src="https://node-react-ecommerce-app.herokuapp.com/images/p2.jpg" />
+                        
                         <div className="info-cart">
 
 

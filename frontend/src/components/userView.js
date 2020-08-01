@@ -53,7 +53,7 @@ export default function UserView() {
             try {
 
                 const rawData =
-                    await fetch(`https://nodeecommerce.herokuapp.com/orders/completed/${userInfo._id}`, {
+                    await fetch(`http://nodeecommerce.herokuapp.com/orders/completed/${userInfo._id}`, {
                         headers: {
                             "Authorization": `Bearer ${userInfo}`
                         }
@@ -98,7 +98,7 @@ export default function UserView() {
                     <input id="rpassword" type="password" name="rpassword" value={rpassword} onChange={(e) => { handleInput(e) }} required />
                 </div>
 
-                <button className="button-pnp" type="submit">Register</button>
+                <button className="button-pnp" type="submit">Update Account</button>
                 <p className="placeholder-user">Logout ?</p>
                 <button className="button-pnp" >Log Out</button>
             </form>
@@ -117,7 +117,7 @@ export default function UserView() {
                         :
                         isError.error ? <div>{error.msg}</div>
                             :
-                            orders.userOrders.map(order =>
+                            orders && orders.userOrders && orders.userOrders.map(order =>
                                 <tr>
                                     <td>{order._id}</td>
                                     <td>{orders.user.name}</td>

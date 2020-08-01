@@ -55,14 +55,13 @@ export default function Users(props) {
     const {currentStep} = stepState
 
 
-
     return (
         <div className="signin-wrapper">
             {/* {props.location.search && <StepTimeline/>} */}
             {loading && <p>Loading ...</p>}
-    <p>{error && error}</p>
                
                 <form className="form" method="POST" onSubmit={handleSignin}>
+                <p style={{background: "red", color: "white"}}>{error && error}</p>
                     <h1 className="form-title">Signin</h1>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>

@@ -104,18 +104,22 @@ header nav .dropdown-list {
   }
   header nav .nav-list .nav-item .dropdown-list {
     position: absolute;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    visibility: hidden;
+    border: none;
+  }
+  header nav .nav-list .nav-item .dropdown-list ul {
     background-color: #444054;
     padding: 1rem;
     border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.1s ease;
     width: 100px;
     transform: translate(-17px, 15px);
+    border: none;
   }
   header nav .nav-list .nav-item .dropdown-list::before {
     content: "";
     position: absolute;
-    top: -15px;
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
@@ -124,6 +128,7 @@ header nav .dropdown-list {
   }
   header nav .nav-list .nav-item .dropdown-list.open {
     opacity: 1;
+    visibility: visible;
   }
   header nav .nav-list .nav-item .dropdown-list li {
     margin: 1rem auto;

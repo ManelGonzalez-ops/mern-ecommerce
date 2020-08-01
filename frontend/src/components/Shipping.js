@@ -88,7 +88,7 @@ export default function Shipping(props) {
         <div className="form-group small-mb">
             <label className="inline" htmlFor="stripe">Credit Card
             <input className="inline" type="radio" value="stripe" id="stripe"
-            active
+            active="true"
                 name="stripe"
                 onChange={(e) => setPaymentP(e.target.value)}
                 value={paymentP} checked="checked" /></label>
@@ -187,7 +187,7 @@ export default function Shipping(props) {
 
             if (currentOrder && Object.keys(currentOrder).length) {
                 if (shippingInfo && Object.keys(shippingInfo).length) {
-                    console.log("me cago en toodo")
+                    
                     dispatch({ type: "SET_STEP", payload: 3 })
                     props.history.push("/checkout")
 
@@ -241,5 +241,5 @@ export default function Shipping(props) {
 
 
 export const Spinner2 =()=><svg class="spinner" width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+<circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30"></circle>
 </svg>

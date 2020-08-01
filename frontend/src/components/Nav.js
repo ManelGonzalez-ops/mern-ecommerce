@@ -48,12 +48,14 @@ export default function Nav() {
                             <span className="text-center">
                                 Account
                             </span>
-                            <ul className={openDropdown ? "dropdown-list open" : "dropdown-list "}>
+                            <div className={openDropdown ? "dropdown-list open" : "dropdown-list "}>
+                            <ul>
                                 <li className="dropdown-list-item"><Link to="/user">Profile</Link></li>
                                 <li className="dropdown-list-item"
                                     onClick={logout}>Log out</li>
                                 <li className="dropdown-list-item"><Link to="/addstore">Admin section</Link></li>
                             </ul>
+                            </div>
                         </li>
 
                         :

@@ -107,8 +107,8 @@ export default function Details(props) {
                     error ? <p>{error}</p> :
                         (
                             <Fragment>
-                                {details.reviews && details.reviews.map(review =>
-                                    <li>
+                                {details.reviews && details.reviews.map((review, index) =>
+                                    <li key={index}>
                                         <p className="comment">{review.review}</p>
                                         
                                         <RatingStars display="inline" rating={review.rating} />
