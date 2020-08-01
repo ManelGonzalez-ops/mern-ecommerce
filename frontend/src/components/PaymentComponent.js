@@ -35,7 +35,7 @@ export default function CheckoutForm() {
       return;
     }
     setLoading(true)
-    const payment = await fetch("https://nodeecommerce.herokuapp.com/secret", {
+    const payment = await fetch("https://localhost:8000/secret", {
       headers: {
         "Content-Type": "application/json"
       },
@@ -90,7 +90,7 @@ export default function CheckoutForm() {
 
   const fechar = async () => {
     try {
-      const rawData = await fetch("https://nodeecommerce.herokuapp.com/secret/success", {
+      const rawData = await fetch("https://localhost:8000/secret/success", {
         headers: {
           "Content-Type": "application/json"
         },

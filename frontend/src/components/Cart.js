@@ -4,15 +4,21 @@ import { useSelector, useDispatch } from "react-redux"
 import { cartProduct, cartModification } from "../actions/cartActions"
 import isEmpty from "../utils/emptyObject"
 import Cookie from "js-cookie"
+import CartEmpty from "./CartEmpty"
+import {Loader1} from "./Products"
+import useScrollTop from "../utils/useScrollTop"
+
 
 
 export default function Cart(props) {
+
+    useScrollTop()
     
     const { productId } = props.match.params
     const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
     const { cartItems, loading, error } = useSelector(state => state.cart)
 
-
+  
 
     useEffect(() => {
         if (!loading) {
@@ -25,13 +31,16 @@ export default function Cart(props) {
 
 
     const dispatch = useDispatch()
-    useEffect(() => {
-       
 
-       
+//adds one product every time (clicking in details), updating cartItem array
+    useEffect(() => { 
+        console.log(cartItems, "CAAAART ITENSSJASBHGDV")
+        console.log("mmmmmmmmmmmmamamasmasmsmamasmamas")
         if (productId) {
+            console.log("mamamelaaaa")
             dispatch(cartProduct(productId, qty))
         }
+      
     }, [])
 
     
@@ -73,13 +82,17 @@ export default function Cart(props) {
     return (
 
         <div className="cart">
-
-            {loading ? <div>Loading...</div>
+            
+            {
+            cartItems.length === 0 ? <CartEmpty/>
+            :
+            loading ? <Loader1/>
                 :
                 error ? <p>{error.message}</p>
                     :
                     cartItems.length &&
                     <Fragment>
+                   
                         <div className="right">
                             <div className="header">
                                 <h1>Shopping Cart</h1>
@@ -92,7 +105,7 @@ export default function Cart(props) {
                                 return (
 
                                     <div key={item.id} className="cart-content">
-                                        <img src="https://node-react-ecommerce-app.herokuapp.com/images/p2.jpg" alt="pantalones" />
+                                        <img src={item.image} alt="pantalones" />
                                         <div className="info-cart">
                                             <Link to={`/product/${item.id}`}
                                             ><h3>{item.name}</h3></Link>
@@ -153,7 +166,7 @@ export default function Cart(props) {
                         </div>
                     </Fragment>
             }
-        </div>
+       </div>
     )
 }
 

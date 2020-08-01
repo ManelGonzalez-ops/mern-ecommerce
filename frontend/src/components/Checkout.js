@@ -93,7 +93,7 @@ export default function Checkout(props) {
                     </div>
                     <div className="summary">
                         <button className="button-pnp" onClick={() => { setModalIsOpen(true) }}>Place Order</button>
-                        <h2 className="caption">Order Total</h2>
+                        <h2 className="caption">Summary</h2>
                         <div className="summary__item">
                             <p>Items</p>
                             <p>{cartItems.reduce((total, item) => total + parseInt(item.qty, 10), 0)} uds</p>

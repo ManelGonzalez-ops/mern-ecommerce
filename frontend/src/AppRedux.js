@@ -2,7 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react';
 import './App.css';
 // import Products from "./data"
 import DetailsRedux from "./components/DetailsRedux"
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom"
+import { HashRouter, Route, Switch, Link } from "react-router-dom"
 import Nav from "./components/Nav"
 import Cart from "./components/Cart"
 import Signin from "./components/Signin"
@@ -18,45 +18,38 @@ import OrderDetails from "./components/OrderDetails"
 
 
 
+
 function App() {
     const [productoSeleccion, setProductoSeleccion] = useState("")
 
 
-//tenemos que renderizar dodicionalmente StepTimeline
+    //tenemos que renderizar dodicionalmente StepTimeline
 
-const {currentPath} = useSelector(state=>state.currentPath)
+    const { currentPath } = useSelector(state => state.currentPath)
 
-useEffect(()=>{
+    useEffect(() => {
 
-}, [currentPath])
+    }, [currentPath])
 
-const Timeline =()=>{
-    if(JSON.parse(localStorage.getItem("isbuyin"))){
-
-        if("path" == "login or logout"){
-            return <Route path="/" component={StepTimeline}/>
-        }
-    }
-    else if("path" == "checkoout or shipping") {
-            return <Route path="/" component={StepTimeline}/>
-    }
-}
 
     return (
 
-        <Router>
-            <Nav />
-            
-                {currentPath === "show" && <Route path="/" component={StepTimeline}/>}
-                
-                <Route path="/shipping" exact component={Shipping} />
+        <HashRouter>
+            <div className="app-wrapper">
+                <Nav />
 
-                <Route path="/signin" exact component={Signin} />
-            
-                <Route path="/signup" exact component={Signup} />
-           
-                <Route path="/checkout" exact component={Checkout} />
-            
+            </div>
+            {currentPath === "show" && <Route path="/" component={StepTimeline} />}
+
+            <Route path="/shipping" exact component={Shipping} />
+
+            <Route path="/signin" exact component={Signin} />
+
+            <Route path="/signup" exact component={Signup} />
+
+            <Route path="/checkout" exact component={Checkout} />
+
+
             <Switch>
                 <Route path="/product/:productId" exact component={DetailsRedux} />
             </Switch>
@@ -79,7 +72,10 @@ const Timeline =()=>{
             <footer className="footer">
                 All rights reserved	&copy;
             </footer>
-        </Router>
+            
+                
+            
+        </HashRouter>
 
     );
 }

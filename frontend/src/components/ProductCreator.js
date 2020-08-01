@@ -71,7 +71,7 @@ export default function Users(props) {
     const productLista = useSelector(state => state.productList)
     const { products, loading, error } = productLista
 
-    const categoryList = ["Software", "Toys", "Hardware", "Accesories", "Kitchen & Dining",  "Clothing & Jewelry", "Books", "Baby", "Sports", "Other"]
+    const categoryList = ["Toys", "Hardware", "Accesories", "Kitchen & Dining",  "Clothing & Jewelry", "Books", "Baby", "Sports", "Other"]
 
 
 
@@ -144,27 +144,27 @@ const deleteProduct =(e)=>{
                 >   <div className="form-responsive-section">
                     <div className="form-group">
                         <label htmlFor="name">Product Name</label>
-                        <input id="name" type="text" name="name" value={name} onChange={(e) => { handleInput(e) }}></input>
+                        <input id="name" type="text" name="name" value={name} onChange={(e) => { handleInput(e) }} required ></input>
                     </div>
                     <div className="form-group">
                         <label htmlFor="image">Image</label>
-                        <input id="image" type="text" name="image" value={image} onChange={(e) => { handleInput(e) }}></input>
+                        <input id="image" pattern="https://.*" type="url" name="image" value={image} onChange={(e) => { handleInput(e) }} pattern="https://.*" placeholder="https://..." required ></input>
                     </div>
                     </div>
                     <div className="form-responsive-section">
                     <div className="form-group">
                         <label htmlFor="price">Price</label>
-                        <input id="price" type="number" name="price" value={price} onChange={(e) => { handleInput(e) }}></input>
+                        <input id="price" type="number" name="price" value={price} onChange={(e) => { handleInput(e) }} required></input>
                     </div>
                     <div className="form-group">
                         <label htmlFor="brand">Brand</label>
-                        <input id="brand" type="text" name="brand" value={brand} onChange={(e) => { handleInput(e) }}></input>
+                        <input id="brand" type="text" name="brand" value={brand} onChange={(e) => { handleInput(e) }} required></input>
                     </div>
                     </div>
                     <div className="form-responsive-section">
                     <div className="form-group">
                         <label htmlFor="category">Category</label>
-                        <select id="category" type="text" name="category" value={category} onChange={(e) => { handleInput(e) }}>
+                        <select id="category" type="text" name="category" value={category} onChange={(e) => { handleInput(e) }} required>
                         {categoryList.map((item,index)=>
                             <option value={item} key={index}>{item}</option>)}
                             
@@ -172,12 +172,12 @@ const deleteProduct =(e)=>{
                     </div>
                     <div className="form-group">
                         <label htmlFor="description">Descripcion</label>
-                        <textarea id="description" name="description" value={description} onChange={(e) => { handleInput(e) }}></textarea>
+                        <textarea id="description" name="description" value={description} onChange={(e) => { handleInput(e) }} required></textarea>
                     </div>
                     </div>
                     <div className="form-group stock-field">
                         <label htmlFor="stock">Count in stock</label>
-                        <input  id="stock" type="number" name="stock" value={stock} onChange={(e) => { handleInput(e) }}></input>
+                        <input  id="stock" type="number" name="stock" value={stock} onChange={(e) => { handleInput(e) }} required></input>
                     </div>
                     <button type="submit" className="button-pnp create" ref={signin}>Signin</button>
                     <button onClick={() => { setOpenModal(false) }}>close</button>
@@ -193,7 +193,6 @@ const deleteProduct =(e)=>{
                         <tr>
                             <th>id</th>
                             <th>Name</th>
-                            <th>Image</th>
                             <th>Brand</th>
                             <th>Price</th>
                             <th>Category</th>
@@ -205,7 +204,6 @@ const deleteProduct =(e)=>{
                         {products.map(item => <tr key={item._id}>
                             <th>{item._id}</th>
                             <td>{item.name}</td>
-                            <td>{item.image}</td>
                             <td>{item.brand}</td>
                             <td>{item.price}</td>
                             <td>{item.category}</td>

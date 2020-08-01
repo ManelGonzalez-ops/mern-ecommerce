@@ -3,21 +3,22 @@ import { Link } from "react-router-dom"
 import Image from "../media/images/p3.jpg"
 import RatingStars from "./ratingStar"
 
+
 export default function Products({ item }) {
 
     const [productHovered, setProductHovered] = useState(false)
     const [cartHovered, setCartHovered] = useState(false)
 
-
+console.log(item.name.length)
     return (
         <div
             className={productHovered ? "product hovered" : "product"}
             onMouseOver={() => { setProductHovered(true) }}
             onMouseOut={() => { setProductHovered(false) }}
             >
-            <img src={Image} alt="imagen" className="img-product" />
+            <div style={{backgroundImage: `url(${item.image})`}} className="img-product" ></div>
             <div className="cart-body">
-                <p className="producto__nombre">
+                <p className={item.name.length <= 60 ? "producto__nombre":"producto__nombre encojer"}>
                     <Link
                         to={`/product/${item._id}/`}>{item.name}</Link></p>
                 <p className="producto__brand">{item.brand}</p>
@@ -26,6 +27,7 @@ export default function Products({ item }) {
                     <p className="producto__price">
                         $ {item.price}
                     </p>
+                   
                     <Link
                     to={`/product/${item._id}/`}
                     className={cartHovered ? "pseudo-wrap hovered" : "pseudo-wrap"}
@@ -34,6 +36,7 @@ export default function Products({ item }) {
                     >
                         <CartSvg />
                     </Link>
+                   
                 </div>
             </div>
         </div>

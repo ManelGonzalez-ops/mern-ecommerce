@@ -16,7 +16,13 @@ $main-color: #fcfcfc;
 
 @import "./details/details.scss";
 
+@import "./productCreator.scss";
 
+html, body {
+  overflow-x:hidden;
+  //importante añadir para movil
+  position: relative;
+} 
 
 .shippingWrapper{
   min-height: 64vh;
@@ -548,3 +554,157 @@ background-color: #3298dc;
 
 }
 
+.icons-wrapper{
+  display: flex;
+justify-content: space-between;
+  .section{
+    a{
+      display: flex;
+      padding: 0.5rem;
+      transform: rotateX(-90deg);
+      transform-origin: top;
+      animation: rotateIn 0.5s ease 0.5s forwards;
+      border: 1px solid crimson;
+      background-color: white;
+      text-decoration: none;
+
+      &.right{
+        padding: 6px;
+          padding-bottom: 5px;
+      }
+
+      .arrow-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        p{
+          margin: 0;
+         margin-top: 5px;
+        }
+
+        &.left{
+          margin-right: 1rem;
+        }
+
+        &.right{
+          margin-left: 0.5rem;
+        }
+      }
+    }
+    
+    
+  }
+}
+
+
+@media (min-width: 500px){
+
+  .icons-wrapper{
+
+    display: none;
+  }
+}
+
+@keyframes rotateIn{
+
+  from{
+    transform: rotateX(-90deg);
+  }
+  to{
+    transform: rotateX(0deg);
+  }
+}
+
+
+.slide{
+height: 600px;
+width: 100%;
+background-color: red;
+
+&.blue{
+  background-color: blue;
+}
+}
+.carousel-container{
+position: absolute;
+
+  ul{
+    height: 600px;
+    li{
+      height: 100%;
+
+      div{
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: relative;
+        z-index: 222;
+      }
+    }
+  }
+  &.up{
+    z-index: -9999;
+    position: absolute;
+  }
+}
+.slidd{
+  position: relative;
+}
+
+
+
+@keyframes arrow{
+
+30%{
+transform: translateY(-40%)
+}
+
+100%{
+  transform: translateY(100%)
+}
+}
+@keyframes btnarrow{
+
+30%{
+transform: scaleY(3)
+}
+
+100%{
+  transform: scaleY(10)
+}
+}
+
+
+.wrapper-carru{
+  position: relative;
+
+  .buton-shop{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: top;
+    padding: 1rem;
+    height: auto;
+    position: absolute;
+    mix-blend-mode: overlay;
+    border: 5px solid red;
+
+    .text{
+      color: red;
+      font-size: 3rem;
+    }
+    .ensanchador{
+      animation: btnarrow 2s ease infinite;
+      height: 5px
+    } 
+    svg{
+  fill: red;
+      animation: arrow 2s ease infinite;
+    }
+  }
+}

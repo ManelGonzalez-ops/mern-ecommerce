@@ -1,3 +1,7 @@
+.container-details {
+  position: relative;
+}
+
 .details-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -60,6 +64,8 @@
 @media (min-width: 700px) {
   .details-wrapper img {
     width: 50vw;
+    max-height: 80vh;
+    object-fit: contain;
   }
   .details-wrapper .flex-container {
     align-items: flex-start;

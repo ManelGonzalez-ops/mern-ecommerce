@@ -3,6 +3,7 @@ import Cookie from "js-cookie"
 
 
 
+
 export default function Checkout({ match }) {
 
     const [info, setInfo] = useState("")
@@ -18,7 +19,7 @@ export default function Checkout({ match }) {
 
             try {
                 const rawData =
-                    await fetch(`https://nodeecommerce.herokuapp.com/orders/order/${orderId}`, {
+                    await fetch(`https://localhost:8000/orders/order/${orderId}`, {
                         headers: {
                             "Authorization": `Bearer ${userInfo}`
                         }

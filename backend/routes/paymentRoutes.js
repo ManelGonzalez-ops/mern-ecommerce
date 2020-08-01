@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         if (order.user == req.body.idUser) {
           console.log(order.totalCost, "coooste total")
           const paymentIntent = await stripe.paymentIntents.create({
-            amount: order.totalCost,
+            amount: parseFloat(order.totalCost),
             currency: 'usd',
             // Verify your integration in this guide by including this parameter
             metadata: { integration_check: 'accept_a_payment' },
