@@ -19,7 +19,7 @@ export default function Checkout({ match }) {
 
             try {
                 const rawData =
-                    await fetch(`http://localhost:8000/orders/order/${orderId}`, {
+                    await fetch(`https://mern-ecomerce.herokuapp.com/orders/order/${orderId}`, {
                         headers: {
                             "Authorization": `Bearer ${userInfo}`
                         }
@@ -27,11 +27,11 @@ export default function Checkout({ match }) {
 
                 const { data } = await rawData.json()
                 setInfo(data)
-                console.log(info, "laaadata")
+           
                 setLoading(false)
 
             } catch (err) {
-                console.log(err.message, "errorrrr")
+      
                 setLoading(false)
                 setError(() => ({
                     error: true,
@@ -81,7 +81,7 @@ export default function Checkout({ match }) {
                             <p className="floatedd">Price</p>
 
                             {info.orderItemsArray.map(item => {
-                                    console.log(item)
+                           
                                     return (
                                         <div className="item__table">
                                             <img src="https://nodereact-ecommerce-app.herokuapp.com/images/p1.jpg" alt="panalones" />

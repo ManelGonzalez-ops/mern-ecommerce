@@ -17,7 +17,7 @@ function App() {
 
             <div className="hall__container" >
 
-                <Link to="/cart"><SvgCart /></Link>
+               
                 <Slider />
 
                 <ProductSection />

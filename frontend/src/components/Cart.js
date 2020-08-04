@@ -24,8 +24,7 @@ export default function Cart(props) {
         if (!loading) {
             
             Cookie.set("cartItems", JSON.stringify(cartItems))
-            console.log("xuuuuuuuuuuupa Nhjaknnkjlshdsjkdhvsbsjgdbuhsjgdbsjdb")
-            console.log(Cookie.getJSON("cartItems"), "PERO QUE COÑO")
+      
         }
     }, [loading])
 
@@ -34,10 +33,9 @@ export default function Cart(props) {
 
 //adds one product every time (clicking in details), updating cartItem array
     useEffect(() => { 
-        console.log(cartItems, "CAAAART ITENSSJASBHGDV")
-        console.log("mmmmmmmmmmmmamamasmasmsmamasmamas")
+       
         if (productId) {
-            console.log("mamamelaaaa")
+
             dispatch(cartProduct(productId, qty))
         }
       
@@ -50,11 +48,11 @@ export default function Cart(props) {
         const { name, value } = e.target
         // props.history.push(`/cart/${name}?qty=${value}`)
         if (value) {
-            console.log("ahora...", value, name)
+         
             dispatch(cartModification(name, value))
         }
         else {
-            console.log("ahora...", name)
+         
             dispatch(cartModification(name))
         }
     }
@@ -62,7 +60,7 @@ export default function Cart(props) {
     const user = useSelector(state => state.userSignin)
     const { userInfo } = user
     const toCheckout = () => {
-        console.log(userInfo, "useeeer info")
+   
         if (isEmpty(userInfo)) {
 
             props.history.push("/signin?redirect=shipping")
@@ -101,7 +99,7 @@ export default function Cart(props) {
                             <hr />
 
                             {cartItems && cartItems.map(item => {
-                                console.log(item, "aaquuuuuuui")
+                     
                                 return (
 
                                     <div key={item.id} className="cart-content">

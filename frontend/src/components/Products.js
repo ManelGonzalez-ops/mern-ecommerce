@@ -9,14 +9,14 @@ export default function Products({ item }) {
     const [productHovered, setProductHovered] = useState(false)
     const [cartHovered, setCartHovered] = useState(false)
 
-console.log(item.name.length)
+
     return (
         <div
             className={productHovered ? "product hovered" : "product"}
             onMouseOver={() => { setProductHovered(true) }}
             onMouseOut={() => { setProductHovered(false) }}
             >
-            <div style={{backgroundImage: `url(${item.image})`}} className="img-product" ></div>
+            <Link to={`product/${item._id}/`}><div style={{backgroundImage: `url(${item.image})`}} className="img-product" ></div></Link>
             <div className="cart-body">
                 <p className={item.name.length <= 60 ? "producto__nombre":"producto__nombre encojer"}>
                     <Link

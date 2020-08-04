@@ -77,7 +77,7 @@ export default function Checkout(props) {
 
                             {cartItems && cartItems.length !== 0 &&
                                 cartItems.map((item, index) => {
-                                    console.log(item)
+                                
                                     return (
                                         <div key={index} className="item__table">
                                             <img src="https://nodereact-ecommerce-app.herokuapp.com/images/p1.jpg" alt="panalones" />

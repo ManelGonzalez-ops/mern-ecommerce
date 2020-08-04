@@ -42,13 +42,12 @@ export default function Users(props) {
             dispatch({type: "SET_CURRENT_PATH", payload: "show"})
         }
 
-        console.log(userInfo)
+        
         if (userInfo) {
-            console.log(userInfo)
+           
             props.history.push(redirect)
         }
 
-        console.log(userInfo)
     }, [userInfo])
 
     const handleSignup = (e) => {

@@ -38,7 +38,7 @@ export default function CheckoutForm(props) {
       return;
     }
     setLoading(true)
-    const payment = await fetch("http://localhost:8000/secret", {
+    const payment = await fetch("https://mern-ecomerce.herokuapp.com/secret", {
       headers: {
         "Content-Type": "application/json"
       },
@@ -59,15 +59,15 @@ export default function CheckoutForm(props) {
     setLoading(false)
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
-      console.log(result.error.message, "errur");
+
       setError(result.error.message)
     } else {
       // The payment has been processed!
-      console.log("payment processed")
+ 
       if (result.paymentIntent.status === 'succeeded') {
 
         setSuccess(true)
-        console.log("payment succeeded!!")
+
 
         // Show a success message to your customer
         // There's a risk of the customer closing the window before callback
@@ -83,7 +83,7 @@ export default function CheckoutForm(props) {
 
     if (success) {
       fechar()
-      console.log("mmaaamaguarrona")
+
     }
 
 
@@ -93,7 +93,7 @@ export default function CheckoutForm(props) {
 
   const fechar = async () => {
     try {
-      const rawData = await fetch("http://localhost:8000/secret/success", {
+      const rawData = await fetch("https://mern-ecomerce.herokuapp.com/secret/success", {
         headers: {
           "Content-Type": "application/json"
         },
@@ -140,10 +140,9 @@ export default function CheckoutForm(props) {
     if (toHall) {
       redirectDelay = setTimeout(() => {
         history.push("/")
-        console.log("reeeeedirecionameeee")
+
       }, 2000)
 
-      console.log("redireciiiiona warrraa", toHall)
     }
 
     return () => {

@@ -54,14 +54,14 @@ export default function Users(props) {
 
     const handleCreateorEdit = (e) => {
         e.preventDefault()
-        console.log(e.target.textContent)
+       
         switch (signin.current.textContent) {
             case "Create":
-                console.log("hola")
+            
                 dispatch(saveProduct({ name, image, price, brand, description, category, stock }))
                 return
             case "Update":
-                console.log(_id)
+          
                 dispatch(saveProduct({ _id, name, image, price, brand, description, category, stock }))
         }
         

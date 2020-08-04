@@ -186,7 +186,7 @@ header nav .dropdown-list {
 
 .hall__container {
   position: relative;
-  background: #5CA9AB;
+  background: #5ca9ab;
 }
 
 .product-grid {
@@ -198,7 +198,7 @@ header nav .dropdown-list {
 
 .product-grid .product {
   display: flex;
-  background: #FFEBC1;
+  background: #ffebc1;
   max-height: 250px;
 }
 
@@ -210,7 +210,7 @@ header nav .dropdown-list {
 }
 
 .product-grid .product .cart-body {
-  background-color: #FFEBC1;
+  background-color: #ffebc1;
   padding: 1rem;
   flex: 1;
   box-sizing: border-box;
@@ -322,6 +322,11 @@ header nav .dropdown-list {
   top: 190px;
   transition: transform 0.4s ease;
   text-decoration: lightblue;
+  padding: 0.5rem;
+  color: #affdff;
+  background: #444054;
+  border: 0;
+  outline: 0;
   cursor: pointer;
   min-height: 0px;
 }
@@ -431,15 +436,13 @@ header nav .dropdown-list {
 
 .aside {
   position: fixed;
-  min-height: 300px;
   background-color: #444054;
   transform: translateX(-100%);
   transition: transform 0.4s ease;
-  padding: 1rem;
-  border-top-right-radius: 0.4rem;
-  border-bottom-right-radius: 0.4rem;
   min-width: 100px;
-  top: 100px;
+  top: 0;
+  height: 100%;
+  z-index: 1;
 }
 
 .aside.open {
@@ -448,14 +451,20 @@ header nav .dropdown-list {
 
 .aside ul {
   padding: 0;
+  margin: 0;
 }
 
 .aside ul li {
   list-style: none;
-  margin-bottom: 1rem;
   color: white;
   cursor: pointer;
   transition: color 0.1s ease-in;
+  padding: 1rem;
+  border-top: 1px solid silver;
+}
+
+.aside ul li:last-of-type {
+  border-bottom: 1px solid silver;
 }
 
 .aside ul li:hover {
@@ -466,7 +475,14 @@ header nav .dropdown-list {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0;
+  padding: 1rem;
+  position: relative;
+}
+
+.header-aside span {
+  position: absolute;
+  right: 5px;
+  top: 5px;
 }
 
 .search-name {
@@ -686,6 +702,7 @@ header nav .dropdown-list {
   }
   .filter-group.left {
     margin-right: 10px;
+    margin-left: 10%;
   }
   .filter-group.left.with-hide .hide-icon {
     right: 25px;

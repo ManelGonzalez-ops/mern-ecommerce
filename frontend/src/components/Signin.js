@@ -37,12 +37,10 @@ export default function Users(props) {
         // }
         // lo comentamos para probar, la app acabada debe llevar esto para evitar hacer login dos veces
             if (userInfo) {
-                console.log(userInfo)
+                
                 dispatch({type: "SET_STEP", payload: 1})
                 props.history.push(redirect)
             }
-        
-        console.log(userInfo)
 
     }, [userInfo])
 

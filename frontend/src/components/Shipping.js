@@ -61,7 +61,6 @@ export default function Shipping(props) {
             }
         })
         if (nextStep) {
-            console.log(nextStep)
             dispatch({ type: "SET_STEP", payload: 2 })
             dispatch(saveShipping({ address, city, postal, country }))
         }
@@ -101,7 +100,7 @@ export default function Shipping(props) {
     
     const handleCheckout = (e) => {
         e.preventDefault()
-        console.log(userInfo, "userInfo antes de despahcat addorderdb")
+     
         dispatch(addOrderDB(userInfo))
 
     }
@@ -113,13 +112,12 @@ export default function Shipping(props) {
 
         let serialUrl = localStorage.getItem("lastUrl")
         if (JSON.parse(serialUrl) == "/shipping") {
-            console.log(JSON.parse(serialUrl), "pero qe coño pasa aqui")
 
 
             if (currentOrder && Object.keys(currentOrder).length) {
-                console.log("mmamaa 1r nivel")
+        
                 if (shippingInfo && Object.keys(shippingInfo).length) {
-                    console.log("mmamaa 2n nivel")
+                
 
                     dispatch({ type: "SET_STEP", payload: 3 })
                     props.history.push("/checkout")
@@ -150,13 +148,13 @@ export default function Shipping(props) {
         if (JSON.parse(serialUrl) !== "/checkout") {
 
 
-            console.log("remuuumamela GUAAARRONA")
+           
 
 
 
             if (currentOrder && Object.keys(currentOrder).length) {
                 if (shippingInfo && Object.keys(shippingInfo).length) {
-                    console.log("me cago en toodo")
+                 
                     localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
                     dispatch({ type: "SET_STEP", payload: 3 })
                     props.history.push("/checkout")

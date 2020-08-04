@@ -4,7 +4,7 @@ import Cookie from "js-cookie"
 export const cartProduct = (productId, qty) => async (dispatch, getState) => {
     try {
         dispatch({ type: CART_ADD_LOADING })
-        const rawData = await fetch(`http://localhost:8000/products/${productId}`)
+        const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
         console.log(data)
         const newItem = {

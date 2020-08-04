@@ -57,7 +57,7 @@ function App() {
             else if (stickyLabel && stickyLabel.current && galerie.current.getBoundingClientRect().top > stickyLabel.current.getBoundingClientRect().height) {
 
                 if(stickyLabel.current.style.position === "fixed"){
-                    console.log("HOLA")
+
                     stickyLabel.current.style.position = "static"
                     galerie.current.style.marginTop = 0
                 
@@ -88,7 +88,7 @@ function App() {
 
     return (
 
-        <Fragment>
+        <div style={{margin: 0}} onClick={()=>{openAside && setOpenAside(false)}}>
 
             {loading ? <Loader1 />
                 :
@@ -128,7 +128,7 @@ function App() {
                     </Fragment>
             }
 
-        </Fragment>
+        </div>
     );
 }
 

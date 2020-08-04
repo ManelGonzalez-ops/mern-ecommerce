@@ -10,7 +10,7 @@ const [estrella4, setStrella4] = useState("")
 const [estrella5, setStrella5] = useState("")
 
 useEffect(()=>{
-console.log(rating)
+
     setStrella1(()=>
     rating >= 1? "orange": "white")
     setStrella2(()=>

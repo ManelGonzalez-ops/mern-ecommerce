@@ -1,7 +1,6 @@
 import React, {Fragment} from 'react'
 
 export default function CartEmpty() {
-    console.log("xuuuuuuuuuclaaa")
     return (
         
         
