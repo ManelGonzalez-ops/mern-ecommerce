@@ -1,14 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import Products from "../data"
 import { useSelector, useDispatch } from "react-redux"
 import { detailsProduct, addReview } from "../actions/productActions"
-import isEmpty from "../utils/emptyObject"
 import RatingStars from "./ratingStar"
 import Cookie from "js-cookie"
-import { Loader1 } from "./Products"
-import IconSection from "./shoppingIcons"
 import useScrollTop from "../utils/useScrollTop"
-import { Box, Button, Chip, Divider, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader, makeStyles, Paper, Select, Typography, useTheme } from "@material-ui/core"
+import { Box, Button, Chip, CircularProgress, Divider, FormControl,  List, ListItem, makeStyles, Select, Typography, useTheme } from "@material-ui/core"
 import Image from "material-ui-image"
 import { motion } from 'framer-motion'
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd'
@@ -91,7 +87,7 @@ export default function Details(props) {
 
         <div className="container-details" style={{ minHeight: "90vh", marginTop: "2rem" }}>
 
-            {loading ? <Loader1 /> :
+            {loading ? <CircularProgress /> :
                 error ? <p>{error}</p> :
                     (
                         <Fragment>

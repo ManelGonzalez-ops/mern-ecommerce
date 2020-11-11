@@ -3,11 +3,8 @@ import { Link, useHistory } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { cartProduct, cartModification } from "../actions/cartActions"
 import isEmpty from "../utils/emptyObject"
-import Cookie from "js-cookie"
-import CartEmpty from "./CartEmpty"
-import { Loader1 } from "./Products"
 import useScrollTop from "../utils/useScrollTop"
-import { Box, Button, Divider, Fade, FormControl, IconButton, List, ListItem, ListItemText, ListSubheader, makeStyles, Paper, Select, Slide, styled, Typography, Zoom } from '@material-ui/core'
+import { Button, CircularProgress, Divider, FormControl, List, ListItem, ListItemText, makeStyles, Paper, Select, Typography, Zoom } from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import { useWindowWidth } from '../utils/useWindowWidth'
 import { Alert } from '@material-ui/lab'
@@ -173,7 +170,7 @@ export default function Cart(props) {
 
                 {
 
-                    loading ? <Loader1 />
+                    loading ? <CircularProgress />
                         :
                         error ? <p>{error.message}</p>
                             :

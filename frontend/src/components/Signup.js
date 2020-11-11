@@ -1,8 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import Products from "../data"
 import { useSelector, useDispatch } from "react-redux"
 import { userActionsSignup } from "../actions/userActions"
-import Cookie from "js-cookie"
 import { useHistory } from 'react-router-dom'
 import { Paper, TextField, Link, Box, Typography, Button, Grid, makeStyles } from '@material-ui/core'
 import { useDataLayer } from '../Context'

@@ -1,6 +1,5 @@
 import React from 'react'
 import { makeStyles, MobileStepper, Step, StepLabel, Stepper } from '@material-ui/core';
-import { useWindowWidth } from '../utils/useWindowWidth';
 import { useSelector } from 'react-redux';
 import { useDataLayer } from '../Context';
 
@@ -19,7 +18,6 @@ const useStyles = makeStyles({
 
 export const Stepper2 = () => {
 
-    //const [viewport] = useWindowWidth() 
     const {viewport} = useDataLayer()
     const classes = useStyles()
 

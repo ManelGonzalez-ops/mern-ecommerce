@@ -1,16 +1,15 @@
-import React, { useEffect, useState, Fragment, useLayoutEffect, useRef } from 'react';
-import Slider from "./Slider"
-import ProductSection from "./ProductSection";
+import React, { useEffect, useState, Fragment} from 'react';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import { Fab, Fade, makeStyles, Paper, Zoom } from '@material-ui/core';
-import { motion } from 'framer-motion';
+import { Fab, makeStyles, Paper, Zoom } from '@material-ui/core';
 import { ProductSection2 } from './ProductSection2';
+import { useDataLayer } from '../Context';
+
 
 const styles = makeStyles(theme => ({
     floatbutton: {
         position: "fixed",
-        bottom: "50px",
-        right: "50px",
+        bottom: "6%",
+        right: "5%",
         zIndex: 15
     }
 }))
@@ -52,6 +51,7 @@ function Hall() {
 
     }
 
+    const {viewport} = useDataLayer()
 
     const clases = styles()
 
@@ -70,6 +70,7 @@ function Hall() {
                         <Fab color="primary" aria-label="add"
                             className={clases.floatbutton}
                             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                            size={viewport > 500? "medium": "small"}
                         >
                             <ExpandLessIcon
 

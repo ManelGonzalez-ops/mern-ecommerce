@@ -10,7 +10,7 @@ export const gmailButtonStyles = ({ palette }) => {
     root: ({ collapsed }) => ({
       minWidth: collapsed ? 56 : 64,
       minHeight: collapsed ? 56 : 48,
-      backgroundColor: palette.common.white,
+      backgroundColor: palette.secondary.main,
       padding: `8px ${collapsed ? '8px' : '24px'} 8px ${
         collapsed ? '8px' : '16px'
       }`,
@@ -29,7 +29,7 @@ export const gmailButtonStyles = ({ palette }) => {
     label: {
       fontFamily:
         "'Google Sans', Roboto,RobotoDraft,Helvetica,Arial,sans-serif",
-      color: '#3c4043',
+      color: 'white',
       textTransform: 'none',
       fontWeight: 500,
     },
@@ -52,6 +52,7 @@ const CustomButton = ({ collapsed, classes, ...props }) => {
   return (
     <Button
       disableRipple
+      color="primary"
       {...props}
       classes={buttonClasses}
       startIcon={

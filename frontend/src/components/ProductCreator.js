@@ -2,8 +2,7 @@ import React, { useState, useEffect, Fragment, useRef } from 'react'
 import { useHistory } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { saveProduct, listProducts } from "../actions/productActions"
-import Cookie from "js-cookie"
-import { Box, Button, FormControl, InputLabel, makeStyles, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextareaAutosize, TextField } from '@material-ui/core'
+import { Box, Button, FormControl, InputLabel, makeStyles, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     batonpnp: {

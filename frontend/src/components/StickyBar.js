@@ -1,13 +1,9 @@
 import { AppBar, createMuiTheme, IconButton, makeStyles, Paper, useTheme } from '@material-ui/core'
 import React, { useState, useEffect } from 'react'
-import ReactDOM from "react-dom"
-import ListIcon from '@material-ui/icons/List';
 import Breadcrumb from './Breadcrumb';
 import Sorter from "./SelectIcon"
 import Search from "./SearchIcon"
-import clsx from 'clsx';
 import AppsIcon from '@material-ui/icons/Apps'
-import { useDataLayer } from '../Context';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 
@@ -64,16 +60,11 @@ export const StickyBar =
                 <Paper
                 elevation={0}
                     ref={ref}
-                    //top will work when fixed position is set
-                    // sx={{
-                    //     backgroundColor: isColored ? "primary.main": "default"
-                    // }}
+                    
                     style={theme.palette.type === "light"? {backgroundColor: "white"} : {backgroundColor: "#424242"}}
                     classes={{ root: clases.root }}
                     className="menubar"
-                //color={theme.palette.primary.main}
-
-                // className="filter__container" ref={stickyLabel}
+                
                 >
 
                     {viewport > 500 &&
@@ -90,7 +81,7 @@ export const StickyBar =
                     }
 
 
-                    {category &&
+                    {viewport > 500 &&
                         <Breadcrumb 
                         category={category}
                          goBack={goBack} 

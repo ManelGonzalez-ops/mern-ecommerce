@@ -1,9 +1,9 @@
-import { Box, Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, List, ListItem, ListItemText, ListSubheader, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Box, Breadcrumbs, Button,  Divider, List, ListItem, ListItemText,  makeStyles, Paper, Typography } from '@material-ui/core'
 import React, { useEffect, Fragment, useState, useRef } from 'react'
 
 import { useSelector, useDispatch } from "react-redux"
 import ModalPayment from "./modalPayment"
-import StepTimeline from "./StepTimeline"
+
 
 const useStyles = makeStyles((theme) => ({
     root: {

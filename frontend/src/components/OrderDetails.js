@@ -1,7 +1,5 @@
-import React, { useEffect, Fragment, useState, useRef } from 'react'
+import React, { useEffect, Fragment, useState } from 'react'
 import Cookie from "js-cookie"
-
-
 
 
 export default function Checkout({ match }) {

@@ -15,7 +15,7 @@ export const addOrderDB = (hasLogin) => async (dispatch, getState) => {
         userInfo = Cookie.getJSON("userInfoR")
     }
     try {
-        console.log({ cartItems, userInfo }, "basura de mierdaAAAAAAAAAAAAAAAAAAA")
+        
         dispatch({ type: ADD_ORDERDB_REQUEST })
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/orders", {
             headers: {

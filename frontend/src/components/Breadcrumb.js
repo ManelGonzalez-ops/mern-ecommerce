@@ -27,7 +27,7 @@ export default function Breadcrumb({category, goBack, isColored}) {
             <Link color="inherit" onClick={goBack} style={{cursor: "pointer"}}>
                 Categories
         </Link>
-    <Typography color="textPrimary">{category}</Typography>
+    <Typography color="textPrimary">{category ? category: "All"}</Typography>
         </Breadcrumbs>
         </ThemeProvider>
     )

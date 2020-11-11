@@ -6,7 +6,6 @@ export const cartProduct = (productId, qty) => async (dispatch, getState) => {
         dispatch({ type: CART_ADD_LOADING })
         const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
-        console.log(data)
         const newItem = {
             id: data._id,
             qty,
@@ -25,12 +24,9 @@ export const cartProduct = (productId, qty) => async (dispatch, getState) => {
                     console.log("EEEXCEDEDEE")
                 }
 
-                console.log(x.stock, "stoock")
-                console.log(x.qty, "qtyyy")
                 return x
             })
             Cookie.set("cartItems", JSON.stringify(koko))
-            console.log("cooomo")
             dispatch({type: CART_ADD_ITEM, payload: koko})
             
         }
@@ -58,7 +54,6 @@ export const cartModification = (productId, qty = 0) => async (dispatch, getStat
     
     if (qty === 0) {
         const updatedArray = cart.cartItems.filter(item =>item.id !== productId)
-        console.log(updatedArray, productId)
         Cookie.set("cartItems", JSON.stringify(updatedArray))
         dispatch({ type: CART_DELETE_ITEM, payload: updatedArray })
 

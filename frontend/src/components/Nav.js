@@ -1,9 +1,8 @@
-import React, { useState, useEffect, Fragment, useCallback, useRef, useDebugValue } from 'react'
-import { Link, useHistory, useLocation } from "react-router-dom"
+import React, { useState, useEffect, useRef } from 'react'
+import {  useHistory, useLocation } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import Cookie from "js-cookie"
 import { userLogout } from "../actions/userActions"
-import { AppBar, Badge, Box, Button, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Menu, MenuItem, SwipeableDrawer, Tab, Tabs, Toolbar, Typography, withStyles } from '@material-ui/core'
+import { AppBar, Badge, Box, IconButton, ListItemIcon, ListItemText, makeStyles, Menu, MenuItem, Tab, Tabs, Toolbar, Typography, withStyles } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
 import { useWindowWidth } from '../utils/useWindowWidth'

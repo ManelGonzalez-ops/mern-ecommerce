@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentComponent from "./PaymentComponent";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Cookie from "js-cookie"
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useSelector, useDispatch } from "react-redux"

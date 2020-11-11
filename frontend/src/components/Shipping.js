@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { saveShipping } from "../actions/shippingActions"
 import { addOrderDB } from "../actions/orderActions"
-import { Box, Button, FormControl, FormControlLabel, FormHelperText, FormLabel, Grid, ListItem, ListItemIcon, makeStyles, Paper, Radio, RadioGroup, TextField, Typography } from '@material-ui/core'
+import { Box, Button, FormControl, FormControlLabel, FormHelperText, FormLabel, Grid, ListItem, makeStyles, Paper, Radio, RadioGroup, TextField, Typography } from '@material-ui/core'
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 
 //here we still need to handle errors, because we are not notifying errors in the UI
@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
 export default function Shipping(props) {
 
     const styles = useStyles()
-    const [shippingCookie, setShippingC] = useState("")
     const [address, setAddress] = useState("")
     const [city, setCity] = useState("")
     const [postal, setPostal] = useState("")

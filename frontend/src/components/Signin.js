@@ -1,12 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import Products from "../data"
 import { useSelector, useDispatch } from "react-redux"
 import { userActionsSignin } from "../actions/userActions"
 import { useHistory } from 'react-router-dom'
-import Cookie from "js-cookie"
-import StepTimeline from "./StepTimeline"
 import { Box, Button, Paper, TextField, Typography, Link } from '@material-ui/core'
-import { bootstrapTextFieldHook } from '@mui-treasury/styles/textField';
 import { useDataLayer } from '../Context'
 
 export const Signin = (props) => {

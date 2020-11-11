@@ -1,5 +1,4 @@
-import React, { useLayoutEffect } from 'react'
-import { CloseBtnAside } from './SearchIcon'
+import React from 'react'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import CategoryIcon from '@material-ui/icons/Category';

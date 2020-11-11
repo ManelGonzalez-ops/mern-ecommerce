@@ -1,11 +1,9 @@
-import React, { useEffect, useState, Fragment, useLayoutEffect, useRef } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import { useDispatch } from "react-redux"
-import { listProducts, searchProduct } from '../actions/productActions';
+import { searchProduct } from '../actions/productActions';
 import SearchSharpIcon from '@material-ui/icons/SearchSharp'
-import { Button, createMuiTheme, makeStyles, TextField, ThemeProvider, useTheme } from '@material-ui/core';
+import { Button, makeStyles, TextField, ThemeProvider } from '@material-ui/core';
 import clsx from 'clsx';
-import { Opacity } from '@material-ui/icons';
-import { useDataLayer } from '../Context';
 import PropTypes from 'prop-types';
 
 
@@ -26,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
         }),
-        width: props=>props.viewport < 500 ? `${props.viewport - props.searchIconWidth - props.selectIconWidth - 60}px` : `${250}px`,
+        width: props => props.viewport < 500 ? `${props.viewport - props.searchIconWidth - props.selectIconWidth - 60}px` : `${250}px`,
     },
 
     iconVisible: {
@@ -46,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         display: "flex"
     },
-    
+
 }))
 
 SearchFilter.propTypes = {
@@ -115,7 +113,7 @@ function SearchFilter({
     const clases = useStyles(props)
 
 
-    
+
 
     return (
 
@@ -134,10 +132,10 @@ function SearchFilter({
                 classes={{ root: clases.button }}
                 color={isColored ? "secondary" : "default"}
                 ref={icon}
-              
+
             >
                 <span
-            
+
                 >
                     <SearchSharpIcon
                         classes={{ root: clases.icon }}
@@ -169,7 +167,7 @@ function SearchFilter({
                     color="secondary"
                 />
             </ThemeProvider>
-     
+
 
         </div>
 

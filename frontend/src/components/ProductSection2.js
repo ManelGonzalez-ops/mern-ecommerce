@@ -14,7 +14,7 @@ import { StickyBar } from './StickyBar';
 import CustomButton from './CustomButton';
 import { Pagination, Skeleton } from "@material-ui/lab"
 import { useDataLayer } from '../Context';
-import PropTypes from 'prop-types';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,9 +49,6 @@ export const ProductSection2 = () => {
     const { products, loading, error } = productList
     const dispatch = useDispatch()
 
-
-    const [hasBeenTouched, setHasBeenTouched] = useState(false)
-
     const [active, setActive] = useState("")
     const navHeight = useRef(0)
     const barra = useRef(null)
@@ -73,7 +70,7 @@ export const ProductSection2 = () => {
         if (!loading) {
             timer = setTimeout(() => {
                 setIsLoading(false)
-             
+
             }, 800)
         }
         return () => {
@@ -118,7 +115,7 @@ export const ProductSection2 = () => {
                 if (stickyLabel.current.style.position !== "fixed") {
                     document.querySelector(".app-wrapper").style.opacity = 0
                     document.querySelector(".app-wrapper").style.animation = "none"
-                
+
                     // galerie.current.style.paddingTop = window.pageYOffset + "px"
                     // galerie.current.style.paddingTop = stickyLabel.current.getBoundingClientRect().height + "px"
                     galerie.current.style.height = `${stickyLabel.current.getBoundingClientRect().height}px`
@@ -191,7 +188,13 @@ export const ProductSection2 = () => {
 
 
     const goBack = () => {
-        dispatch(listProducts())
+        if(category){
+            dispatch(listProducts())
+        }else{
+            //if not category selected will open the aside 
+            setOpenAside(true)
+        }
+        
     }
 
     const getIconsWidth = (which, val) => {
@@ -326,9 +329,9 @@ export const ProductSection2 = () => {
                                             onChange={handleUpdatePagination}
                                         >
                                             {Array(5).fill(0).map((item, index) => (
-                                                <option 
-                                                key={index}
-                                                value={(index + 1) * 5}
+                                                <option
+                                                    key={index}
+                                                    value={(index + 1) * 5}
                                                 >
                                                     {(index + 1) * 5}
                                                 </option>
@@ -373,7 +376,7 @@ const ResponsiveSkeleton = ({ viewport }) => {
                         (<Skeleton
                             key={index}
                             style={{ marginBottom: "4px" }} />)
-                            )}
+                    )}
                 </div>
             ))}
         </div>

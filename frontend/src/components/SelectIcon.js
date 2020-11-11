@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { sortProducts } from '../actions/productActions';
 import { useDispatch } from "react-redux";
-import { Box, Button, createMuiTheme, Fade, Input, makeStyles, MenuItem, Select, useTheme } from '@material-ui/core';
+import { Box, Button, createMuiTheme, Fade, Input, makeStyles, MenuItem, Select } from '@material-ui/core';
 import clsx from 'clsx';
 import SortIcon from '@material-ui/icons/Sort';
 import { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
-import { useDataLayer } from '../Context';
+
 
 
 SelectFilter.propTypes = {
@@ -90,7 +90,6 @@ export default function SelectFilter({ selectFilter, setSelectFilter, viewport, 
     const [hasBeenTouched, setHasBeenTouched] = useState(false)
     
     const icon = useRef()
-    const firstRender = useRef(true)
     const select = useRef(null)
    
     const dispatch = useDispatch()

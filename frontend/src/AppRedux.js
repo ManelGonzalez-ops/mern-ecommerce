@@ -16,7 +16,7 @@ import UserView from "./components/userView"
 import OrderDetails from "./components/OrderDetails"
 import { Stepper2 } from './components/Stepper2';
 import { useDataLayer } from './Context';
-import { createMuiTheme, Paper, ThemeProvider } from "@material-ui/core";
+import { createMuiTheme, Paper, ThemeProvider, Typography } from "@material-ui/core";
 import { InfoSnackbar } from './components/InfoSnackbar';
 
 
@@ -102,7 +102,7 @@ function App() {
                    <InfoSnackbar message="you are already signin"/>
 
                     <footer className="footer">
-                        All rights reserved	&copy;
+                       <Typography> All rights reserved	&copy;</Typography>
             </footer>
                 </Paper>
             </ThemeProvider>

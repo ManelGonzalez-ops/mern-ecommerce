@@ -1,8 +1,6 @@
 import React, { Fragment, useState, useRef } from 'react'
 import Product from "./Products2"
 import { motion, useDomEvent } from 'framer-motion'
-import { Button } from '@material-ui/core'
-
 
 
 export default function ProductDispatcher({ products, openAside}) {

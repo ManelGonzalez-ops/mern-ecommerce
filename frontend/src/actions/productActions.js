@@ -7,7 +7,7 @@ const listProducts = () => async (dispatch) => {
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products");
         //extraemos directamente el valor de la key products 
         const { data } = await rawData.json();
-        console.log("MMMMMMMMMMMMMAMAMAMAMAMAM", data)     
+        //console.log("MMMMMMMMMMMMMAMAMAMAMAMAM", data)     
         //cokie is too big that i get's deleted, so let's use localstorage
         localStorage.setItem("productList", JSON.stringify(data))
         console.log(Cookie.getJSON("productList"), "aver.....")
@@ -23,7 +23,6 @@ const detailsProduct = (productId) => async (dispatch) => {
         dispatch({ type: PRODUCT_DETAILS_REQUEST })
         const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
-        console.log(data, "maamaa")
         dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
     }
     catch (err) {
@@ -57,7 +56,7 @@ const saveProduct = (product) => async (dispatch, getState) => {
 
             if (product._id) {
 
-                console.log(product._id, "thee id")
+                //console.log(product._id, "thee id")
                 const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products/update", {
                     headers: {
                         "Content-Type": "application/json",

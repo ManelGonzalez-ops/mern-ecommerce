@@ -1,6 +1,6 @@
 import React from "react"
 import { useDataLayer } from "../Context";
-import { FormControlLabel, IconButton, makeStyles, Switch, withStyles } from "@material-ui/core";
+import { FormControlLabel, IconButton, Switch } from "@material-ui/core";
 import Brightness5Icon from "@material-ui/icons/Brightness5"
 import Brightness3Icon from "@material-ui/icons/Brightness3"
 
@@ -18,7 +18,7 @@ export const Switcher = () => {
         return (
             <FormControlLabel
                 style={{ marginLeft: "1.2rem" }}
-                //style={{marginLeft: `${stilo}px`, display: "flex", marginTop: "1rem"}}
+             
                 control={
                     <Switch
                         checked={isDark}
