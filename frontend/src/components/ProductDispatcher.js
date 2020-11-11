@@ -1,17 +1,32 @@
-import React, { Fragment } from 'react'
-import Product from "./Products"
+import React, { Fragment, useState, useRef } from 'react'
+import Product from "./Products2"
+import { motion, useDomEvent } from 'framer-motion'
+import { Button } from '@material-ui/core'
 
-export default function ProductDispatcher({products}) {
+
+
+export default function ProductDispatcher({ products, openAside}) {
+
+    const [selection, setSelection] = useState("")
+
+    useDomEvent(useRef(window), "scroll", () => selection && setSelection(""));
+
     return (
-        
-                        <Fragment>
-                            {products.map(item => {
+        <Fragment>
+            <motion.div className={selection ? "img-overlay open" : "img-overlay"}
+                animate={selection ? { opacity: 1 } : { opacity: 0 }}
+                onClick={() => { setSelection("") }}
+            ></motion.div>
 
-                                return item && <Product key={item._id} item={item} />
+            {products && products.map(item => {
 
-                            }
-                            )}
-                            </Fragment>
-                        
+                return item && <Product setSelection={setSelection} isSelected={selection === item._id} key={item._id} item={item}
+                    openAside={openAside} />
+            })
+                
+            }
+
+        </Fragment>
+
     )
 }

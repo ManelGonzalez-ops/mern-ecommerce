@@ -1,11 +1,15 @@
+.cart-wrapper {
+  min-height: 80vh;
+}
+
 .cart {
-  min-height: 100vh;
   display: grid;
   grid-template-rows: auto auto;
   grid-template-columns: auto;
   box-sizing: border-box;
-  width: 100%;
-  margin: 0 auto;
+  align-items: end;
+  margin: 0 10px;
+  margin-top: 1rem;
 }
 
 .cart * {
@@ -15,15 +19,17 @@
 .cart .right {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid black;
   box-sizing: border-box;
   grid-row: 1/1;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 40px -12.125px rgba(0, 0, 0, 0.3);
 }
 
 .cart .right .header {
   display: flex;
   justify-content: space-between;
   height: 100px;
+  padding: 0.5rem;
 }
 
 .cart .right .header .price-title {
@@ -45,16 +51,6 @@
   width: 100%;
 }
 
-.cart .right .cart-content::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  bottom: -10px;
-  background-color: black;
-  left: -2px;
-}
-
 .cart .right .cart-content img {
   max-height: 100px;
 }
@@ -64,6 +60,7 @@
   flex-direction: column;
   margin-left: 1rem;
   flex-wrap: wrap;
+  flex: 1;
   flex-basis: auto;
 }
 
@@ -74,6 +71,10 @@
 .cart .right .cart-content .info-cart .info-cantidad {
   display: flex;
   flex-wrap: wrap;
+}
+
+.cart .right .cart-content .info-cart a {
+  text-decoration: none;
 }
 
 .cart .right .cart-content .cart-price {
@@ -134,23 +135,22 @@
     right: 5px;
   }
   .cart .left {
-    width: 350px;
+    width: 300px;
   }
 }
 
 @media (min-width: 1000px) {
   .cart {
-    grid-template-columns: 2.5fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: auto;
     gap: 0;
-    margin: 4rem 1rem;
+    margin: 4rem calc(1rem + 2%);
     margin-bottom: 0;
     box-sizing: border-box;
   }
   .cart .right {
     grid-column: 1/1;
     grid-row: 1/1;
-    padding: 2rem;
   }
   .cart .right .header .price-title {
     position: relative;

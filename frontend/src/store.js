@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux"
 import { productListReducer, productDetailsReducer, productCreatorReducer} from "./reducers/productReducers"
-import thunk, { getState } from "redux-thunk"
+import thunk from "redux-thunk"
 import { cartReducer } from "./reducers/cartReducers"
 import {userLoginReducer, userRegisterReducer} from "./reducers/userReducer"
 import {orderReducer} from "./reducers/orderReducer"
@@ -16,6 +16,7 @@ const shippingInfo = Cookie.getJSON("shippingInfo") || null
 const currentOrder = Cookie.getJSON("currentOrder") || null
 const currentPath = Cookie.getJSON("currentOrder") || null
 
+
 const initialState = {
     cart: { cartItems },
     userSignin: { userInfo },
@@ -23,7 +24,8 @@ const initialState = {
     currentStep: {currentStep},
     shipping: {shippingInfo},
     currentOrder: {currentOrder},
-    currentPath: {currentPath} 
+    currentPath: {currentPath},
+  
 }
 
 

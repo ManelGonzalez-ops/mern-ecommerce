@@ -5,9 +5,36 @@ import { detailsProduct, addReview } from "../actions/productActions"
 import isEmpty from "../utils/emptyObject"
 import RatingStars from "./ratingStar"
 import Cookie from "js-cookie"
-import {Loader1} from "./Products"
+import { Loader1 } from "./Products"
 import IconSection from "./shoppingIcons"
 import useScrollTop from "../utils/useScrollTop"
+import { Box, Button, Chip, Divider, FormControl, InputLabel, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader, makeStyles, Paper, Select, Typography, useTheme } from "@material-ui/core"
+import Image from "material-ui-image"
+import { motion } from 'framer-motion'
+import LibraryAddIcon from '@material-ui/icons/LibraryAdd'
+import { useLocation } from 'react-router-dom'
+import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+
+const theme = createMuiTheme({
+    palette: {
+        type: "dark"
+    }
+})
+
+const styles = makeStyles(theme => ({
+    listitem: {
+        paddingTop: "0.7rem",
+        paddingBottom: "0.7rem"
+    },
+    listheaders: {
+        flex: 1
+    },
+    manualdark: {
+        backgroundColor: theme.palette.type === "dark" ? "#303030" : "inherit"
+    }
+
+}))
+
 
 export default function Details(props) {
 
@@ -15,20 +42,28 @@ export default function Details(props) {
 
     const [review, setReview] = useState("")
     const [ratingSelect, setRatingSelect] = useState(3)
-    const [quantity, setQuantity] = useState(2)
+    const [quantity, setQuantity] = useState(0)
     const { productId } = props.match.params
-    
     const productDetails = useSelector(state => state.productDetails)
     const { details, loading, error } = productDetails
     const dispatch = useDispatch()
 
+
+
     useEffect(() => {
 
 
-        dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
+        //dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
         dispatch(detailsProduct(productId))
 
     }, [])
+    const loc = useLocation()
+    console.log(loc, "riiiii")
+    // useEffect(()=>{
+
+    //     if(!loading) setShowImage(true)
+
+    // }, [loading])
 
     const handleAddToCart = () => {
         props.history.push(`/cart/${productId}?qty=${quantity}`)
@@ -44,114 +79,177 @@ export default function Details(props) {
 
     const handleReview = (e) => {
         e.preventDefault()
-        dispatch(addReview(productId, review, ratingSelect, userInfo.name))
+        dispatch(addReview(productId, review, ratingSelect, userInfo || "anonimous"))
 
     }
 
 
+    const clases = styles();
+    const tema = useTheme()
 
     return (
-        <div className="container-details">
-            <SvgShop/>
-        <IconSection/>
-            {loading ? <Loader1/> :
+
+        <div className="container-details" style={{ minHeight: "90vh", marginTop: "2rem" }}>
+
+            {loading ? <Loader1 /> :
                 error ? <p>{error}</p> :
                     (
                         <Fragment>
-                            {details.stock ?
+                            {details && details.stock > 0 &&
                                 <Fragment>
 
 
                                     <div className="details-wrapper">
-                                        <img src={details.image} alt="pantalones" />
+
+
+                                        <motion.img
+                                            className="img-wrapper"
+                                            src={details.image}
+                                            alt={details.name}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                        />
+
+
                                         <div className="flex-container">
-                                            <div className="description1">
-                                                <h2 className="details-name">{details.name}</h2>
-                                                <p>Puntuación: <span>{details.rating}</span>
-                                                    <RatingStars rating={details.rating} inline="no" /></p>
+                                            <Box
+                                                className="description1"
+                                                classes={{ root: clases.manualdark }}
+                                            >
+                                                <Typography
+                                                    color="primary"
+                                                    variant="h5"
+                                                    style={{ marginBottom: "0.5rem", lineHeight: 1.4 }}
+                                                >{details.name}</Typography>
+                                                <Box mb="0.5rem" component="span">
+                                                    <Typography
+                                                        display="inline"
+                                                    >
+                                                        Puntuación:
+                                                    </Typography>
+                                                    <RatingStars rating={details.rating} inline="no"
+                                                        noSpacing
+                                                    />
+                                                </Box >
 
-                                                <p>Precio: <span>{details.price}</span></p>
-                                                <p>{details.description}</p>
-                                            </div>
-                                            <div className="description2">
-                                                <p>Price: <span>{details.price}</span></p>
-                                                <p className="status">Status: <span>In stock</span></p>
-                                                <label> Quantity: &nbsp;
-                                                <select value={quantity} onChange={(e) => { setQuantity(e.target.value) }}>
-                                                        {[...Array(details.stock).keys()].map((item, index) => {
+                                                <Box mb={2}><Chip label={"Precio"} /> <Typography display="inline"
+                                                    className="altura--corr">{details.price} $</Typography></Box>
+                                                <Typography>{details.description}</Typography>
+                                            </Box>
+                                            <List className="description2"
+                                                classes={{ root: clases.manualdark }}
+                                            >
 
-                                                            return <option key={index + 1}>{index + 1}</option>
-                                                        })}
-                                                    </select>
-                                                </label>
-                                                <button
-                                                    className="button-pnp"
-                                                    onClick={handleAddToCart}>Add to Cart</button>
-                                            </div>
+                                                <ListItem className={clases.listitem}>
+                                                    <Typography
+                                                        className={clases.listheaders}
+                                                    >Price</Typography>
+                                                    <Typography >{details.price} </Typography>
+
+                                                </ListItem>
+                                                <Divider />
+                                                <ListItem className={clases.listitem}>
+                                                    <Typography
+                                                        className={clases.listheaders}>Status:</Typography> <Typography>In stock</Typography></ListItem>
+                                                <Divider />
+                                                <ListItem className={clases.listitem}>
+                                                    <Typography
+                                                        className={clases.listheaders}> Quantity: </Typography>
+
+                                                    <FormControl variant="outlined"
+                                                    >
+
+                                                        <Select
+
+                                                            mb={0}
+                                                            inputProps={{ name: "hoal" }}
+                                                            defaultValue={0}
+                                                            value={quantity}
+                                                            onChange={(e) => { setQuantity(e.target.value) }}>
+                                                                <option value={0} disabled={true}>0</option>
+                                                            {/* <option aria-label="None" value={0}>0</option> */}
+                                                            {[...Array(details.stock).keys()].map((item, index) => {
+                                                                
+                                                                return <option key={index + 1}
+                                                                    value={index + 1}
+                                                                >{index + 1}</option>
+                                                            })}
+                                                        </Select>
+                                                    </FormControl>
+
+                                                </ListItem>
+                                                <ListItem>
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        startIcon={<LibraryAddIcon />}
+                                                        onClick={handleAddToCart}>Add to Cart</Button>
+                                                </ListItem>
+                                            </List>
                                         </div>
                                     </div>
 
+                                    <div>
+                                        <div className="reviews-container">
+                                            <h1>Reviews</h1>
 
+                                            <ul className="reviews">
+
+                                                <Fragment>
+                                                    {details.reviews && details.reviews.map((review, index) =>
+                                                        <li key={index}>
+                                                            <p className="comment">{review.review}</p>
+
+                                                            <RatingStars display="inline" rating={review.rating} />
+
+                                                            <p className="author">{review.author}</p>
+                                                        </li>
+                                                    )}
+                                                </Fragment>
+                                            </ul>
+                                        </div>
+                                        <form className="form" onSubmit={handleReview}>
+                                            <div className="form-group">
+                                                <label htmlFor="review">Add Review</label>
+                                                <textarea type="text" name="review" id="review"
+                                                    onChange={(e) => { setReview(e.target.value) }}
+                                                    value={review}
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Add rating</label>
+                                    &nbsp;
+                                    &nbsp;
+                                    <select value={ratingSelect}
+                                                    onChange={(e) => { setRatingSelect(e.target.value) }}
+                                                >
+                                                    <option value="1" >1</option>
+                                                    <option value="2" >2</option>
+                                                    <option value="3" >3</option>
+                                                    <option value="4" >4</option>
+                                                    <option value="5" >5</option>
+                                                </select>
+                                            </div>
+                                            <button className="review-btn" type="submit">Send</button>
+                                        </form>
+
+                                    </div>
                                 </Fragment>
-                                :
-                                <div className="details_notfound">
-                                    <button onClick={handleNotFound}>The product is out of stock, sorry.</button>
-                                </div>
+                                // :
+                                // <div className="details_notfound">
+                                //     <button onClick={handleNotFound}>The product is out of stock, sorry.</button>
+                                // </div>
                             }
 
                         </Fragment>)}
-        <div className="reviews-container">
-            <h1>Reviews</h1>
-            <ul className="reviews">
-                {loading ? <p>Loading...</p> :
-                    error ? <p>{error}</p> :
-                        (
-                            <Fragment>
-                                {details.reviews && details.reviews.map((review, index) =>
-                                    <li key={index}>
-                                        <p className="comment">{review.review}</p>
-                                        
-                                        <RatingStars display="inline" rating={review.rating} />
-                                        
-                                        <p className="author">{review.author}</p>
-                                    </li>
-                                )}
-                            </Fragment>)}
-            </ul>
-            </div>
-            <form className="form" onSubmit={handleReview}>
-                <div className="form-group">
-                <label htmlFor="review">Add Review</label>
-                <textarea type="text" name="review" id="review"
-                    onChange={(e) => { setReview(e.target.value) }}
-                    value={review}
-                    required
-                />
-                </div>
-                <div className="form-group">
-                <label>Add rating</label>
-                &nbsp;
-                &nbsp;
-                <select value={ratingSelect}
-                    onChange={(e) => { setRatingSelect(e.target.value) }}
-                >
-                    <option value="1" >1</option>
-                    <option value="2" >2</option>
-                    <option value="3" >3</option>
-                    <option value="4" >4</option>
-                    <option value="5" >5</option>
-                </select>
-                </div>
-                <button className="review-btn" type="submit">Send</button>
-            </form>
+
         </div>
+
     )
 }
 
+const Imoge = (props) =>
+    <Image {...props} />
 
 
-const SvgShop = () =>
-    <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{position: "fixed", right: "2rem", bottom:"2rem", cursor: "pointer"}}>
-         <circle cx="18.5" cy="18.5" r="18.5" fill="#EDD81A" />
-        <path d="M2 19.9995H16C16.5304 19.9995 17.0391 19.7888 17.4142 19.4138C17.7893 19.0387 18 18.53 18 17.9995V6.99954C18 6.73432 17.8946 6.47997 17.7071 6.29243C17.5196 6.1049 17.2652 5.99954 17 5.99954H14V5.22254C14 2.61354 12.097 0.277539 9.5 0.0245389C8.80487 -0.0445489 8.10298 0.0326398 7.43949 0.251139C6.77599 0.469638 6.16557 0.824609 5.64752 1.29321C5.12946 1.76182 4.71524 2.33368 4.43149 2.97201C4.14774 3.61033 4.00076 4.30099 4 4.99954V5.99954H1C0.734784 5.99954 0.48043 6.1049 0.292893 6.29243C0.105357 6.47997 0 6.73432 0 6.99954V17.9995C0 18.53 0.210714 19.0387 0.585786 19.4138C0.960859 19.7888 1.46957 19.9995 2 19.9995ZM14 7.99954V9.99954H12V7.99954H14ZM6 4.99954C6 3.34554 7.346 1.99954 9 1.99954C10.654 1.99954 12 3.34554 12 4.99954V5.99954H6V4.99954ZM4 7.99954H6V9.99954H4V7.99954Z" fill="black" />
-    </svg>

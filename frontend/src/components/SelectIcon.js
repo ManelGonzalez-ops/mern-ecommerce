@@ -1,63 +1,220 @@
-import React, {useState, useEffect} from 'react'
-import { listProducts, sortProducts, searchProduct, searchByCartegory } from '../actions/productActions';
-import {useDispatch} from "react-redux"
+import React, { useState, useEffect, useRef } from 'react'
+import { sortProducts } from '../actions/productActions';
+import { useDispatch } from "react-redux";
+import { Box, Button, createMuiTheme, Fade, Input, makeStyles, MenuItem, Select, useTheme } from '@material-ui/core';
+import clsx from 'clsx';
+import SortIcon from '@material-ui/icons/Sort';
+import { ThemeProvider } from 'styled-components';
+import PropTypes from 'prop-types';
+import { useDataLayer } from '../Context';
 
-export default function SelectFilter({selectFilter, setSelectFilter}) {
 
+SelectFilter.propTypes = {
+    searchIconWidth: PropTypes.number,
+    selectIconWidth: PropTypes.number,
+    viewport: PropTypes.number,
+    handleFocus: PropTypes.func,
+    isActive: PropTypes.bool,
+    getIconsWidth: PropTypes.func,
+    isColored: PropTypes.bool,
+    isOut: PropTypes.bool,
+    setIsOut: PropTypes.func,
+    selectFilter: PropTypes.string,
+    setSelectFilter: PropTypes.func
+}
+
+const styles = makeStyles(theme => {
+    return {
+        select: {
+            transition: theme.transitions.create(["width"], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen
+            }),
+            width: 0,
+            overflow: "hidden"
+        },
+        desplegado: {
+            width: (props)=> props.viewport < 500 ? `${props.viewport - props.searchIconWidth - props.selectIconWidth - 60}px` : `${250}px`,
+            transition: theme.transitions.create(["width"], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen
+            })
+        },
+        icon: {
+            transition: theme.transitions.create(["opacity"], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+                delay: "300ms"
+            }),
+            opacity: 1
+        },
+        iconfaded: {
+            transition: theme.transitions.create(["opacity"], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            opacity: 0
+        },
+        button: {
+            minWidth: "37px",
+            padding: 0
+        },
+        contained: {
+            transition: theme.transitions.create(["background-color"], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            })
+        },
+        triangle: {
+            fill: (props)=>props.isColored ? "white" : "black"
+        },
+        underline: {
+           
+            "&:before":{
+                borderBottom: "1px solid white !important",
+
+                "&:focus":{
+                    borderBottom: "1px solid white"
+                }
+            },
+            // "&:after":{
+            //         borderBottom: "1px solid white"
+                
+            // }
+        }
+    }
+})
+export default function SelectFilter({ selectFilter, setSelectFilter, viewport, isActive, handleFocus, getIconsWidth, isColored, isOut, setIsOut, selectIconWidth, searchIconWidth, tema }) {
+    
     const [filterClicked, setFilterClicked] = useState(false)
     const [hasBeenTouched, setHasBeenTouched] = useState(false)
+    
+    const icon = useRef()
+    const firstRender = useRef(true)
+    const select = useRef(null)
+   
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (icon && icon.current) {
+            getIconsWidth("select", icon.current.offsetWidth)
+        }
+    }, [])
 
+    useEffect(() => {
         hasBeenTouched && dispatch(sortProducts(selectFilter))
-
     }, [selectFilter])
 
+
+    const handleMouseOver = () => {
+        if (viewport > 500) {
+            isActive && handleFocus("select")
+        }
+    }
 
     const handleChangeFilter = (e) => {
 
         setSelectFilter(e.target.value)
         if (!hasBeenTouched) setHasBeenTouched(true)
     }
+    const props = { viewport, searchIconWidth, selectIconWidth, isColored }
+    const clases = styles(props)
 
+    useEffect(() => {
+        if (isOut) {
+            handleFocus("select")
+            select.current.focus()
+        }
+    }, [isOut])
+
+    const handleTransitionEnd = () => {
+        select.current.focus()
+    }
+
+    const theme = createMuiTheme({
+        palette: {
+            type:"dark"
+        }
+    })
 
     return (
         <div className={filterClicked ? "filter-group with-hide right" : "filter-group right"}>
-                                <span onClick={() => { setFilterClicked(false) }}><HideIcon /></span>
-                                {/* <label htmlFor="sort-by">Sort By</label> */}
-                                <div className="responsive-inner">
-                                    <span
-                                        id="spanAnimated" className={filterClicked ? "animated right" : "right"}
-                                        onClick={() => { setFilterClicked(true) }}><SortIcon /></span>
+            <div className="responsive-inner">
+                <Fade in={!isActive}>
+                    <Disiper
+                        isOut={isOut}
+                        delay={40}
+                        isActive={isActive}
+                    >
+                        <Button
+                            id="spanAnimated" className={filterClicked ? "animated right" : "right"}
 
-                                    <span
-                                        className={filterClicked ? "select-overflow animated" : "select-overflow"}
-                                        style={{ display: "inline-block", width: "300px", overflow: "hidden" }}>
+                            ref={icon}
+                            classes={{ root: clases.button, contained: clases.contained }}
+                            variant="contained"
+                            onMouseOver={handleMouseOver}
+                            onTransitionEnd={() => { setIsOut(true) }}
+                            onClick={() => { setIsOut(true) }}
 
-                                        <select id="sort-by"
-                                            onChange={(e) => { handleChangeFilter(e) }}
-                                            className={filterClicked ? "animated" : ""}
-                                            value={selectFilter} >
-                                            <option className={filterClicked ? "hasAnimated" : ""} value="higher price">higher price</option>
-                                            <option className={filterClicked ? "hasAnimated" : ""}
-                                                value="lower price">lower price</option>
-                                            <option className={filterClicked ? "hasAnimated" : ""} value="newest">newest</option>
-                                        </select>
-                                    </span>
+                            color={isColored ? "secondary" : "default"}
 
-                                </div>
-                            </div>
+                        >
+                            <SortIcon
+                                style={{ cursor: "pointer", fontSize: "33px" }}
+
+                                className={clsx({
+                                    [clases.icon]: !isActive,
+                                    [clases.iconfaded]: isActive
+                                })}
+                            />
+
+                        </Button>
+                    </Disiper>
+                </Fade>
+                <ThemeProvider theme={tema}>
+                    <Select id="sort-by"
+                        ref={select}
+                        onChange={(e) => { handleChangeFilter(e) }}
+                        // className={filterClicked ? "animated" : ""}
+                        onMouseOver={() => !isActive ? handleFocus("select") : undefined}
+                        className={clsx(clases.select, {
+                            [clases.desplegado]: isActive
+                        })}
+                        value={selectFilter}
+                        onTransitionEnd={handleTransitionEnd}
+                        style={isColored?{color: "white"}:{color: "black"}}
+                        
+                        input={<Input classes={{
+                            underline: clases.underline
+                        }} />}
+                        classes={{icon: clases.triangle}}
+                        color="secondary"
+                    //onBlur={()=>{ handleBlur("select")}}
+                    >
+                        <MenuItem className={filterClicked ? "hasAnimated" : ""} value="higher price">higher price</MenuItem>
+                        <MenuItem className={filterClicked ? "hasAnimated" : ""}
+                            value="lower price">lower price</MenuItem>
+                        <MenuItem className={filterClicked ? "hasAnimated" : ""} value="newest">newest</MenuItem>
+                    </Select>
+                </ThemeProvider>
+
+            </div>
+        </div>
     )
 }
 
 
-const HideIcon = () => <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="svg-icons hide-icon fixed">
-    <path d="M6.72758 10.1617L3.51008 6.94422C2.24341 8.32505 1.76341 9.70839 1.75508 9.73672L1.66675 10.0001L1.75425 10.2634C1.77258 10.3192 3.68425 15.8334 10.0451 15.8334C10.8192 15.8334 11.5242 15.7484 12.1717 15.6059L9.88341 13.3176C9.05948 13.2772 8.28004 12.9317 7.69673 12.3484C7.11343 11.7651 6.76797 10.9857 6.72758 10.1617V10.1617ZM10.0451 4.16672C8.49925 4.16672 7.23258 4.50339 6.17675 4.99839L3.08925 1.91089L1.91091 3.08922L16.9109 18.0892L18.0892 16.9109L15.3409 14.1626C17.5392 12.5351 18.3234 10.2984 18.3351 10.2634L18.4226 10.0001L18.3351 9.73672C18.3167 9.68089 16.4059 4.16672 10.0451 4.16672ZM11.6334 10.4551C11.7892 9.89089 11.6567 9.25589 11.2234 8.82172C10.7901 8.38755 10.1542 8.25589 9.59008 8.41172L8.33342 7.15506C8.84839 6.83837 9.44054 6.66943 10.0451 6.66672C11.8834 6.66672 13.3784 8.16172 13.3784 10.0001C13.3759 10.6045 13.2067 11.1965 12.8892 11.7109L11.6334 10.4551V10.4551Z" fill="black" />
-</svg>
 
 
+const Disiper = ({ children, isOut }) => {
 
-export const SortIcon = () => <svg className="svg-icons fixed" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M7.5 0V22.5H0L9.375 30L18.75 22.5H11.25V0H7.5ZM15 0V3.75H22.5V0H15ZM15 7.5V11.25H26.25V7.5H15ZM15 15V18.75H30V15H15Z" fill="black" />
-</svg>
+    return (
+        <Box display={isOut ? "none" : "unset"}>
+            {children}
+        </Box>
+    )
+}
+
+Disiper.propTypes = {
+    isOut: PropTypes.bool
+}

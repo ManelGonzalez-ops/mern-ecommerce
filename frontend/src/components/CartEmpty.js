@@ -1,28 +1,31 @@
-import React, {Fragment} from 'react'
+import { Alert } from '@material-ui/lab'
+import React, { Fragment } from 'react'
 
 export default function CartEmpty() {
     return (
-        
-        
 
-            <Fragment>
+
+        <>
+            
+            <div>
+
                 <div className="right">
-                
+
                     <div className="header">
                         <h1>Shopping Cart</h1>
 
-                        <span style={{display: "flex", alignSelf: "center", background: "red", color: "white"}}>No items</span> 
-                        
+                        <span style={{ display: "flex", alignSelf: "center", background: "red", color: "white" }}>No items</span>
+
                         <p className="price-title">Price:</p>
                     </div>
                     <hr />
 
                     <div className="cart-content">
-                        
+
                         <div className="info-cart">
 
 
-                            <div className="info-cantidad">
+                            {/* <div className="info-cantidad">
 
                                 Qty:
                                                         <select
@@ -32,7 +35,7 @@ export default function CartEmpty() {
 
                                 </select>
 
-                            </div>
+                            </div> */}
 
                         </div>
                         <p className="cart-price">0€</p>
@@ -57,8 +60,8 @@ export default function CartEmpty() {
 
                     </div>
                 </div>
-            </Fragment>
+            </div>
 
-        
+        </>
     )
 }

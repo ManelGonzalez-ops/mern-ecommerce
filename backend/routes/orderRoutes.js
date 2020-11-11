@@ -28,13 +28,12 @@ router.post("/", async (req, res) => {
                 try {
                     let total = 0
                     let count = 0
-                    const kaka = () => new Promise(resolve => {
+                    const fetcher = () => new Promise(resolve => {
                         orderItems.forEach(async item => {
 
                             const product = await Product.findById(item.id)
 
                             if (product) {
-                                console.log(product, "el puto producto")
                                 total += parseInt(item.qty, 10) * product.price
 
                                 const orderItem = new OrderItem({
@@ -59,8 +58,7 @@ router.post("/", async (req, res) => {
 
                     })
 
-                    //no te olvides de poner el () para hacer kaka
-                    await kaka()
+                    await fetcher()
                     //si tienes que acualizar algo hazlo así, mongoose updates son una perdida de tiempo para soplapollas
                     const orderWithTotalCost = await Order.findById(newOrder._id)
                     if (orderWithTotalCost) {

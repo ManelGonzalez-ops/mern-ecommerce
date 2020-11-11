@@ -1,12 +1,76 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Link } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import Image from "../media/images/p3.jpg"
 import RatingStars from "./ratingStar"
 import { motion } from "framer-motion"
-import { makeStyles } from '@material-ui/core'
+import { Avatar, Box, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Chip, IconButton, Link, ListItemText, makeStyles, Paper, Typography, useTheme } from '@material-ui/core'
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { red } from '@material-ui/core/colors'
+import clsx from 'clsx'
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    borderRadius: "4px",
+    background: "white",
+    [theme.breakpoints.up("xs")]: {
+      maxHeight: "200px",
+      objectFit: "contain"
+    },
+    
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+  productName: {
+    //maxHeight: 150
+    lineHeight: 1.4,
+    fontWeight: 600,
+    color: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark
+  },
+  cardContent: {
+    padding: theme.spacing(2),
+    "&$:last-child": {
+      padding: theme.spacing(2)
+    }
+  },
+  card: {
+    alignSelf: "end",
+    [theme.breakpoints.up("xs")]:{
+      margin: "0 calc(1rem + 2%)"
+    },
+    [theme.breakpoints.up("sm")]:{
+      margin: "unset"
+    },
+    backgroundColor: theme.palette.type === "dark"? "#303030": "inherit",
+    //boxShadow: "0 10px 6px -6px rgba(119, 119, 119, 0.2), 0px 2px 1px -1px rgba(0,0,0,0.1), 0px 1px 1px 0px rgba(0,0,0,0.07), 0px 1px 3px 0px rgba(0,0,0,0.05)"
+  },
+  headerBox: {
+    backgroundColor: theme.palette.type === "dark"? "#303030": "inherit"
+  },
+icon:{
+  fill: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.main
+}
+  
+}));
 
-export default function Products({ item, setSelection, isSelected, debounce, openAside }) {
+export default function Products({ item, setSelection, isSelected, openAside }) {
+  const classes = useStyles();
+
+  const history = useHistory()
 
   const imgi = useRef()
   const [productHovered, setProductHovered] = useState(false)
@@ -15,7 +79,6 @@ export default function Products({ item, setSelection, isSelected, debounce, ope
   const transition = { duration: 0.4, ease: [0.6, 0.01, -0.05, 0.9] }
 
   const handlePointerEvents = (activate) => {
-    console.log(imgi)
     activate ?
       imgi.current.style.pointerEvents = "auto"
       :
@@ -23,87 +86,119 @@ export default function Products({ item, setSelection, isSelected, debounce, ope
   }
 
   useEffect(() => {
-    console.log("Hhhhhhhhhhhhhhhhhhola")
     imgi.current.addEventListener("ontransitionstart", () => {
-      console.log(imgi.current.style.pointerEvents, "Deberia ser auto")
       handlePointerEvents(false)
     })
 
   }, [])
 
-  const handleOpen =()=>{
-    if(openAside){
-      setTimeout(()=>{
+  const handleOpen = () => {
+    if (openAside) {
+      setTimeout(() => {
         isSelected ?
-        setSelection("")
-        :
-        setSelection(item._id)
+          setSelection("")
+          :
+          setSelection(item._id)
       }, 600)
     }
-    else{
+    else {
       isSelected ?
         setSelection("")
         :
         setSelection(item._id)
     }
-    
+
   }
 
 
-
+  const theme = useTheme()
   return (
-    <div
-      className={productHovered ? "product hovered" : "product"}
-      onMouseOver={() => { setProductHovered(true) }}
-      onMouseOut={() => { setProductHovered(false) }}
+  
+    <Card
+      className={classes.card}
+      elevation={2}
     >
-      {/* {isOpen && <div className="img-mask"
-      ></div>} */}
-
-      <motion.img
+<CardActionArea>
+      <motion.div
         ref={imgi}
         onClick={handleOpen}
-          
-
-        style={{ display: "block" }} className={`img-product ${isSelected ? "open" : ""}`}
-
-        src={item.image}
-        alt="hola"
+        style={theme.palette.type === "dark"? {margin: "5px"}: ""}
+        className={clsx("img-prod", {
+          abridor: isSelected
+        })}
 
         layout
         onTransitionEnd={() => {
-          console.log(imgi.current.style.pointerEvents, "Deberia ser none")
           handlePointerEvents(true)
         }}
+      >
+       
+        <CardMedia
+          className={classes.media}
+          component="img"
 
-      />
+          image={item.image}
+          title="Paella dish"
+        />
 
-
-      <div className="cart-body">
-        <p className="producto__nombre">
-          <Link
-            to={`/product/${item._id}/`}>
-              {item.name.length >= 50 ? `${item.name.slice(0,45)}...`  : item.name}
-              </Link></p>
-        <p className="producto__brand">{item.brand}</p>
-        <RatingStars rating={item.rating} />
-        <div className="flex-wrapper">
-          <p className="producto__price">
-            $ {item.price}
-          </p>
-
-          <Link
-            to={`/product/${item._id}/`}
-            className={cartHovered ? "pseudo-wrap hovered" : "pseudo-wrap"}
-            onMouseOver={() => { setCartHovered(true) }}
-            onMouseOut={() => { setCartHovered(false) }}
+      </motion.div>
+      </CardActionArea>
+      <CardContent
+        // classes={{root: classes.cardContent}}
+        style={{
+          padding: theme.spacing(1),
+          paddingTop: 0,
+          paddingLeft: "14px",
+          paddingBottom: 0
+        }}
+      >
+        <Box
+          component="div"
+          my={1}
+          textOverflow="ellipsis"
+          overflow="hidden"
+          bgcolor="background.paper"
+          classes={{root: classes.headerBox}}
+        >
+          <Typography variant="h6" gutterBottom
+          classes={{root: classes.productName}}
+          //color="primary"
           >
-            <CartSvg />
-          </Link>
+            <Link
+             onClick={()=>{history.push(`/product/${item._id}/`)}}
+             color="inherit"
+             underline="none"
+             
+             >
+            {item.name.length > 40 ? `${item.name.slice(0, 38)}...` : item.name}
+            </Link>
+          </Typography>
+          <Typography color="textSecondary" variant="caption" >
+            {item.brand}
+          </Typography>
+        </Box>
 
-        </div>
-      </div>
-    </div>
+        <RatingStars
+          rating={item.rating}
+          noSpacing
+        />
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <ListItemText >
+          <Chip label={`${item.price} $`} aria-label="price"/>
+          
+
+          </ListItemText>
+          <IconButton aria-label="see more"
+          onClick={()=>{history.push(`/product/${item._id}/`)}} >
+            <ShoppingBasketIcon 
+            classes={{root: classes.icon}}
+            />
+          </IconButton>
+        </Box>
+      </CardContent>
+
+    </Card>
+   
   )
 }
 

@@ -3,11 +3,35 @@ import Products from "../data"
 import { useSelector, useDispatch } from "react-redux"
 import { userActionsSignup } from "../actions/userActions"
 import Cookie from "js-cookie"
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { Paper, TextField, Link, Box, Typography, Button, Grid, makeStyles } from '@material-ui/core'
+import { useDataLayer } from '../Context'
 
+
+
+const useStyles = makeStyles(theme => ({
+    paper: {
+        margin: "0 auto",
+        [theme.breakpoints.up("xs")]: {
+            width: "90vw",
+            maxWidth: "400px",
+            padding: "1.5rem"
+        },
+        [theme.breakpoints.up("md")]: {
+            maxWidth: "550px"
+        }
+    },
+  
+    item: {
+        [theme.breakpoints.up("md")]: {
+            paddingRight: "1rem",
+        }
+    }
+}))
 export default function Users(props) {
 
-
+    const {setOpenSnackbar} = useDataLayer()
+    const styles = useStyles()
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
@@ -37,15 +61,15 @@ export default function Users(props) {
 
     const redirect = props.location.search ? "/shipping" : "/"
     useEffect(() => {
-        
-        if(props.location.search){
-            dispatch({type: "SET_CURRENT_PATH", payload: "show"})
+
+        if (props.location.search) {
+            dispatch({ type: "SET_CURRENT_PATH", payload: "show" })
         }
 
-        
+
         if (userInfo) {
-           
             props.history.push(redirect)
+            setOpenSnackbar(true)
         }
 
     }, [userInfo])
@@ -61,43 +85,119 @@ export default function Users(props) {
         }
     }
 
+    const history = useHistory()
 
+    const handleSignin = () => {
+        redirect === "/" ?
+            history.push("/signin") : history.push(`signin?redirect=${redirect}`)
+    }
     return (
-        <Fragment>
-            
+        <div
+            style={{ minHeight: "80vh", marginTop: "4rem" }}
+        >
+
             {loading && <p>Loading ...</p>}
 
             <p>{error && error}</p>
+            <Paper
+                classes={{
+                    root: styles.paper
+                }}
+            >
+                <form method="POST" onSubmit={handleSignup}>
+                    <Box mb={3}>
+                        <Typography variant="h5" >Signup</Typography>
+                    </Box>
+                    
+                        <Box mb={2}>
+                            <Grid
 
-            <form method="POST" className="form form-signup" onSubmit={handleSignup}>
-                <h1 className="form-title">Signup</h1>
-                <div className="form-responsive-section">
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input id="email" type="email" name="email" value={email} onChange={(e) => { handleInput(e) }} required></input>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input id="name" type="text" name="name" value={name} onChange={(e) => { handleInput(e) }} required></input>
-                    </div>
-                </div>
-                <div className="form-responsive-section">
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input id="password" type="password" name="password" value={password} onChange={(e) => { handleInput(e) }} required></input>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="rpassword">Confirm Password</label>
-                        <input id="rpassword" type="password" name="rpassword" value={rpassword} onChange={(e) => { handleInput(e) }} required></input>
-                    </div>
-                </div>
-                <button className="button-pnp" type="submit">Register</button>
-                <p className="placeholder-user">Already have and account?</p>
-                <Link className="button-pnp" to={redirect === "/" ? "signin" : `signin?redirect=${redirect}`} >Sign in</Link>
-            </form>
+                                container
+                                classes={{ root: styles.grid }}
+                                justify="center"
+                            >
+                                <Grid xs={12} md={6} item
+                                    classes={{ item: styles.item }}
+                                >
+                                    <Box mb={2}>
+                                        <TextField
+                                            fullWidth
+                                            id="email"
+                                            type="email"
+                                            label="email"
+                                            name="email"
+                                            size="small"
+                                            value={email}
+                                            onChange={(e) => { handleInput(e) }}
+                                            variant="filled"
+                                            required />
+
+                                    </Box>
+                                    <Box mb={2}>
+                                        <TextField
+                                            label="name"
+                                            fullWidth
+                                            variant="filled"
+                                            size="small"
+                                            id="name"
+                                            type="text"
+                                            name="name"
+                                            value={name} onChange={(e) => { handleInput(e) }} required />
+                                    </Box>
+                                </Grid>
+                                <Grid xs={12} md={6} item
+
+                                >
+                                    <Box mb={2}>
+                                        <TextField
+                                            label="password"
+                                            fullWidth
+                                            variant="filled"
+                                            size="small"
+                                            id="password"
+                                            type="password"
+                                            name="password"
+                                            value={password} onChange={(e) => { handleInput(e) }}
+                                            required />
+                                    </Box>
+                                    <Box mb={2}>
+                                        <TextField
+                                            label="rpassword"
+                                            fullWidth
+                                            variant="filled"
+                                            size="small"
+                                            id="rpassword"
+                                            type="password"
+                                            name="rpassword"
+                                            value={rpassword}
+                                            onChange={(e) => { handleInput(e) }}
+                                            required />
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Box fullWidth display="flex" justifyContent="space-between" >
+
+                            <Button
+                                type="submit"
+                                color="primary"
+                                variant="contained"
+                            >Register</Button>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                <Typography variant="body2" >Already have and account?</Typography>
+                                <Link
+                                    color="primary"
+                                    component="button"
+                                    onClick={handleSignin}
+                                >Sign in</Link>
+                            </div>
+                        </Box>
+                    
+
+                </form>
+            </Paper>
 
 
-
-        </Fragment>
+        </div>
     )
 }

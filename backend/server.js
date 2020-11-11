@@ -6,6 +6,7 @@ const dotenv = require("dotenv").config()
 const config = require("./config")
 
 const express = require("express")
+const app = express()
 const cors = require("cors")
 const mongoose = require("mongoose")
 const UserRouter = require("./routes/userRoutes")
@@ -27,7 +28,7 @@ mongoose.connect(MONGODB_URL, {
 .catch(err=>{console.log(err.message, "error")})
 
 
-const app = express()
+
 app.use(cors())
 app.use(express.json())
 

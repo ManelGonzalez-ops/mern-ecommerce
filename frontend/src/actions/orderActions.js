@@ -20,7 +20,8 @@ export const addOrderDB = (hasLogin) => async (dispatch, getState) => {
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/orders", {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${userInfo.token}`
+                "Authorization": `Bearer ${userInfo.token}`,
+                
             },
             body: JSON.stringify({ cartItems, userInfo, shippingInfo }),
             method: "POST"

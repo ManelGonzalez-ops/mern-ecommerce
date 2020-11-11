@@ -3,7 +3,15 @@ import { useHistory } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { saveProduct, listProducts } from "../actions/productActions"
 import Cookie from "js-cookie"
+import { Box, Button, FormControl, InputLabel, makeStyles, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextareaAutosize, TextField } from '@material-ui/core'
 
+const useStyles = makeStyles((theme) => ({
+    batonpnp: {
+        display: "block",
+        margin: "0 auto",
+        marginTop: "3rem"
+    }
+}))
 export default function Users(props) {
 
     const [openModal, setOpenModal] = useState(false)
@@ -54,24 +62,24 @@ export default function Users(props) {
 
     const handleCreateorEdit = (e) => {
         e.preventDefault()
-       
+
         switch (signin.current.textContent) {
             case "Create":
-            
+
                 dispatch(saveProduct({ name, image, price, brand, description, category, stock }))
                 return
             case "Update":
-          
+
                 dispatch(saveProduct({ _id, name, image, price, brand, description, category, stock }))
         }
-        
+
     }
 
 
     const productLista = useSelector(state => state.productList)
     const { products, loading, error } = productLista
 
-    const categoryList = ["Toys", "Hardware", "Accesories", "Kitchen & Dining",  "Clothing & Jewelry", "Books", "Baby", "Sports", "Other"]
+    const categoryList = ["Toys", "Hardware", "Accesories", "Kitchen & Dining", "Clothing & Jewelry", "Books", "Baby", "Sports", "Other"]
 
 
 
@@ -84,11 +92,11 @@ export default function Users(props) {
             dispatch(listProducts())
 
         }
-//if appRedux rerenders in the background will call this effect.. because succes will change, but that's not how it should so we add a useffect [] a continuacion
+        //if appRedux rerenders in the background will call this effect.. because succes will change, but that's not how it should so we add a useffect [] a continuacion
     }, [success])
 
-    useEffect(()=>{
-        dispatch({type:"SET_CURRENT_PATH", payload: "hide"})
+    useEffect(() => {
+        dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
         dispatch(listProducts())
     }, [])
 
@@ -112,124 +120,202 @@ export default function Users(props) {
         setStock(product.stock)
         signin.current.textContent = "Update"
     }
-const deleteProduct =(e)=>{
-    
-    dispatch(saveProduct({_id, delete: true}))
-    e.preventDefault()
-}
+    const deleteProduct = (e) => {
+
+        dispatch(saveProduct({ _id, delete: true }))
+        e.preventDefault()
+    }
     const deleteProductPre = (id) => {
         setOpenModalDel(true)
         setId(id)
     }
-
+    const clases = useStyles()
     return (
         <div className="admin-wrapper">
 
-            <button className="button-pnp"
+            <Button
+                classes={{ root: clases.batonpnp }}
+                variant="contained" color="primary"
                 onClick={createProduct}
 
-            >Create product</button>
+            >Create product</Button>
 
 
-            {saveLoading && <p>oading ...</p>}
+            {saveLoading && <p>Loading ...</p>}
             <p>{saveError && saveError}</p>
-            
+
 
 
             <div className="form-container"
                 className={openModal ? "modal open" : "modal"}>
-                
-        {/* creates and edits */}
-                <form className="form form-signup" method="POST" onSubmit={handleCreateorEdit}
+
+                {/* creates and edits */}
+                <Paper component="form" className="form form-signup" method="POST" onSubmit={handleCreateorEdit}
                 >   <div className="form-responsive-section">
-                    <div className="form-group">
-                        <label htmlFor="name">Product Name</label>
-                        <input id="name" type="text" name="name" value={name} onChange={(e) => { handleInput(e) }} required ></input>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="image">Image</label>
-                        <input id="image" pattern="https://.*" type="url" name="image" value={image} onChange={(e) => { handleInput(e) }} pattern="https://.*" placeholder="https://..." required ></input>
-                    </div>
+                        <div className="form-group">
+                            <TextField
+                                id="name"
+                                type="text"
+                                name="name"
+                                value={name}
+                                onChange={(e) => { handleInput(e) }}
+                                label="Product Name"
+                                required />
+                        </div>
+                        <div className="form-group">
+                            <TextField
+                                id="image"
+                                type="url"
+                                name="image"
+                                value={image}
+                                onChange={(e) => { handleInput(e) }}
+                                pattern="https://.*"
+                                placeholder="https://..."
+                                label="image"
+                                required />
+                        </div>
                     </div>
                     <div className="form-responsive-section">
-                    <div className="form-group">
-                        <label htmlFor="price">Price</label>
-                        <input id="price" type="number" name="price" value={price} onChange={(e) => { handleInput(e) }} required></input>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="brand">Brand</label>
-                        <input id="brand" type="text" name="brand" value={brand} onChange={(e) => { handleInput(e) }} required></input>
-                    </div>
+                        <div className="form-group">
+                            <TextField
+                                id="price"
+                                type="number"
+                                name="price"
+                                value={price}
+                                onChange={(e) => { handleInput(e) }}
+                                label="Price"
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <TextField
+                                id="brand"
+                                type="text"
+                                name="brand"
+                                value={brand}
+                                label="brand"
+                                onChange={(e) => { handleInput(e) }}
+                                required />
+                        </div>
                     </div>
                     <div className="form-responsive-section">
-                    <div className="form-group">
-                        <label htmlFor="category">Category</label>
-                        <select id="category" type="text" name="category" value={category} onChange={(e) => { handleInput(e) }} required>
-                        {categoryList.map((item,index)=>
-                            <option value={item} key={index}>{item}</option>)}
+                        <div className="form-group">
+                            <FormControl
+                            style={{width: "300px"}}
+                            >
+                                <InputLabel id="category">category</InputLabel>
+                                <Select
+                                id="category"
+                                labelId="label"
+                                type="text"
+                                name="category"
+                                value={category}
+                                onChange={(e) => { handleInput(e) }}
+                                label="category"
+                                style={{width: "100%"}}
+                                required>
+                                {categoryList.map((item, index) =>
+                                    <option value={item} key={index}>{item}</option>)}
+
+                            </Select>
+                            </FormControl>
                             
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="description">Descripcion</label>
-                        <textarea id="description" name="description" value={description} onChange={(e) => { handleInput(e) }} required></textarea>
-                    </div>
+                        </div>
+                        <div className="form-group">
+                            <TextField
+                                id="description"
+                                name="description"
+                                value={description}
+                                onChange={(e) => { handleInput(e) }}
+                                label="description"
+                                
+                                required
+                                //variant="outlined"
+                                // multiline
+                                // rows={4}
+                            />
+                        </div>
                     </div>
                     <div className="form-group stock-field">
-                        <label htmlFor="stock">Count in stock</label>
-                        <input  id="stock" type="number" name="stock" value={stock} onChange={(e) => { handleInput(e) }} required></input>
+
+                        <TextField
+                            id="stock"
+                            type="number"
+                            name="stock"
+                            value={stock}
+                            onChange={(e) => { handleInput(e) }}
+                            label="units in stock"
+                            required></TextField>
                     </div>
-                    <button type="submit" className="button-pnp create" ref={signin}>Signin</button>
-                    <button onClick={() => { setOpenModal(false) }}>close</button>
-                </form>
+                    <Button
+                        type="submit"
+                        className="button-pnp create"
+                        ref={signin}
+                        variant="contained"
+                        color="primary"
+                    >Signin</Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => { setOpenModal(false) }}
+                    >close</Button>
+                </Paper>
             </div>
             <br /><br />
             <div className="product-list">
                 {loading && <p>Loading...</p>}
                 {error && <p>{error}</p>}
                 {products && products.length &&
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>Name</th>
-                            <th>Brand</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Stock</th>
-                        </tr>
-                        </thead>
-                        <tbody>     
-                        {products.map(item => <tr key={item._id}>
-                            <th>{item._id}</th>
-                            <td>{item.name}</td>
-                            <td>{item.brand}</td>
-                            <td>{item.price}</td>
-                            <td>{item.category}</td>
-                            <td>{item.description}</td>
-                            <td>{item.stock}</td>
-                            <td>
-                                <button onClick={() => { editProduct(item) }}>
-                                    EditProduct
-                        </button>
-                                <button onClick={() => { deleteProductPre(item._id) }}>
-                                    DelteProduct
-                        </button>
-                            </td>
-                        </tr>)}
-                        </tbody>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow >
+                                    <TableCell align="right">id</TableCell>
+                                    <TableCell align="right">Name</TableCell>
+                                    <TableCell align="right">Brand</TableCell>
+                                    <TableCell align="right">Price</TableCell>
+                                    <TableCell align="right">Category</TableCell>
+                                    <TableCell align="right">Description</TableCell>
+                                    <TableCell align="right">Stock</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {products.map(item => <TableRow key={item._id}>
+                                    <TableCell align="right" component="th" scope="row" >{item._id}</TableCell>
+                                    <TableCell align="right">{item.name}</TableCell>
+                                    <TableCell align="right">{item.brand}</TableCell>
+                                    <TableCell align="right">{item.price}</TableCell>
+                                    <TableCell align="right">{item.category}</TableCell>
+                                    <TableCell align="right">{item.description}</TableCell>
+                                    <TableCell align="right">{item.stock}</TableCell>
+                                    <TableCell align="right">
+                                        <Button onClick={() => { editProduct(item) }}>
+                                            EditProduct
+                        </Button>
+                                        <Button onClick={() => { deleteProductPre(item._id) }}>
+                                            DelteProduct
+                        </Button>
+                                    </TableCell>
+                                </TableRow>)}
+                            </TableBody>
 
-                    </table>}
+                        </Table>
+                    </TableContainer>}
 
-                <div
-                id="modal-delete"
-                 className={openModalDel? "modal open": "modal"}>
+                <Box
+                    id="modal-delete"
+                    className={openModalDel ? "modal open" : "modal"}>
                     Are you sure you want to remove the product ?
-                    <button onClick={deleteProduct}>Remove</button>
-                    <button onClick={()=>{setOpenModalDel(false)}}>Cancel</button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={deleteProduct}>Remove</Button>
+                    <Button
+                        variant="outlined"
+                        color=""
+                        onClick={() => { setOpenModalDel(false) }}>Cancel</Button>
 
-                </div>
+                </Box>
             </div>
         </div>
     )

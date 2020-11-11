@@ -49,7 +49,7 @@ const userActionsSignup = (name, email, password) => async (dispatch) => {
         })
         //we send back jwt token as well
         const data = await rawData.json()
-        Cookie.set("userInfoR", JSON.stringify(data))
+        Cookie.set("userInfo", JSON.stringify(data))
         dispatch({ type: USER_REGISTER_SUCCESS, payload: data })
     }
     catch (err) {

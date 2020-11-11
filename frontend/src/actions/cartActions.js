@@ -29,7 +29,8 @@ export const cartProduct = (productId, qty) => async (dispatch, getState) => {
                 console.log(x.qty, "qtyyy")
                 return x
             })
-            
+            Cookie.set("cartItems", JSON.stringify(koko))
+            console.log("cooomo")
             dispatch({type: CART_ADD_ITEM, payload: koko})
             
         }
@@ -47,20 +48,29 @@ export const cartProduct = (productId, qty) => async (dispatch, getState) => {
 }
 
 
-export const cartModification = (productId, qty = 0) => async (dispatch) => {
+export const cartModification = (productId, qty = 0) => async (dispatch, getState) => {
 
     dispatch({ type: CART_ADD_LOADING })
-    if (qty === 0) {
-        dispatch({ type: CART_DELETE_ITEM, payload: productId })
+    const {cart} = getState()
+    
 
+    
+    
+    if (qty === 0) {
+        const updatedArray = cart.cartItems.filter(item =>item.id !== productId)
+        console.log(updatedArray, productId)
+        Cookie.set("cartItems", JSON.stringify(updatedArray))
+        dispatch({ type: CART_DELETE_ITEM, payload: updatedArray })
 
     }
     else {
+        const updatedArr = cart.cartItems.map(item => {
+            if (item.id === productId) item.qty = qty
+            return item
+        })
+        Cookie.set("cartItems", JSON.stringify(updatedArr))
         dispatch({
-            type: CART_UPDATE_ITEM, payload: {
-                productId,
-                qty
-            }
+            type: CART_UPDATE_ITEM, payload: updatedArr
         })
 
 

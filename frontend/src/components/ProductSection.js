@@ -1,48 +1,79 @@
 import React, { useEffect, useState, Fragment, useLayoutEffect, useRef } from 'react';
-import { Link } from "react-router-dom"
-
+import ReactDOM from "react-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { listProducts, sortProducts, searchProduct, searchByCartegory } from '../actions/productActions';
 
 
 import { LoaderPnp, Loader1 } from "./Products"
-import Slider from "./Slider"
 import Background from "../media/images/watercolor.png"
 import ProductDispatcher from "./ProductDispatcher"
 import Sorter from "./SelectIcon"
 import Search from "./SearchIcon"
+import Aside from './Aside';
+import Breadcrumb from "./Breadcrumb"
+import { Button, IconButton, Typography } from '@material-ui/core';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import CustomButton from './CustomButton';
+import ListIcon from '@material-ui/icons/List';
+
 
 function App() {
     const stickyLabel = useRef(null)
     const galerie = useRef(null)
+    const aside = useRef(null)
+    const [searchIconWidth, setSearchIconWidth] = useState(0)
+    const [selectIconWidth, setSelectIconWidth] = useState(0)
+    const [debounce, setDebounce] = useState(false)
+    const [amountTranslate, setAmountTranslate] = useState(0)
     const [selectFilter, setSelectFilter] = useState("lower price")
     const [searchFilter, setSearchFilter] = useState("")
-
     const [openAside, setOpenAside] = useState(false)
-    const [marginTop, setMarginTop] = useState(0)
+    const [category, setCategory] = useState("")
+
+    const [viewport, setViewport] = useState(window.innerWidth)
+
     const productList = useSelector(state => state.productList)
     const { products, loading, error } = productList
     const dispatch = useDispatch()
 
     const [hasBeenTouched, setHasBeenTouched] = useState(false)
 
+    const [active, setActive] = useState("")
+
+    //use this to avoid memory leaks by unmounted components that handle async operations 
+    const isMounted = useRef(null)
+
+
 
     useEffect(() => {
+        console.log(aside.current, "aaaaside")
+        if (aside && aside.current) {
+            setAmountTranslate(aside.current.scrollWidth)
+        }
 
+    }, [aside])
 
+    const handleBlur = (which) => {
+        viewport < 500 ?
+            setActive("")
+            :
+            setActive(prev => prev.filter(item => item !== which))
 
-        dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
-        dispatch(listProducts())
+    }
 
-    }, [])
-
+    const handleFocus = (which) => {
+        viewport < 500 ?
+            setActive(which)
+            :
+            setActive(prev => [...prev, which])
+    }
 
     const handleStikyPosition = (e) => {
-        
+
         //here are doing a bit complex and lets explain:
 
         //1. add fixed when we scroll all the height stickyLabel component  
-        if (stickyLabel.current) {
+        if (stickyLabel.current && galerie.current) {
 
             if (stickyLabel && stickyLabel.current.getBoundingClientRect().top < 0) {
                 if (stickyLabel.current.style.position !== "fixed") {
@@ -53,77 +84,172 @@ function App() {
 
             }
             //2.Check when galerie has just left a height equivalent to the stickyLabel to show its top at the begining of the viewport. or we can when we see space between the top of the vieport and the top of the galerie.
-            
+
             else if (stickyLabel && stickyLabel.current && galerie.current.getBoundingClientRect().top > stickyLabel.current.getBoundingClientRect().height) {
 
-                if(stickyLabel.current.style.position === "fixed"){
+                if (stickyLabel.current.style.position === "fixed") {
 
                     stickyLabel.current.style.position = "static"
                     galerie.current.style.marginTop = 0
-                
+
                 }
 
             }
-           
+
         }
     }
 
+    const handleResize = () => {
+        setViewport(window.innerWidth)
+    }
+
     useLayoutEffect(() => {
+        isMounted.current = true
+        if (isMounted.current) {
+            dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
+            dispatch(listProducts())
+        }
+
+
+        window.addEventListener("resize", handleResize)
+
+        if (galerie && galerie.current) {
+            galerie.current.addEventListener("transitionstart", (e) => {
+                if (e.target.className === "product-grid")
+                    setDebounce(true)
+            })
+            // galerie.current.addEventListener("transitionend", makeDebounceFalse)
+        }
+        return () => {
+            document.removeEventListener("scroll", handleStikyPosition)
+            isMounted.current = false
+        }
+    }, [])
+
+
+
+    useEffect(() => {
 
         document.addEventListener("scroll", handleStikyPosition)
+
+        return () => {
+            document.removeEventListener("scroll", handleStikyPosition)
+        }
     }, [stickyLabel])
-
-
-
-    const categoryList = ["Toys", "Hardware", "Accesories", "Kitchen & Dining", "Clothing & Jewelry", "Books", "Baby", "Sports", "Other"]
 
 
     //category
     const handleCategorySearch = (categoryType) => {
         dispatch(searchByCartegory(categoryType))
         setOpenAside(false)
+        setCategory(categoryType)
     }
 
+    const handleCloseAside = () => {
+        if (openAside) {
+            console.log("QUEEEEEEEEEEEEE PASAAAAAAA")
+            setDebounce(true)
+            setOpenAside(false)
+            setTimeout(() => {
+                setDebounce(false)
+            }, 500)
+        }
+
+    }
+
+    const goBack = () => {
+        dispatch(listProducts())
+    }
+
+    const getIconsWidth = (which, val) => {
+        console.log("queeeeeeeeeeeeeeeeeeee")
+        switch (which) {
+            case "search":
+                setSearchIconWidth(val)
+            case "select":
+                setSelectIconWidth(val)
+        }
+
+    }
+
+    useEffect(() => {
+        console.log("bueeno")
+        console.log(searchIconWidth, "bueeeno")
+    }, [searchIconWidth])
 
 
     return (
 
-        <div style={{margin: 0}} onClick={()=>{openAside && setOpenAside(false)}}>
+        <div style={{ margin: 0 }} onClick={handleCloseAside}>
+
+            <div className="filter__container" ref={stickyLabel}>
+
+                {viewport > 500 &&
+                    <IconButton
+                        onClick={() => { setOpenAside(true) }}
+                    >
+                        <ListIcon fontSize="large" />
+                    </IconButton>
+                }
+
+                {
+                    viewport < 500 && <FixedButton
+                        style={{ position: "fixed", bottom: "5%", left: "5%" }}
+                        onClick={() => { setOpenAside(true) }}
+                    />}
+
+                {category &&
+                    <Breadcrumb category={category} goBack={goBack} />}
+
+                <Search
+                    searchFilter={searchFilter}
+                    setSearchFilter={setSearchFilter} viewport={viewport}
+                    handleFocus={handleFocus}
+                    isActive={viewport < 500 ? (active === "search" ? true : false) : (active && active.includes("search") ? true : false)}
+                    getIconsWidth={getIconsWidth}
+                    selectIconWidth={selectIconWidth}
+                    searchIconWidth={searchIconWidth}
+                    handleBlur={handleBlur}
+                />
+                <Sorter selectFilter={selectFilter}
+                    setSelectFilter={setSelectFilter}
+                    viewport={viewport}
+                    handleFocus={handleFocus}
+                    isActive={viewport < 500 ? (active === "select" ? true : false) : (active && active.includes("select") ? true : false)}
+                    getIconsWidth={getIconsWidth}
+                    searchIconWidth={searchIconWidth}
+                    selectIconWidth={selectIconWidth}
+
+                />
+            </div>
+
+
+
+            <Aside
+                ref={aside}
+                search={handleCategorySearch}
+                isOpen={openAside} open={setOpenAside} />
+
 
             {loading ? <Loader1 />
                 :
-                error ? <p>{error}</p>
+                error ? <ErrorMsg error={error} goBack={goBack} />
                     :
                     <Fragment>
 
-                        <div className="filter__container" ref={stickyLabel}>
-                            <p className={openAside ? "categories close" : "categories"}
-                                onClick={() => { setOpenAside(true) }}
-                            ><stong>Categories &#8594;</stong></p>
-                            <Search searchFilter={searchFilter} setSearchFilter={setSearchFilter} />
-                            <Sorter selectFilter={selectFilter} setSelectFilter={setSelectFilter} />
-                        </div>
 
 
 
-
-                        <aside className={openAside ? "aside open" : "aside"}>
-                            <header className="header-aside">
-                                <h3 style={{ color: "orange" }}>Categories</h3>
-                                <span
-                                    onClick={() => { setOpenAside(false) }}>
-                                    <CloseBtnAside /></span>
-                            </header>
-                            <ul>
-                                {categoryList.map((item, index) => <li
-                                    key={index}
-                                    onClick={() => { handleCategorySearch(item) }}>{item}</li>)}
-                            </ul>
-                        </aside>
-
-
-                        <div className="product-grid" ref={galerie}>
-                            <ProductDispatcher products={products} />
+                        <div className="product-grid" ref={galerie}
+                            style={openAside ?
+                                { transform: `translateX(${amountTranslate}px)` }
+                                :
+                                null}
+                            onTransitionEnd={(e) => { e.target.className === "product-grid" && setDebounce(false) }}
+                        >
+                            <ProductDispatcher
+                                openAside={openAside}
+                                products={products} debounce={debounce} />
                         </div>
                     </Fragment>
             }
@@ -132,6 +258,24 @@ function App() {
     );
 }
 
+const FixedButton = (props) => ReactDOM.createPortal(<CustomButton {...props} />, document.getElementById("portal"));
+
+const ErrorMsg = ({ error, goBack }) => {
+
+
+    return (
+        <div
+            className="products-error">
+            <p>{error}</p>
+            <Button
+                variant="outlined"
+                onClick={goBack}
+            >
+                Go Back
+        </Button>
+        </div>
+    )
+}
 
 export default App;
 

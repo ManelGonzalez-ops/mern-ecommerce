@@ -20,7 +20,7 @@ const listProducts = () => async (dispatch) => {
 
 const detailsProduct = (productId) => async (dispatch) => {
     try {
-        dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId })
+        dispatch({ type: PRODUCT_DETAILS_REQUEST })
         const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
         console.log(data, "maamaa")
@@ -98,11 +98,12 @@ const addReview = (productId, review, rating, author) => async (dispatch) => {
     try {
         dispatch({ type: REVIEW_ADD_REQUEST })
 
+        const autorChecked = typeof author === "string"? author : author.name 
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products/review", {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ productId, review, rating, author: author}),
+            body: JSON.stringify({ productId, review, rating, author: autorChecked}),
             method: "PUT"
         })
 
@@ -157,8 +158,9 @@ const sortProducts = (criterio) => async (dispatch, getState) => {
 const searchProduct = (palabra) => async (dispatch, getState) => {
 
         try{
-            const productArray = JSON.parse(localStorage.getItem("productList"))
             dispatch({type: SHOW_SEARCH_REQUEST})
+            const productArray = JSON.parse(localStorage.getItem("productList"))
+            
            
             const newArr = productArray.map(item=> {
                 let patron = new RegExp(palabra, "g")

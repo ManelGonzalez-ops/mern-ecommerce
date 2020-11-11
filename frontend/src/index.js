@@ -5,16 +5,25 @@ import './index.css';
 // import App from './App';
 import "./css/main.css"
 import AppRedux from "./AppRedux"
-import {Provider} from "react-redux"
+import { Provider } from "react-redux"
 import store from "./store"
 import * as serviceWorker from './serviceWorker';
+import ContextoComp from "./Context";
+
+
+
+
 
 ReactDOM.render(
 
-    <Provider store={store}>
-    <AppRedux />
-    </Provider>
- ,
+  <Provider store={store}>
+    <ContextoComp>
+      
+      <AppRedux />
+     
+    </ContextoComp>
+  </Provider>
+  ,
   document.getElementById('root')
 );
 

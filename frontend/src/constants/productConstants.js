@@ -34,4 +34,4 @@ export const CART_ADD_FAIL = "CART_ADD_FAIL"
 //hemos perdido media hora por dejar pueso CART_DELETE_ITEM = "CART_DELETE_ITEM"
 //fallo que además te quedas wtf xq la app edja de tener sentdio
 export const CART_DELETE_ITEM= "CART_DELETE_ITEM"
-export const CART_UPDATE_ITEM = "CART_UPDATE_FAIL"
+export const CART_UPDATE_ITEM = "CART_UPDATE_ITEM"

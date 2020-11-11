@@ -1,14 +1,11 @@
-import React, {useEffect, Fragment} from 'react'
-import { useSelector, useDispatch } from "react-redux"
+import React, { Fragment } from 'react'
+import { useSelector} from "react-redux"
 
 export default function StepTimeline() {
 
     const {currentStep} = useSelector(state=>state.currentStep)
 
-    useEffect(()=>{
-
-    },[currentStep])
-
+   
     return (
         <Fragment>
         <div className="timeline">

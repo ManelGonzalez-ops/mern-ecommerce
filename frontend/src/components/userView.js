@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { userUpdateInfo } from "../actions/userActions"
 import { Link } from "react-router-dom"
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@material-ui/core'
 
 export default function UserView() {
 
@@ -77,57 +78,110 @@ export default function UserView() {
 
         <div className="userView-wrapper">
 
-            <form method="POST" className="form update-form" onSubmit={handleUserUpdate}>
-                <h1 className="form-title">Update Account</h1>
+            <Paper component="form" method="POST" className="form update-form userView" onSubmit={handleUserUpdate}>
+                <Typography variant="h4" className="form-title">Update Account</Typography>
                 <div className="form-group">
-                    <label htmlFor="email"><span className="tag-color1">new</span> Email</label>
-                    <input id="email" type="email" name="email" value={email} onChange={(e) => { handleInput(e) }} required />
+                    <TextField
+                        id="email"
+                        type="email"
+                        label="email"
+                        variant="outlined"
+                        name="email"
+                        value={email}
+                        onChange={(e) => { handleInput(e) }}
+                        required
+                        fullWidth />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="name"><span className="tag-color2">new</span> Name</label>
-                    <input id="name" type="text" name="name" value={name} onChange={(e) => { handleInput(e) }} required />
+                   
+                    <TextField
+                        id="name"
+                        type="text"
+                        name="name"
+                        value={name}
+                        onChange={(e) => { handleInput(e) }}
+                        label="name"
+                        variant="outlined"
+                        required
+                        fullWidth />
                 </div>
 
 
                 <div className="form-group">
-                    <label htmlFor="password"><span className="tag-color3">new</span> Password</label>
-                    <input id="password" type="password" name="password" value={password} onChange={(e) => { handleInput(e) }} required />
+                  
+                    <TextField
+                     id="password" 
+                     type="password"
+                      name="password" 
+                      value={password}
+                       onChange={(e) => { handleInput(e) }}
+                       label="password"
+                       variant="outlined"
+                        required
+                        fullWidth 
+                        />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="rpassword">Confirm <span className="tag-color3">new</span> Password</label>
-                    <input id="rpassword" type="password" name="rpassword" value={rpassword} onChange={(e) => { handleInput(e) }} required />
+                    
+                    <TextField 
+                    id="password" 
+                    type="password" 
+                    name="rpassword" 
+                    value={rpassword} 
+                    onChange={(e) => { handleInput(e) }}
+                    label="confirm password"
+                    variant="outlined"
+                    required
+                    fullWidth />
                 </div>
 
-                <button className="button-pnp" type="submit">Update Account</button>
-                <p className="placeholder-user">Logout ?</p>
-                <button className="button-pnp" >Log Out</button>
-            </form>
-            <table id="table-costumer">
-                <thead>
-                    <tr>
-                        <th>Order Id</th>
-                        <th>User</th>
-                        <th>Date</th>
-                        <th>Total Price</th>
-                        <th>See Details</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <Button 
+                
+                 type="submit"
+                 variant="contained"
+                 color="primary"
+                 >Update Account</Button>
+                <Typography className="placeholder-user">Logout ?</Typography>
+                <Button 
+                variant="contained"
+                color="secondary"
+                >Log Out</Button>
+            </Paper>
+            <TableContainer
+            style={{width: "auto", flex: 1}}
+            >
+            <Table 
+            //id="table-costumer"
+            >
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Order Id</TableCell>
+                        <TableCell>User</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Total Price</TableCell>
+                        <TableCell>See Details</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
                     {isLoading ? <div>loading...</div>
                         :
-                        isError.error ? <div>{error.msg}</div>
+                        isError.error ? <div>{isError.msg}</div>
                             :
-                            orders && orders.userOrders && orders.userOrders.map(order =>
-                                <tr>
-                                    <td>{order._id}</td>
-                                    <td>{orders.user.name}</td>
-                                    <td>{order.totalCost}</td>
-                                    <td>{order.dateAdded}</td>
-                                    <td><Link to={`/order/${order._id}`}>details</Link></td>
-                                </tr>)}
+                            orders && orders.userOrders.length > 0? orders.userOrders.map(order =>
+                                <TableRow key={order._id}>
+                                    <TableCell component="th" scope="row">{order._id}</TableCell>
+                                    <TableCell>{orders.user.name}</TableCell>
+                                    <TableCell>{order.totalCost}</TableCell>
+                                    <TableCell>{order.dateAdded}</TableCell>
+                                    <TableCell><Link to={`/order/${order._id}`}>details</Link></TableCell>
+                                </TableRow>)
+                            :
+                            <TableCell colSpan={4}>You have no orders with us yet !</TableCell>    
+                            }
 
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
+            </TableContainer>
         </div>
     )
 }

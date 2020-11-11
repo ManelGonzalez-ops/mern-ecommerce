@@ -15,17 +15,13 @@ const cartReducer = (state = { cartItems: [] }, action) => {
             return { error: action.payload, loading: false }
 
         case CART_DELETE_ITEM:
-            const cleanArray = state.cartItems.filter(item => item.id !== action.payload)
+            
 
-            return { cartItems: cleanArray, loading: false }
+            return { cartItems: action.payload, loading: false }
 
         case CART_UPDATE_ITEM:
-            const { productId, qty } = action.payload
-            const updatedArray = state.cartItems.map(item => {
-                if (item.id === productId) item.qty = qty
-                return item
-            })
-            return { cartItems: updatedArray, loading: false }
+            
+            return { cartItems: action.payload, loading: false }
             
         case "CLEAR_CART":
             return { cartItems: [] }
