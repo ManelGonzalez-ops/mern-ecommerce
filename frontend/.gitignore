@@ -4,14 +4,14 @@
 /node_modules
 /.pnp
 .pnp.js
-src/components/ButtonShop.js
-src/components/CartEmpty.js
-src/components/imagenCarr.js
-src/components/Products.js
-src/components/ProductsSection.js
-src/components/StepTimeline.js
-src/components/Slider.js
-src/components/imi.js
+/src/components/ButtonShop.js
+/src/components/CartEmpty.js
+/src/components/imagenCarr.js
+/src/components/Products.js
+/src/components/ProductSection.js
+/src/components/StepTimeline.js
+/src/components/Slider.js
+/src/components/imi.js
 
 
 # testing
