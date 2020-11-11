@@ -17,9 +17,9 @@ router.post('/', async (req, res) => {
 
 
       if (order) {
-        console.log(order.user, req.body.idUser, "cooooooomemememlalalala")
+        
         if (order.user == req.body.idUser) {
-          console.log(order.totalCost, "coooste total")
+          //console.log(order.totalCost, "coooste total")
           const paymentIntent = await stripe.paymentIntents.create({
             //multiplicamos x100 porque los anormales de Stripe toman las cifras como céntimos
             amount: Math.round(order.totalCost * 100),

@@ -62,7 +62,6 @@ router.post("/", async (req, res) => {
                     //si tienes que acualizar algo hazlo así, mongoose updates son una perdida de tiempo para soplapollas
                     const orderWithTotalCost = await Order.findById(newOrder._id)
                     if (orderWithTotalCost) {
-                        console.log(total, "el tooooooooooooooooooootal")
                         orderWithTotalCost.totalCost = total
                         orderWithTotalCost.wentToCheckout = true
                         await orderWithTotalCost.save()
@@ -90,7 +89,7 @@ router.post("/", async (req, res) => {
         }
     }
     catch (err) {
-        res.status(401).send({ error: `${err.message}asiiiii nooooooooooo` })
+        res.status(401).send({ error: `${err.message}` })
     }
 })
 

@@ -92,7 +92,6 @@ router.post("/register", async (req, res) => {
 })
 
 router.put("/update", async (req, res) => {
-    console.log("Hhhhhhhhhhhola marika")
     try {
 
         console.log(req.body, "boooooooooooody")

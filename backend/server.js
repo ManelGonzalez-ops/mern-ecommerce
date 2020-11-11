@@ -36,13 +36,7 @@ app.use("/users", UserRouter)
 app.use("/products", productRouter)
 app.use("/orders", orderRouter)
 app.use("/secret", PaymentRouter)
-// app.use("", productRouter)
 
-// app.get("/product/:id", (req, res)=>{
-//     const id = req.params.id
-//     const producto = data.products.find(item=>item._id === id)
-//     res.send(producto)
-// })
 
 let PORT = process.env.PORT || 8000
 

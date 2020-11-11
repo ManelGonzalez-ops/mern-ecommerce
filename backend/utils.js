@@ -17,9 +17,7 @@ const getToken =(user)=>{
 //when we define that function without using them, the server return a empty object dont know why xd
 const isAuth =(req,res,next)=>{
     token = req.headers["authorization"]
-    console.log(token, "lololololololololololololo")
     if(token){
-        console.log(token, "mamamamamalalalalalalla")
         const onlyToken = token.slice(7, token.length)
         jwt.verify(onlyToken, config.JWT_SECRET, (err, decode)=>{
             if(err){
