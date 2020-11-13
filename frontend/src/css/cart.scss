@@ -1,6 +1,7 @@
 
 .cart-wrapper{
     min-height: 80vh;
+    margin-bottom: 4rem;
 }
 
 .cart {
@@ -12,8 +13,6 @@
     grid-template-rows: auto auto;
     grid-template-columns: auto;
     box-sizing: border-box;
-    align-items: end;
-    // width: 100%;
     margin: 0 10px;
     margin-top: 1rem;
 
@@ -87,9 +86,9 @@
         }
     }
 
-    .left {
+    .resumen {
         box-sizing: border-box;
-
+        margin-top: 2rem;
         margin: 0 auto;
         grid-row: 2/-1;
         .box {
@@ -138,7 +137,7 @@
                 }
             }
         }
-        .left {
+        .resumen {
             width: 300px;
         }
     }
@@ -159,15 +158,17 @@
            
 
             .header {
+                padding: 1rem;
                 .price-title {
                     position: relative;
                     right: 0;
                 }
             }
         }
-        .left {
+        .resumen {
             grid-column: 2/-1;
             grid-row: 1/1;
+            margin-top: 0;
 
             .box {
                 margin-left: 0.5rem;

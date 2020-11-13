@@ -89,10 +89,7 @@ export default function Nav() {
         setQty(total)
     }, [cartItems])
 
-    console.log(location, "location")
     useEffect(() => {
-        console.log(tabVal, "historyytaabval")
-        console.log(location.pathname, "historyy")
         if (location.pathname === "/") {
             setTabVal(0)
         }
@@ -264,7 +261,6 @@ function CustomizedMenus({ viewport }) {
 
     const history = useHistory()
     const handleRouteChange = (param) => {
-        console.log("vuva")
         history.push(param)
     }
 

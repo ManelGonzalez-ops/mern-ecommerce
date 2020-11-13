@@ -739,6 +739,7 @@ header nav .dropdown-list {
 
 .cart-wrapper {
   min-height: 80vh;
+  margin-bottom: 4rem;
 }
 
 .cart {
@@ -746,7 +747,6 @@ header nav .dropdown-list {
   grid-template-rows: auto auto;
   grid-template-columns: auto;
   box-sizing: border-box;
-  align-items: end;
   margin: 0 10px;
   margin-top: 1rem;
 }
@@ -824,13 +824,14 @@ header nav .dropdown-list {
   right: 10px;
 }
 
-.cart .left {
+.cart .resumen {
   box-sizing: border-box;
+  margin-top: 2rem;
   margin: 0 auto;
   grid-row: 2/-1;
 }
 
-.cart .left .box {
+.cart .resumen .box {
   padding: 1rem;
   height: auto;
   border-radius: 0.4rem;
@@ -839,11 +840,11 @@ header nav .dropdown-list {
   margin: 0 auto;
 }
 
-.cart .left .box span {
+.cart .resumen .box span {
   word-break: break-all;
 }
 
-.cart .left .box .button-pnp {
+.cart .resumen .box .button-pnp {
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -857,7 +858,7 @@ header nav .dropdown-list {
   cursor: pointer;
 }
 
-.cart .left .box .box-total {
+.cart .resumen .box .box-total {
   font-size: 1.2rem;
   font-weight: bold;
 }
@@ -873,7 +874,7 @@ header nav .dropdown-list {
     position: relative;
     right: 5px;
   }
-  .cart .left {
+  .cart .resumen {
     width: 300px;
   }
 }
@@ -891,15 +892,19 @@ header nav .dropdown-list {
     grid-column: 1/1;
     grid-row: 1/1;
   }
+  .cart .right .header {
+    padding: 1rem;
+  }
   .cart .right .header .price-title {
     position: relative;
     right: 0;
   }
-  .cart .left {
+  .cart .resumen {
     grid-column: 2/-1;
     grid-row: 1/1;
+    margin-top: 0;
   }
-  .cart .left .box {
+  .cart .resumen .box {
     margin-left: 0.5rem;
   }
 }
@@ -1424,7 +1429,8 @@ header nav .dropdown-list {
   }
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
   position: relative;
 }
@@ -1675,7 +1681,7 @@ footer {
     opacity: 1;
   }
   to {
-    opacity: .3;
+    opacity: 0.3;
   }
 }
 
@@ -1710,38 +1716,38 @@ rect {
 }
 
 .kakaka:nth-of-type(1) ellipse {
-  stroke: #F1725D;
+  stroke: #f1725d;
   cx: 25px;
   stroke-width: 3px;
   animation: jump 600ms infinite ease-in-out;
-  opacity: .7;
+  opacity: 0.7;
   animation-delay: 0ms;
 }
 
 .kakaka:nth-of-type(2) ellipse {
-  stroke: #38BDAB;
+  stroke: #38bdab;
   cx: 65px;
   stroke-width: 3px;
   animation: jump 600ms infinite ease-in-out;
-  opacity: .7;
+  opacity: 0.7;
   animation-delay: 75ms;
 }
 
 .kakaka:nth-of-type(3) ellipse {
-  stroke: #9D30A5;
+  stroke: #9d30a5;
   cx: 105px;
   stroke-width: 3px;
   animation: jump 600ms infinite ease-in-out;
-  opacity: .7;
+  opacity: 0.7;
   animation-delay: 150ms;
 }
 
 .kakaka:nth-of-type(4) ellipse {
-  stroke: #B779E2;
+  stroke: #b779e2;
   cx: 145px;
   stroke-width: 3px;
   animation: jump 600ms infinite ease-in-out;
-  opacity: .7;
+  opacity: 0.7;
   animation-delay: 225ms;
 }
 
@@ -1750,13 +1756,13 @@ rect {
   cx: 185px;
   stroke-width: 3px;
   animation: jump 600ms infinite ease-in-out;
-  opacity: .7;
+  opacity: 0.7;
   animation-delay: 300ms;
 }
 
 .kakaka:nth-of-type(6) ellipse {
   fill: #333333;
-  opacity: .05;
+  opacity: 0.05;
   rx: 0;
   ry: 0;
   cx: 25px;
@@ -1767,7 +1773,7 @@ rect {
 
 .kakaka:nth-of-type(7) ellipse {
   fill: #333333;
-  opacity: .05;
+  opacity: 0.05;
   rx: 0;
   ry: 0;
   cx: 65px;
@@ -1778,7 +1784,7 @@ rect {
 
 .kakaka:nth-of-type(8) ellipse {
   fill: #333333;
-  opacity: .05;
+  opacity: 0.05;
   rx: 0;
   ry: 0;
   cx: 105px;
@@ -1789,7 +1795,7 @@ rect {
 
 .kakaka:nth-of-type(9) ellipse {
   fill: #333333;
-  opacity: .05;
+  opacity: 0.05;
   rx: 0;
   ry: 0;
   cx: 145px;
@@ -1800,7 +1806,7 @@ rect {
 
 .kakaka:nth-of-type(10) ellipse {
   fill: #333333;
-  opacity: .05;
+  opacity: 0.05;
   rx: 0;
   ry: 0;
   cx: 185px;
@@ -1812,7 +1818,7 @@ rect {
 @keyframes jump {
   40% {
     transform: translateY(20px) scale(1.3);
-    opacity: .9;
+    opacity: 0.9;
   }
   40% {
     rx: 10px;
@@ -1832,7 +1838,7 @@ rect {
 
 @keyframes shadow {
   45% {
-    opacity: .15;
+    opacity: 0.15;
     rx: 10px;
     ry: 3px;
     transform: translateY(0px) scale(1.3);
@@ -1895,7 +1901,8 @@ rect {
   flex: 1;
 }
 
-#table-costumer td, #table-costumer th {
+#table-costumer td,
+#table-costumer th {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -1904,7 +1911,7 @@ rect {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -2091,4 +2098,11 @@ rect {
 
 .breadcrumb ol {
   flex-wrap: nowrap;
+}
+
+.loader-placer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-40%, -50%);
 }

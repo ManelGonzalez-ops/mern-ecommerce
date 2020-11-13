@@ -1,5 +1,6 @@
 .cart-wrapper {
   min-height: 80vh;
+  margin-bottom: 4rem;
 }
 
 .cart {
@@ -7,7 +8,6 @@
   grid-template-rows: auto auto;
   grid-template-columns: auto;
   box-sizing: border-box;
-  align-items: end;
   margin: 0 10px;
   margin-top: 1rem;
 }
@@ -85,13 +85,14 @@
   right: 10px;
 }
 
-.cart .left {
+.cart .resumen {
   box-sizing: border-box;
+  margin-top: 2rem;
   margin: 0 auto;
   grid-row: 2/-1;
 }
 
-.cart .left .box {
+.cart .resumen .box {
   padding: 1rem;
   height: auto;
   border-radius: 0.4rem;
@@ -100,11 +101,11 @@
   margin: 0 auto;
 }
 
-.cart .left .box span {
+.cart .resumen .box span {
   word-break: break-all;
 }
 
-.cart .left .box .button-pnp {
+.cart .resumen .box .button-pnp {
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -118,7 +119,7 @@
   cursor: pointer;
 }
 
-.cart .left .box .box-total {
+.cart .resumen .box .box-total {
   font-size: 1.2rem;
   font-weight: bold;
 }
@@ -134,7 +135,7 @@
     position: relative;
     right: 5px;
   }
-  .cart .left {
+  .cart .resumen {
     width: 300px;
   }
 }
@@ -152,15 +153,19 @@
     grid-column: 1/1;
     grid-row: 1/1;
   }
+  .cart .right .header {
+    padding: 1rem;
+  }
   .cart .right .header .price-title {
     position: relative;
     right: 0;
   }
-  .cart .left {
+  .cart .resumen {
     grid-column: 2/-1;
     grid-row: 1/1;
+    margin-top: 0;
   }
-  .cart .left .box {
+  .cart .resumen .box {
     margin-left: 0.5rem;
   }
 }

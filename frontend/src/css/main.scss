@@ -1,5 +1,3 @@
-
-
 $main-color: #fcfcfc;
 
 @import "./nav/nav.scss";
@@ -18,21 +16,22 @@ $main-color: #fcfcfc;
 
 @import "./productCreator.scss";
 
-html, body {
+html,
+body {
   //overflow-x:hidden;
   //importante añadir para movil
   overflow-x: hidden;
   position: relative;
-} 
-body{
+}
+body {
   padding: 0px !important;
   overflow: hidden;
 
-  &.no--pointers{
+  &.no--pointers {
     pointer-events: none;
   }
 }
-.shippingWrapper{
+.shippingWrapper {
   min-height: 64vh;
 }
 
@@ -65,7 +64,6 @@ body{
     }
 
     input {
-
       &.inline {
         width: auto;
         display: inline;
@@ -313,37 +311,34 @@ body{
   }
 }
 
-
-footer{
+footer {
   height: 7vh;
   background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   color: white;
 }
 
-.svggWrapper{
-
+.svggWrapper {
   height: 90vh;
-  position: relative; 
-  .luader{
+  position: relative;
+  .luader {
     position: absolute;
     top: 30%;
     left: 50%;
     transform: translateX(-50%);
-    
-}
+  }
 }
 
 @keyframes flashy {
   from {
-  opacity: 1;
-}
-to {
-  opacity: .3;
-}
+    opacity: 1;
+  }
+  to {
+    opacity: 0.3;
+  }
 }
 
 rect {
@@ -362,12 +357,9 @@ rect {
   animation-delay: 150ms;
 }
 
-
-
 ///////otro
 
-
-$colors: #F1725D, #38BDAB, #9D30A5, #B779E2, #683893;
+$colors: #f1725d, #38bdab, #9d30a5, #b779e2, #683893;
 $left: 25px;
 $count: 40px;
 $timing: 600ms infinite ease-in-out;
@@ -378,13 +370,13 @@ $delay: 75ms;
   cx: $left + ($count * $num2);
   stroke-width: 3px;
   animation: jump $timing;
-  opacity: .7;
+  opacity: 0.7;
   animation-delay: $delay * $num2;
 }
 
 @mixin floor($num2) {
   fill: #333333;
-  opacity: .05;
+  opacity: 0.05;
   rx: 0;
   ry: 0;
   cx: $left + ($count * $num2);
@@ -401,49 +393,49 @@ $delay: 75ms;
 
 .kakaka {
   position: absolute;
-  
+
   ellipse {
     transform-origin: center;
   }
-    
+
   &:nth-of-type(1) ellipse {
     @include jelly(1, 0);
   }
-  
+
   &:nth-of-type(2) ellipse {
     @include jelly(2, 1);
   }
-  
+
   &:nth-of-type(3) ellipse {
-    @include jelly(3, 2)
+    @include jelly(3, 2);
   }
-  
+
   &:nth-of-type(4) ellipse {
-    @include jelly(4, 3)
+    @include jelly(4, 3);
   }
-  
+
   &:nth-of-type(5) ellipse {
-    @include jelly(5, 4)
+    @include jelly(5, 4);
   }
-  
+
   &:nth-of-type(6) ellipse {
-    @include floor(0)
+    @include floor(0);
   }
-  
+
   &:nth-of-type(7) ellipse {
-   @include floor(1)
+    @include floor(1);
   }
-  
+
   &:nth-of-type(8) ellipse {
-    @include floor(2)
+    @include floor(2);
   }
-  
+
   &:nth-of-type(9) ellipse {
-    @include floor(3)
+    @include floor(3);
   }
-  
+
   &:nth-of-type(10) ellipse {
-    @include floor(4)
+    @include floor(4);
   }
 }
 
@@ -453,7 +445,7 @@ $dist: 10px;
 @keyframes jump {
   40% {
     transform: translateY($dist * 2) scale(1.3);
-    opacity: .9;
+    opacity: 0.9;
   }
   40% {
     rx: $dist;
@@ -473,70 +465,68 @@ $dist: 10px;
 
 @keyframes shadow {
   45% {
-    opacity: .15;
+    opacity: 0.15;
     rx: $dist;
     ry: $dist - 7;
     transform: translateY($dist - 10) scale(1.3);
   }
 }
 
-.admin-wrapper{
-  .button-pnp{
+.admin-wrapper {
+  .button-pnp {
     display: block;
-      width: 300px;
-      box-sizing: border-box;
-      padding: 10px;
-      border-radius: 0.3rem;
-      border: 1px solid silver;
-      text-decoration: none;
-      text-align: center;
-      font-size: 16px;
-      font-family: Arial;
-      cursor: pointer;
-      margin: 0 auto;
+    width: 300px;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 0.3rem;
+    border: 1px solid silver;
+    text-decoration: none;
+    text-align: center;
+    font-size: 16px;
+    font-family: Arial;
+    cursor: pointer;
+    margin: 0 auto;
   }
 }
 
-
-@mixin tag{
+@mixin tag {
   border-radius: 2px;
   color: white;
   padding: 0px 3px;
 }
-.tag-color1{
+.tag-color1 {
   @include tag;
   background-color: #00d1b2;
 }
-.tag-color2{
-@include tag;
-background-color: #3298dc;
+.tag-color2 {
+  @include tag;
+  background-color: #3298dc;
 }
 
-.tag-color3{
+.tag-color3 {
   @include tag;
   background-color: crimson;
-  
 }
 
-.userView-wrapper{
-
+.userView-wrapper {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 0.5rem;
   margin: 0.5rem;
-  align-items: center
+  align-items: center;
 }
-.userView{
+.userView {
   margin: 0;
   margin-bottom: 2rem;
 }
 
-#table-costumer{
+#table-costumer {
   border-collapse: collapse;
   flex: 1;
-  td,th{
+  td,
+  th {
     border: 1px solid #ddd;
     padding: 8px;
   }
@@ -545,23 +535,24 @@ background-color: #3298dc;
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
-    }
+  }
 
-  tr:nth-child(even){background-color: #f2f2f2;}
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
 
-  tr:hover {background-color: #ddd;}
-
+  tr:hover {
+    background-color: #ddd;
+  }
 }
 
-
-
-.icons-wrapper{
+.icons-wrapper {
   display: flex;
-justify-content: space-between;
-  .section{
-    a{
+  justify-content: space-between;
+  .section {
+    a {
       display: flex;
       padding: 0.5rem;
       transform: rotateX(-90deg);
@@ -571,93 +562,84 @@ justify-content: space-between;
       background-color: white;
       text-decoration: none;
 
-      &.right{
+      &.right {
         padding: 6px;
-          padding-bottom: 5px;
+        padding-bottom: 5px;
       }
 
-      .arrow-container{
+      .arrow-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
 
-        p{
+        p {
           margin: 0;
-         margin-top: 5px;
+          margin-top: 5px;
         }
 
-        &.left{
+        &.left {
           margin-right: 1rem;
         }
 
-        &.right{
+        &.right {
           margin-left: 0.5rem;
         }
       }
     }
-    
-    
   }
 }
 
-
-@media (min-width: 700px){
-
-  .icons-wrapper{
-
+@media (min-width: 700px) {
+  .icons-wrapper {
     display: none;
   }
 
-  .userView-wrapper{
+  .userView-wrapper {
     margin: 1rem;
     flex-direction: row;
     align-items: flex-start;
   }
-  .userView{
+  .userView {
     margin-right: 0.5rem;
   }
 }
 
-@media (min-width: 1000px){
+@media (min-width: 1000px) {
   .userView-wrapper {
     margin: 2rem calc(1.5rem + 5%);
   }
-  .userView{
+  .userView {
     margin-right: calc(1rem + 5%);
   }
 }
 
-@keyframes rotateIn{
-
-  from{
+@keyframes rotateIn {
+  from {
     transform: rotateX(-90deg);
   }
-  to{
+  to {
     transform: rotateX(0deg);
   }
 }
 
+.slide {
+  height: 600px;
+  width: 100%;
+  background-color: red;
 
-.slide{
-height: 600px;
-width: 100%;
-background-color: red;
-
-&.blue{
-  background-color: blue;
+  &.blue {
+    background-color: blue;
+  }
 }
-}
 
-.carousel-container{
-
-
-  ul{
+.carousel-container {
+  ul {
     height: 600px;
-    li{
+    li {
       height: 100%;
 
-      div{
+      div {
         height: 100%;
         background-size: cover;
         background-repeat: no-repeat;
@@ -666,43 +648,38 @@ background-color: red;
       }
     }
   }
-  &.up{
+  &.up {
     z-index: -9999;
     position: absolute;
   }
 }
-.slidd{
+.slidd {
   position: relative;
 }
 
+@keyframes arrow {
+  30% {
+    transform: translateY(-40%);
+  }
 
+  100% {
+    transform: translateY(100%);
+  }
+}
+@keyframes btnarrow {
+  30% {
+    transform: scaleY(3);
+  }
 
-@keyframes arrow{
-
-30%{
-transform: translateY(-40%)
+  100% {
+    transform: scaleY(10);
+  }
 }
 
-100%{
-  transform: translateY(100%)
-}
-}
-@keyframes btnarrow{
-
-30%{
-transform: scaleY(3)
-}
-
-100%{
-  transform: scaleY(10)
-}
-}
-
-
-.wrapper-carru{
+.wrapper-carru {
   position: relative;
 
-  .buton-shop{
+  .buton-shop {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -716,40 +693,44 @@ transform: scaleY(3)
     mix-blend-mode: overlay;
     border: 5px solid red;
 
-    .text{
+    .text {
       color: red;
       font-size: 3rem;
     }
-    .ensanchador{
+    .ensanchador {
       animation: btnarrow 2s ease infinite;
-      height: 5px
-    } +
-    svg{
-  fill: red;
+      height: 5px;
+    }
+    + svg {
+      fill: red;
       animation: arrow 2s ease infinite;
     }
   }
 }
 
-
-@media (min-width: 1200px){
-
-  .userView{
+@media (min-width: 1200px) {
+  .userView {
     margin-right: 2.5rem;
   }
 }
 
-
 // .icon-category{
 //   margin-left: auto;
 // }
-.breadcrumb{
+.breadcrumb {
   margin-left: 10px;
   position: relative;
   z-index: 1;
   margin-left: 10px !important;
 
-  ol{
+  ol {
     flex-wrap: nowrap;
   }
+}
+
+.loader-placer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-40%, -50%);
 }

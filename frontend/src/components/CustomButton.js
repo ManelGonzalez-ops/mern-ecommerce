@@ -48,7 +48,7 @@ const useStyles = makeStyles(gmailButtonStyles, { name: 'GmailButton' })
 const CustomButton = ({ collapsed, classes, ...props }) => {
   const styles = useStyles({ collapsed, ...props })
   const { img: imgClassName, ...buttonClasses } = styles;
-  console.log("tuuuu")
+
   return (
     <Button
       disableRipple

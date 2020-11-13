@@ -4,12 +4,13 @@ import { detailsProduct, addReview } from "../actions/productActions"
 import RatingStars from "./ratingStar"
 import Cookie from "js-cookie"
 import useScrollTop from "../utils/useScrollTop"
-import { Box, Button, Chip, CircularProgress, Divider, FormControl,  List, ListItem, makeStyles, Select, Typography, useTheme } from "@material-ui/core"
+import { Box, Button, Chip,  Divider, FormControl, List, ListItem, makeStyles, MenuItem, Select, Typography, useTheme } from "@material-ui/core"
 import Image from "material-ui-image"
 import { motion } from 'framer-motion'
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd'
 import { useLocation } from 'react-router-dom'
 import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import { Loader } from './Loader'
 
 const theme = createMuiTheme({
     palette: {
@@ -27,7 +28,8 @@ const styles = makeStyles(theme => ({
     },
     manualdark: {
         backgroundColor: theme.palette.type === "dark" ? "#303030" : "inherit"
-    }
+    },
+
 
 }))
 
@@ -48,25 +50,14 @@ export default function Details(props) {
 
     useEffect(() => {
 
-
-        //dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
         dispatch(detailsProduct(productId))
 
     }, [])
     const loc = useLocation()
-    console.log(loc, "riiiii")
-    // useEffect(()=>{
 
-    //     if(!loading) setShowImage(true)
-
-    // }, [loading])
 
     const handleAddToCart = () => {
         props.history.push(`/cart/${productId}?qty=${quantity}`)
-    }
-
-    const handleNotFound = () => {
-        props.history.push("/")
     }
 
     // const theReviews = useSelector(state=>state.reviews)
@@ -87,14 +78,13 @@ export default function Details(props) {
 
         <div className="container-details" style={{ minHeight: "90vh", marginTop: "2rem" }}>
 
-            {loading ? <CircularProgress /> :
+            {loading ? <Loader/>
+                 :
                 error ? <p>{error}</p> :
                     (
-                        <Fragment>
+                        <>
                             {details && details.stock > 0 &&
-                                <Fragment>
-
-
+                                <>
                                     <div className="details-wrapper">
 
 
@@ -162,13 +152,11 @@ export default function Details(props) {
                                                             defaultValue={0}
                                                             value={quantity}
                                                             onChange={(e) => { setQuantity(e.target.value) }}>
-                                                                <option value={0} disabled={true}>0</option>
-                                                            {/* <option aria-label="None" value={0}>0</option> */}
+                                                            <MenuItem value={0} disabled={true}>0</MenuItem>
                                                             {[...Array(details.stock).keys()].map((item, index) => {
-                                                                
-                                                                return <option key={index + 1}
+                                                                return ( <MenuItem key={index + 1}
                                                                     value={index + 1}
-                                                                >{index + 1}</option>
+                                                                >{index + 1}</MenuItem>)
                                                             })}
                                                         </Select>
                                                     </FormControl>
@@ -231,14 +219,11 @@ export default function Details(props) {
                                         </form>
 
                                     </div>
-                                </Fragment>
-                                // :
-                                // <div className="details_notfound">
-                                //     <button onClick={handleNotFound}>The product is out of stock, sorry.</button>
-                                // </div>
+                                </>
+
                             }
 
-                        </Fragment>)}
+                        </>)}
 
         </div>
 

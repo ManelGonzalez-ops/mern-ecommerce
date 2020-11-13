@@ -7,7 +7,7 @@ import ProductDispatcher from "./ProductDispatcher"
 
 import Aside from './Aside';
 
-import { AppBar, Box, Button, CircularProgress, IconButton, makeStyles, Select, Typography, useTheme } from '@material-ui/core';
+import { Box, Button, makeStyles, MenuItem, Select, Typography, useTheme } from '@material-ui/core';
 
 import { StickyBar } from './StickyBar';
 
@@ -218,10 +218,6 @@ export const ProductSection2 = () => {
         }
     }, [active])
 
-    const slices = [
-        { page: 1, data: [] }
-    ]
-
     const updatePageNumber = (resultsXPage) => {
         if (products) {
             const pageNumber = Math.ceil(products.length / resultsXPage)
@@ -242,6 +238,8 @@ export const ProductSection2 = () => {
         }
 
     }, [totalPages, products])
+
+    
 
     const handleUpdatePagination = (e) => {
         setResultPerPage(e.target.value)
@@ -289,7 +287,10 @@ export const ProductSection2 = () => {
             <Aside
                 ref={aside}
                 search={handleCategorySearch}
-                isOpen={openAside} closeAs={closeAside} />
+                openAside={openAside} 
+                closeAs={closeAside} 
+                setOpenAside={setOpenAside}
+                />
 
 
             {isLoading ? <ResponsiveSkeleton
@@ -329,12 +330,12 @@ export const ProductSection2 = () => {
                                             onChange={handleUpdatePagination}
                                         >
                                             {Array(5).fill(0).map((item, index) => (
-                                                <option
+                                                <MenuItem
                                                     key={index}
                                                     value={(index + 1) * 5}
                                                 >
                                                     {(index + 1) * 5}
-                                                </option>
+                                                </MenuItem>
                                             ))}
                                         </Select>
                                     </Box>)}

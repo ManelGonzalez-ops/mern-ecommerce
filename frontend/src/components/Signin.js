@@ -4,6 +4,7 @@ import { userActionsSignin } from "../actions/userActions"
 import { useHistory } from 'react-router-dom'
 import { Box, Button, Paper, TextField, Typography, Link } from '@material-ui/core'
 import { useDataLayer } from '../Context'
+import { Loader } from './Loader'
 
 export const Signin = (props) => {
 
@@ -63,7 +64,7 @@ export const Signin = (props) => {
     return (
         <div className="signin-wrapper">
            
-            {loading && <p>Loading ...</p>}
+            {loading && <Loader/>}
 
             <Paper className="form"
                 style={{ boxShadow: '0 8px 40px -12px rgba(0,0,0,0.3)' }}

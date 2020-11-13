@@ -4,6 +4,7 @@ import { userActionsSignup } from "../actions/userActions"
 import { useHistory } from 'react-router-dom'
 import { Paper, TextField, Link, Box, Typography, Button, Grid, makeStyles } from '@material-ui/core'
 import { useDataLayer } from '../Context'
+import { Loader } from './Loader'
 
 
 
@@ -94,7 +95,7 @@ export default function Users(props) {
             style={{ minHeight: "80vh", marginTop: "4rem" }}
         >
 
-            {loading && <p>Loading ...</p>}
+            {loading && <Loader/>}
 
             <p>{error && error}</p>
             <Paper
