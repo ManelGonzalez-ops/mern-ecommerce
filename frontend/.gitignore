@@ -12,10 +12,11 @@
 /src/components/StepTimeline.js
 /src/components/Slider.js
 /src/components/imi.js
-
+/src/apuntesTesting.txt
 
 # testing
 /coverage
+/src/App.test.js
 
 # production
 /build

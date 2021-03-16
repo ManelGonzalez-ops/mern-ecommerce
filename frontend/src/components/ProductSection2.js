@@ -1,9 +1,9 @@
-import React, { useEffect, useState, Fragment, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, Fragment, useLayoutEffect, useRef } from 'react';
 import ReactDOM from "react-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { listProducts, searchByCartegory } from '../actions/productActions';
 
-import ProductDispatcher from "./ProductDispatcher"
+import { ProductDispatcher } from "./ProductDispatcher"
 
 import Aside from './Aside';
 
@@ -38,53 +38,71 @@ export const ProductSection2 = () => {
     const stickyLabel = useRef(null)
     const galerie = useRef(null)
     const aside = useRef(null)
-    const [searchIconWidth, setSearchIconWidth] = useState(0)
-    const [selectIconWidth, setSelectIconWidth] = useState(0)
-    const [selectFilter, setSelectFilter] = useState("lower price")
-    const [searchFilter, setSearchFilter] = useState("")
-    const [openAside, setOpenAside] = useState(false)
-    const [category, setCategory] = useState("")
+    const [searchIconWidth, setSearchIconWidth] = React.useState(0)
+    const [selectIconWidth, setSelectIconWidth] = React.useState(0)
+    const [selectFilter, setSelectFilter] = React.useState("lower price")
+
+    const [openAside, setOpenAside] = React.useState(false)
+    //const [category, setCategory] = React.useState("")
     const { viewport, isDark } = useDataLayer()
     const productList = useSelector(state => state.productList)
     const { products, loading, error } = productList
+    const { filteredProducts, category } = useSelector(state => state.filteredProducts)
+    const puta = useSelector(state=>state.filteredProducts)
     const dispatch = useDispatch()
 
-    const [active, setActive] = useState("")
+    const [active, setActive] = React.useState("")
     const navHeight = useRef(0)
     const barra = useRef(null)
     const grid = useRef()
     const firstRender = useRef(true)
-    const [isOut, setIsOut] = useState(false)
+    const [isOut, setIsOut] = React.useState(false)
     //use this to avoid memory leaks by unmounted components that handle async operations
     const isMounted = useRef(null)
-    const [isLoading, setIsLoading] = useState(true)
-
-    const [isColored, setIsColored] = useState(false)
-    const [resultsPerPage, setResultPerPage] = useState(20)
-    const [pagination, setPagination] = useState([])
-    const [totalPages, setTotalPages] = useState(1)
-    const [currentPage, setCurrentPage] = useState(1)
-
+    const [isLoading, setIsLoading] = React.useState(true)
+    const [data, setData] = React.useState([])
+    const [isColored, setIsColored] = React.useState(false)
+    //const [resultsPerPage, setResultPerPage] = React.useState(20)
+    const resultsPerPage = useRef(20)
+    const [pagination, setPagination] = React.useState({ data: [], page: 1 })
+    const [totalPages, setTotalPages] = React.useState(1)
+    const [currentPage, setCurrentPage] = React.useState(1)
+    const [count, setCount] = React.useState(0)
+    const rerenders = useRef(0)
+    const [kiki, setKiki] = React.useState(false)
     useEffect(() => {
         let timer
+        console.log("que cjones", loading)
         if (!loading) {
+            console.log("que pasaaaa")
             timer = setTimeout(() => {
                 setIsLoading(false)
-
-            }, 800)
+                console.log("xupa", isLoading)
+            }, 600)
         }
         return () => {
             clearTimeout(timer)
         }
     }, [loading])
+    rerenders.current = rerenders.current + 1
+    console.log(rerenders.current, "rerenders")
+    // useEffect(()=>{
+    //     setInterval(()=>{
+    //         setCount(prev=>prev + 1)
+    //         console.log(count, "cuentq")
+    //     },100)
 
+    //     setKiki(true)
+    //     console.log(kiki, "coño")
+    // },[])
 
-
+    console.log(kiki, "mama")
+    console.log(viewport, isDark, "tetsing")
     const closeAside = () => {
         setOpenAside(false)
     }
 
-
+    console.log(viewport)
     const handleBlur = (which) => {
         if (viewport < 500) {
             setActive("")
@@ -154,47 +172,60 @@ export const ProductSection2 = () => {
 
 
     useLayoutEffect(() => {
-        isMounted.current = true
-        if (isMounted.current) {
-            dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
-            dispatch(listProducts())
-        }
+        console.log("fireed uselayout")
+
+        dispatch({ type: "SET_CURRENT_PATH", payload: "hide" })
+        dispatch(listProducts())
 
         if (barra.current) {
             navHeight.current = barra.current.getBoundingClientRect()
         }
 
-        stickyLabel.current.style.transition = "none"
-        window.addEventListener("scroll", handleStikyPosition)
+        // stickyLabel.current.style.transition = "none"
+        //window.addEventListener("scroll", handleStikyPosition)
 
 
         return () => {
             window.removeEventListener("scroll", handleStikyPosition)
-            isMounted.current = false
         }
     }, [isDark])
 
 
     // }
 
-
+    const showAllProducts = () => {
+        dispatch({
+            type: "SET_FILTERED_PRODUCTS", payload: {
+                products: products,
+                category: ""
+            }
+        })
+    }
     //category
     const handleCategorySearch = (categoryType) => {
-        dispatch(searchByCartegory(categoryType))
+        //whn we close searcher and category is not selected
+        if (!categoryType) {
+            showAllProducts()
+            return
+        }
+
+        const results = products.filter(item => item.category[0] === categoryType)
+        dispatch({
+            type: "SET_FILTERED_PRODUCTS", payload: {
+                products: results,
+                category: categoryType
+            }
+        })
+        setCurrentPage(1)
         setOpenAside(false)
-        setCategory(categoryType)
     }
 
 
 
     const goBack = () => {
-        if(category){
-            dispatch(listProducts())
-        }else{
-            //if not category selected will open the aside 
-            setOpenAside(true)
-        }
-        
+        console.log("gooing back")
+        //dispatch(listProducts())
+        dispatch({ type: "SET_FILTERED_PRODUCTS", payload: { products, category: "" } })
     }
 
     const getIconsWidth = (which, val) => {
@@ -218,31 +249,53 @@ export const ProductSection2 = () => {
         }
     }, [active])
 
-    const updatePageNumber = (resultsXPage) => {
-        if (products) {
-            const pageNumber = Math.ceil(products.length / resultsXPage)
-            setTotalPages(pageNumber)
+    const updatePageNumber = () => {
+        if (!filteredProducts.length) {
+            setTotalPages(1)
+            setPagination({ page: 1, data: [] })
+            return
         }
+        const pageNumber = Math.ceil(filteredProducts.length / resultsPerPage.current)
+        console.log(pageNumber, "pageNumber")
+        setTotalPages(pageNumber)
+        setPagination(Array(pageNumber).fill(null).map((item, index) => ({
+            page: index + 1,
+            data: filteredProducts.slice(index * resultsPerPage.current, index * resultsPerPage.current + resultsPerPage.current)
+        })))
+
     }
-    useEffect(() => {
-        updatePageNumber(resultsPerPage)
-    }, [resultsPerPage, products])
 
     useEffect(() => {
-        if (products) {
+        console.log(pagination, "pagination changed")
+    }, [pagination])
 
-            setPagination(Array(totalPages).fill(null).map((item, index) => ({
-                page: index + 1,
-                data: products.slice(index * resultsPerPage, index * resultsPerPage + resultsPerPage)
-            })))
+
+    useEffect(() => {
+        console.log(filteredProducts, "la datua2")
+        if (!isMounted.current) {
+            return
         }
+        updatePageNumber()
 
-    }, [totalPages, products])
+    }, [filteredProducts])
+
+    //meant to run once on component initilization
+    useEffect(() => {
+        console.log(products, "product updated")
+        if (products) {
+            dispatch({
+                type: "SET_FILTERED_PRODUCTS",
+                payload: { products: [...products], category: "" }
+            })
+            isMounted.current = true
+        }
+    }, [products])
 
     
 
     const handleUpdatePagination = (e) => {
-        setResultPerPage(e.target.value)
+        resultsPerPage.current = e.target.value
+        updatePageNumber()
         setCurrentPage(1)
     }
 
@@ -253,14 +306,12 @@ export const ProductSection2 = () => {
         <div
             style={{ minHeight: "80vh" }}
         >
-
+            <div className="test">{count}</div>
             <StickyBar
                 ref={stickyLabel}
                 setOpenAside={setOpenAside}
                 goBack={goBack}
                 category={category}
-                searchFilter={searchFilter}
-                setSearchFilter={setSearchFilter}
                 viewport={viewport}
                 handleFocus={handleFocus}
                 active={active}
@@ -273,6 +324,9 @@ export const ProductSection2 = () => {
                 isColored={isColored}
                 isOut={isOut}
                 setIsOut={setIsOut}
+                isLoading={isLoading}
+                handleCategorySearch={handleCategorySearch}
+
             />
 
             {
@@ -287,10 +341,11 @@ export const ProductSection2 = () => {
             <Aside
                 ref={aside}
                 search={handleCategorySearch}
-                openAside={openAside} 
-                closeAs={closeAside} 
+                openAside={openAside}
+                closeAs={closeAside}
                 setOpenAside={setOpenAside}
-                />
+                isLoading={isLoading}
+            />
 
 
             {isLoading ? <ResponsiveSkeleton
@@ -300,16 +355,15 @@ export const ProductSection2 = () => {
                     :
                     <Fragment>
                         <div ref={galerie} style={{ background: "transparent", width: "100%" }}></div>
-                        <div className="product-grid"
+                        <ProductDispatcher
                             ref={grid}
-                        >
-                            <ProductDispatcher
-                                openAside={openAside}
-                                products={pagination.length > 0
-                                    && pagination.find(item => item.page === currentPage)
-                                    && pagination.find(item => item.page === currentPage).data
-                                } />
-                        </div>
+                            openAside={openAside}
+                            goBack={goBack}
+                            products={pagination.length > 0
+                                // && pagination.find(item => item.page === currentPage)
+                                && pagination.find(item => item.page === currentPage).data
+                            } />
+
                         <Box
                             position="relative"
                             display="flex"
@@ -326,7 +380,7 @@ export const ProductSection2 = () => {
                                             style={{ marginRight: "0.5rem" }}
                                         >Results per page:</Typography>
                                         <Select
-                                            value={resultsPerPage}
+                                            value={resultsPerPage.current}
                                             onChange={handleUpdatePagination}
                                         >
                                             {Array(5).fill(0).map((item, index) => (
@@ -344,6 +398,7 @@ export const ProductSection2 = () => {
                                 classes={{ root: clases.root, ul: clases.pagination }}
                                 color="secondary"
                                 count={totalPages}
+                                page={currentPage}
                                 onChange={(e, newPage) => { setCurrentPage(newPage) }}
                             />
 
@@ -358,7 +413,7 @@ export const ProductSection2 = () => {
 const FixedButton = (props) => ReactDOM.createPortal(<CustomButton {...props} />, document.getElementById("portal"));
 
 
-const ResponsiveSkeleton = ({ viewport }) => {
+export const ResponsiveSkeleton = ({ viewport }) => {
 
 
     if (viewport < 500) {
@@ -374,9 +429,9 @@ const ResponsiveSkeleton = ({ viewport }) => {
                         style={{ marginBottom: "1rem" }}
                     />
                     {Array(5).fill(0).map((item, index) =>
-                        (<Skeleton
-                            key={index}
-                            style={{ marginBottom: "4px" }} />)
+                    (<Skeleton
+                        key={index}
+                        style={{ marginBottom: "4px" }} />)
                     )}
                 </div>
             ))}
@@ -385,7 +440,7 @@ const ResponsiveSkeleton = ({ viewport }) => {
 
 }
 
-const ErrorMsg = ({ error, goBack }) => {
+export const ErrorMsg = ({ error, goBack }) => {
 
     return (
         <div

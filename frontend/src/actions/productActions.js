@@ -4,19 +4,30 @@ import Cookie from "js-cookie"
 const listProducts = () => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST })
+        console.log("productlist() ejectued")
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products");
         //extraemos directamente el valor de la key products 
         const { data } = await rawData.json();
         //console.log("MMMMMMMMMMMMMAMAMAMAMAMAM", data)     
         //cokie is too big that i get's deleted, so let's use localstorage
-        localStorage.setItem("productList", JSON.stringify(data))
+
+        const readyData = helpers.parseDates(data)
+        localStorage.setItem("productList", JSON.stringify(readyData))
         console.log(Cookie.getJSON("productList"), "aver.....")
-        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
+        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: readyData })
     }
     catch (error) {
         dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message })
     }
 }
+
+const helpers = {
+    parseDates: (data) => data.map(item => {
+        item.date_added = Date.parse(item.date_added)
+        return item
+    })
+}
+
 
 const detailsProduct = (productId) => async (dispatch) => {
     try {
@@ -29,7 +40,6 @@ const detailsProduct = (productId) => async (dispatch) => {
         dispatch({ type: PRODUCT_DETAILS_FAIL, payload: err.message })
     }
 }
-
 
 
 const saveProduct = (product) => async (dispatch, getState) => {
@@ -97,12 +107,12 @@ const addReview = (productId, review, rating, author) => async (dispatch) => {
     try {
         dispatch({ type: REVIEW_ADD_REQUEST })
 
-        const autorChecked = typeof author === "string"? author : author.name 
+        const autorChecked = typeof author === "string" ? author : author.name
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products/review", {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ productId, review, rating, author: autorChecked}),
+            body: JSON.stringify({ productId, review, rating, author: autorChecked }),
             method: "PUT"
         })
 
@@ -117,83 +127,73 @@ const addReview = (productId, review, rating, author) => async (dispatch) => {
 
 
 const sortProducts = (criterio) => async (dispatch, getState) => {
-    try {
 
-        const { productList: { products } } = getState()
-
-        switch (criterio) {
-
-            case "lower price":
-                dispatch({ type: SORT_BY_REQUEST })
-                await products.sort((a, b) => a.price - b.price)
-                dispatch({ type: SORT_BY_PRICE, payload: products })
-                break
-            case "higher price":
-                dispatch({ type: SORT_BY_REQUEST })
-                await products.sort((a, b) => b.price - a.price)
-                dispatch({ type: SORT_BY_PRICE, payload: products })
-                break
-
-            case "date added":
-                dispatch({ type: SORT_BY_REQUEST })
-                await products.sort((a, b) => a.getTime() - b.getTime())
-                dispatch({ type: SORT_BY_DATE, payload: products })
-                break
-
-            default:
-                dispatch({ type: SORT_BY_ERROR, payload: "filtro erroneo" })
-
-
+    const { filteredProducts: { filteredProducts, category } } = getState()
+    let sortedResults;
+    const resultsCopy = [...filteredProducts]
+    if (criterio === "lower price") {
+        sortedResults = resultsCopy.sort((a, b) => a.price - b.price)
+    }
+    if (criterio === "higher price") {
+        sortedResults = resultsCopy.sort((a, b) => b.price - a.price)
+    }
+    if (criterio === "newest") {
+        sortedResults = resultsCopy.sort((a, b) => a.date_added - b.date_added)
+    }
+    console.log(sortedResults, criterio, "sorted")
+    dispatch({
+        type: "SET_FILTERED_PRODUCTS", payload: {
+            products: sortedResults,
+            category
         }
+    })
 
-    }
-    catch (err) {
-        dispatch({ type: SORT_BY_ERROR, payload: err.message })
-    }
 
 }
 
 
 const searchProduct = (palabra) => async (dispatch, getState) => {
 
-        try{
-            dispatch({type: SHOW_SEARCH_REQUEST})
-            const productArray = JSON.parse(localStorage.getItem("productList"))
-            
-           
-            const newArr = productArray.map(item=> {
-                let patron = new RegExp(palabra, "g")
-                if( patron.test(item.name) || patron.test(item.brand)){
-                    return item
-                }
-            })
 
-            dispatch({type: SHOW_SEARCH_SUCCESS, payload: newArr})
-
+    const { filteredProducts: { filteredProducts, category } } = getState()
+    if (!filteredProducts.length) return;
+    console.log(filteredProducts, "q coll")
+    const newArr = filteredProducts.filter(item => {
+        let patron = new RegExp(palabra, "gi")
+        if (patron.test(item.name) || patron.test(item.brand)) {
+            return item
         }
-        catch(err){
+    })
 
-            dispatch({type: SHOW_SEARCH_FAIL, payload: err.message})
+    console.log(newArr, "newArr")
+
+    dispatch({
+        type: "SET_FILTERED_PRODUCTS", payload: {
+            category,
+            products: newArr
         }
+    })
+
+
 }
 
 
-const searchByCartegory =(category)=> async (dispatch, getState)=>{
-  
-    try{
-        
-        dispatch({type: "CATEGORY_LOOKUP_REQUEST"})
+const searchByCartegory = (category) => async (dispatch, getState) => {
+
+    try {
+
+        dispatch({ type: "CATEGORY_LOOKUP_REQUEST" })
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products");
-        const {data} = await rawData.json()
-       
-        const newArr = data.filter(item=>item.category[0] === category)
-        Object.keys(newArr).length > 0?
-        dispatch({type: "CATEGORY_LOOKUP_SUCCESS", payload: newArr})
-        :
-        dispatch({type: "CATEGORY_LOOKUP_FAIL", payload: "There aren't products of this category in stock right now"})
+        const { data } = await rawData.json()
+
+        const newArr = data.filter(item => item.category[0] === category)
+        Object.keys(newArr).length > 0 ?
+            dispatch({ type: "CATEGORY_LOOKUP_SUCCESS", payload: newArr })
+            :
+            dispatch({ type: "CATEGORY_LOOKUP_FAIL", payload: "There aren't products of this category in stock right now" })
     }
-    catch(err){
-        dispatch({type: "CATEGORY_LOOKUP_FAIL", payload: err.message})
+    catch (err) {
+        dispatch({ type: "CATEGORY_LOOKUP_FAIL", payload: err.message })
     }
 }
 

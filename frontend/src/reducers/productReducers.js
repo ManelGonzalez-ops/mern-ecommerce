@@ -26,9 +26,26 @@ function productListReducer(state = { products: [] }, action) {
         case "CATEGORY_LOOKUP_REQUEST":
             return { loading: true }
         case "CATEGORY_LOOKUP_SUCCESS":
-            return {products: action.payload, loading: false}
+            return { products: action.payload, loading: false }
         case "CATEGORY_LOOKUP_FAIL":
-            return {error: action.payload, loading: false}
+            return { error: action.payload, loading: false }
+        default:
+            return state
+    }
+}
+
+const initialState = {
+    filteredProducts: [],
+    category: ""
+}
+function filteredProductsReducer(state = initialState, action) {
+    switch (action.type) {
+        case "SET_FILTERED_PRODUCTS":
+            const { products, category } = action.payload
+            return {
+                filteredProducts: products,
+                category: category
+            }
         default:
             return state
     }
@@ -90,4 +107,4 @@ function productCreatorReducer(state = { newproduct: {} }, action) {
 // }
 
 
-export { productListReducer, productDetailsReducer, productCreatorReducer }
+export { productListReducer, productDetailsReducer, productCreatorReducer, filteredProductsReducer }

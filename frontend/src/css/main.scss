@@ -20,12 +20,14 @@ html,
 body {
   //overflow-x:hidden;
   //importante añadir para movil
-  overflow-x: hidden;
+  //if overflow-x activate, sticky position won't work 
+  //overflow-x: hidden;
+  overflow: visible !important;
+  //avoid material-ui add overflow: hidden when popover is displayed (select menus, etc)
   position: relative;
 }
 body {
   padding: 0px !important;
-  overflow: hidden;
 
   &.no--pointers {
     pointer-events: none;

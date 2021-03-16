@@ -25,8 +25,6 @@ export const StickyBar =
             setOpenAside,
             goBack,
             category,
-            searchFilter,
-            setSearchFilter,
             viewport,
             handleFocus,
             active,
@@ -38,7 +36,8 @@ export const StickyBar =
             selectIconWidth,
             isColored,
             isOut,
-            setIsOut
+            setIsOut,
+            handleCategorySearch
         }, ref) => {
 
 
@@ -96,9 +95,7 @@ export const StickyBar =
                         flex={1}
                     >
                         <Search
-
-                            searchFilter={searchFilter}
-                            setSearchFilter={setSearchFilter} viewport={viewport}
+                            viewport={viewport}
                             handleFocus={handleFocus}
                             isActive={viewport < 500 ? (active === "search" ? true : false) : (active && active.includes("search") ? true : false)}
                             getIconsWidth={getIconsWidth}
@@ -107,6 +104,7 @@ export const StickyBar =
                             handleBlur={handleBlur}
                             isColored={isColored}
                             tema={tema}
+                            handleCategorySearch={handleCategorySearch}
                         />
                         <Sorter selectFilter={selectFilter}
                             setSelectFilter={setSelectFilter}

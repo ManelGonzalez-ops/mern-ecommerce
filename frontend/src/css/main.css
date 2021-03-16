@@ -204,20 +204,19 @@ header nav .dropdown-list {
   box-sizing: border-box;
 }
 
-.product-grid .product {
-  flex-direction: row;
-  display: flex;
-  background-color: white;
+.product-grid .img-prud {
+  min-height: 200px;
 }
 
-.product-grid .product .img-product {
+.product-grid .img-product {
+  height: 200px;
   background-size: cover;
   max-width: 50%;
   display: block;
   object-fit: contain;
 }
 
-.product-grid .product .img-product.open {
+.product-grid .img-product.open {
   cursor: zoom-out;
   position: fixed;
   max-width: 100%;
@@ -242,6 +241,8 @@ header nav .dropdown-list {
   background-color: white;
   left: 50%;
   margin-bottom: 1.5rem;
+  position: sticky;
+  top: 0;
 }
 
 @media (min-width: 500px) {
@@ -1431,13 +1432,12 @@ header nav .dropdown-list {
 
 html,
 body {
-  overflow-x: hidden;
+  overflow: visible !important;
   position: relative;
 }
 
 body {
   padding: 0px !important;
-  overflow: hidden;
 }
 
 body.no--pointers {

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useHistory } from "react-router-dom"
 import RatingStars from "./ratingStar"
 import { motion } from "framer-motion"
-import { Box, Card, CardActionArea, CardContent, CardMedia, Chip, IconButton, Link, ListItemText, makeStyles, Typography, useTheme } from '@material-ui/core'
+import { Box, Card, CardActionArea, CardContent, CardMedia, Chip, CircularProgress, Fade, IconButton, Link, ListItemText, makeStyles, Typography, useTheme } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import clsx from 'clsx'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -15,10 +15,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
     background: "white",
     [theme.breakpoints.up("xs")]: {
-      maxHeight: "200px",
+      //maxHeight: "200px",
+      height: "200px",
       objectFit: "contain"
     },
-    
+
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -47,22 +48,22 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     alignSelf: "end",
-    [theme.breakpoints.up("xs")]:{
+    [theme.breakpoints.up("xs")]: {
       margin: "0 calc(1rem + 2%)"
     },
-    [theme.breakpoints.up("sm")]:{
+    [theme.breakpoints.up("sm")]: {
       margin: "unset"
     },
-    backgroundColor: theme.palette.type === "dark"? "#303030": "inherit",
+    backgroundColor: theme.palette.type === "dark" ? "#303030" : "inherit",
     //boxShadow: "0 10px 6px -6px rgba(119, 119, 119, 0.2), 0px 2px 1px -1px rgba(0,0,0,0.1), 0px 1px 1px 0px rgba(0,0,0,0.07), 0px 1px 3px 0px rgba(0,0,0,0.05)"
   },
   headerBox: {
-    backgroundColor: theme.palette.type === "dark"? "#303030": "inherit"
+    backgroundColor: theme.palette.type === "dark" ? "#303030" : "inherit"
   },
-icon:{
-  fill: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.main
-}
-  
+  icon: {
+    fill: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.main
+  }
+
 }));
 
 export default function Products({ item, setSelection, isSelected, openAside }) {
@@ -75,6 +76,7 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
   const [cartHovered, setCartHovered] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const transition = { duration: 0.4, ease: [0.6, 0.01, -0.05, 0.9] }
+  const [imgLoaded, setImgLoaded] = useState(false)
 
   const handlePointerEvents = (activate) => {
     activate ?
@@ -89,6 +91,8 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
     })
 
   }, [])
+
+
 
   const handleOpen = () => {
     if (openAside) {
@@ -111,35 +115,39 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
 
   const theme = useTheme()
   return (
-  
+
     <Card
       className={classes.card}
       elevation={2}
     >
-<CardActionArea>
-      <motion.div
-        ref={imgi}
-        onClick={handleOpen}
-        style={theme.palette.type === "dark"? {margin: "5px"}: ""}
-        className={clsx("img-prod", {
-          abridor: isSelected
-        })}
+      <CardActionArea>
+        <motion.div
+          ref={imgi}
+          onClick={handleOpen}
+          style={theme.palette.type === "dark" ? { margin: "5px" } : null}
+          className={clsx("img-prud", {
+            abridor: isSelected
+          })}
+          //layout
+          layout={isSelected}
+          onTransitionEnd={() => {
+            handlePointerEvents(true)
+          }}
+        >
+          <Fade in={imgLoaded}>
+            <img
+              className={classes.media}
+              //component="img"
+              onLoad={() => { setImgLoaded(true) }}
+              src={item.image}
+              title="Paella dish"
+              style={{ display: imgLoaded ? "block" : "none" }}
+            />
+          </Fade>
+          {/* {!imgLoaded && <CircularProgress color="secondary" />} */}
 
-        layout
-        onTransitionEnd={() => {
-          handlePointerEvents(true)
-        }}
-      >
-       
-        <CardMedia
-          className={classes.media}
-          component="img"
 
-          image={item.image}
-          title="Paella dish"
-        />
-
-      </motion.div>
+        </motion.div>
       </CardActionArea>
       <CardContent
         // classes={{root: classes.cardContent}}
@@ -156,19 +164,19 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
           textOverflow="ellipsis"
           overflow="hidden"
           bgcolor="background.paper"
-          classes={{root: classes.headerBox}}
+          classes={{ root: classes.headerBox }}
         >
           <Typography variant="h6" gutterBottom
-          classes={{root: classes.productName}}
+            classes={{ root: classes.productName }}
           //color="primary"
           >
             <Link
-             onClick={()=>{history.push(`/product/${item._id}/`)}}
-             color="inherit"
-             underline="none"
-             
-             >
-            {item.name.length > 40 ? `${item.name.slice(0, 38)}...` : item.name}
+              onClick={() => { history.push(`/product/${item._id}/`) }}
+              color="inherit"
+              underline="none"
+            >
+              {item._id}
+              {item.name.length > 40 ? `${item.name.slice(0, 38)}...` : item.name}
             </Link>
           </Typography>
           <Typography color="textSecondary" variant="caption" >
@@ -182,21 +190,21 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
         />
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <ListItemText >
-          <Chip label={`${item.price} $`} aria-label="price"/>
-          
+            <Chip label={`${item.price} $`} aria-label="price" />
+
 
           </ListItemText>
           <IconButton aria-label="see more"
-          onClick={()=>{history.push(`/product/${item._id}/`)}} >
-            <ShoppingBasketIcon 
-            classes={{root: classes.icon}}
+            onClick={() => { history.push(`/product/${item._id}/`) }} >
+            <ShoppingBasketIcon
+              classes={{ root: classes.icon }}
             />
           </IconButton>
         </Box>
       </CardContent>
 
     </Card>
-   
+
   )
 }
 

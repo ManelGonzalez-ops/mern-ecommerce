@@ -16,13 +16,17 @@
     * {
         box-sizing: border-box;
     }
-    .product {
-        //height: 200px;
-        flex-direction: row;
-        display: flex;
-        background-color: white;
+    .img-prud{
+        min-height: 200px;
+    }
+
+        // //height: 200px;
+        // flex-direction: row;
+        // display: flex;
+        // background-color: white;
 
         .img-product {
+            height: 200px;
             background-size: cover;
             max-width: 50%;
             display: block;
@@ -44,7 +48,7 @@
                 height: auto;
             }
         }
-    }
+    
 }
 
 .menubar {
@@ -59,6 +63,11 @@
     background-color: white;
     left: 50%;
     margin-bottom: 1.5rem;
+
+    //make sticky
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 
 @media (min-width: 500px) {

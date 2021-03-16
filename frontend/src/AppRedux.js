@@ -56,7 +56,7 @@ function App() {
     //tenemos que renderizar dodicionalmente StepTimeline
 
     const { currentPath } = useSelector(state => state.currentPath)
-
+console.log(setViewport, isDark, "teste")
 
 
     return (
@@ -66,7 +66,7 @@ function App() {
                 <Paper>
                     <div className="app-wrapper">
                         <Nav />
-
+                    <div onClick={()=>setViewport(400)}></div>
                     </div>
                     {currentPath === "show" && <Stepper2 />}
 

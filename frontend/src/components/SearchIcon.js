@@ -1,11 +1,11 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { searchProduct } from '../actions/productActions';
 import SearchSharpIcon from '@material-ui/icons/SearchSharp'
-import { Button, makeStyles, TextField, ThemeProvider } from '@material-ui/core';
+import { Button, IconButton, Input, InputAdornment, makeStyles, TextField, ThemeProvider } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-
+import CancelIcon from '@material-ui/icons/Cancel';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,13 +56,10 @@ SearchFilter.propTypes = {
     isActive: PropTypes.bool,
     isColored: PropTypes.bool,
     getIconsWidth: PropTypes.func,
-    searchFilter: PropTypes.string,
 }
 
 
 function SearchFilter({
-    searchFilter,
-    setSearchFilter,
     viewport,
     isActive,
     handleFocus,
@@ -71,13 +68,29 @@ function SearchFilter({
     searchIconWidth,
     handleBlur,
     isColored,
-    tema
+    tema,
+    handleCategorySearch
 }) {
 
-
+    const [searchFilter, setSearchFilter] = React.useState("")
     const searchfield = useRef()
     const [searchHeight, setSearchHeight] = useState(0)
     const icon = useRef()
+    const { category } = useSelector(state => state.filteredProducts)
+    const handleClose = () => {
+        handleCategorySearch(category)
+        handleBlur("search")
+        setSearchFilter("")
+        debouncePointerEvents()
+    }
+    //avoid to open input again onmouseover when it closes 
+    const debouncePointerEvents = () => {
+        icon.current.style.pointerEvents = "none"
+        let timer = setTimeout(() => {
+            icon.current.style.pointerEvents = "auto"
+            clearTimeout(timer)
+        }, 2000)
+    }
 
     useLayoutEffect(() => {
 
@@ -95,18 +108,16 @@ function SearchFilter({
     const dispatch = useDispatch()
 
     const handleSearch = () => {
+        handleFocus("search")
+        if (!searchFilter) {
+            return
+        }
         // spanToFade.current.style.display = "none"
         // search.current.style.marginLeft = "7px"
-        handleFocus("search")
         dispatch(searchProduct(searchFilter))
         searchfield.current.blur()
         // setIsSearching(true)
     }
-
-    // const removeSearch = () => {
-    //     setSearchFilter(undefined)
-    //     dispatch(listProducts())
-    //     setIsSearching(false)
 
 
     const props = { viewport, searchIconWidth, selectIconWidth }
@@ -132,7 +143,7 @@ function SearchFilter({
                 classes={{ root: clases.button }}
                 color={isColored ? "secondary" : "default"}
                 ref={icon}
-
+                onMouseOver={() => { handleFocus("search") }}
             >
                 <span
 
@@ -146,7 +157,7 @@ function SearchFilter({
             </Button>
 
             <ThemeProvider theme={tema}>
-                <TextField
+                <Input
                     ref={searchfield}
                     type="text" name="by-name" id="by-name"
                     className={clsx(clases.search, {
@@ -161,9 +172,18 @@ function SearchFilter({
                             paddingLeft: isActive ? "0.5rem" : 0
                         }
                     }}
-                    //onMouseOver={isActive ? undefined : handleInput}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                onClick={handleClose}
+                            >
+                                <CancelIcon />
+                            </IconButton>
+                        </InputAdornment>
+                    }
+
                     onTransitionEnd={() => { isActive && searchfield.current.querySelector("input").focus() }}
-                    onBlur={() => { handleBlur("search") }}
+                    //onBlur={() => { handleBlur("search") }}
                     color="secondary"
                 />
             </ThemeProvider>
