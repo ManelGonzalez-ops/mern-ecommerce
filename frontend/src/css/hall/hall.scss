@@ -2,7 +2,6 @@
     position: relative;
     background: #f5f7f8;
     padding-top: 3rem;
-    
 }
 .wrapper-img {
     flex: 1.5;
@@ -16,39 +15,39 @@
     * {
         box-sizing: border-box;
     }
-    .img-prud{
+    .img-prud {
         min-height: 200px;
+        background: white;
     }
 
-        // //height: 200px;
-        // flex-direction: row;
-        // display: flex;
-        // background-color: white;
+    // //height: 200px;
+    // flex-direction: row;
+    // display: flex;
+    // background-color: white;
 
-        .img-product {
-            height: 200px;
-            background-size: cover;
-            max-width: 50%;
-            display: block;
-            object-fit: contain;
-            &.open {
-                cursor: zoom-out;
-                position: fixed;
-                max-width: 100%;
-                top: 30%;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                width: auto;
-                z-index: 1;
+    .img-product {
+        height: 200px;
+        background-size: cover;
+        max-width: 50%;
+        display: block;
+        object-fit: contain;
+        &.open {
+            cursor: zoom-out;
+            position: fixed;
+            max-width: 100%;
+            top: 30%;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: auto;
+            z-index: 1;
 
-                //here we have to reset 200px of heihgt fro .open
+            //here we have to reset 200px of heihgt fro .open
 
-                width: 100vw;
-                height: auto;
-            }
+            width: 100vw;
+            height: auto;
         }
-    
+    }
 }
 
 .menubar {
@@ -58,7 +57,7 @@
     flex-direction: row;
     top: 0;
     z-index: 10;
-   
+
     align-items: center;
     background-color: white;
     left: 50%;
@@ -70,6 +69,28 @@
     top: 0;
 }
 
+.gallery-placer {
+    position: relative;
+    height: 90%;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .image-selection {
+        max-height: 80%;
+        max-width: 100%;
+        // top: 60%;
+        // left: 60%;
+        // position: absolute;
+        // margin-left: -40%;
+        // margin-top: -40%;
+        // &[data-isIsOpen="true"]{
+        //     height: 80%;
+        //     width: auto;
+        // }
+    }
+}
 @media (min-width: 500px) {
     .product-grid {
         //grid-template-columns: auto;
@@ -380,16 +401,12 @@
         }
     }
     .abridor {
-        
         left: 10%;
         right: 10%;
     }
 }
 
 @media (min-width: 800px) {
-    .hall__container{
-        margin: 1rem;
-    }
     .product-grid {
         width: 85%;
         .product {
@@ -420,10 +437,9 @@
         z-index: 1;
         margin: 0 auto;
 
-        img{
+        img {
             max-height: 100% !important;
         }
-
     }
 
     .menubar {
@@ -435,7 +451,6 @@
 
         //we add the translate through javascript because it impacts when it's in position static
         padding: 0 7.5%;
-       
     }
 }
 
@@ -677,7 +692,6 @@
     }
 }
 
-
 .close-search {
     position: relative;
     left: 172px;
@@ -838,7 +852,7 @@
     pointer-events: none;
     opacity: 0;
     background: rgba(0, 0, 0, 0.9);
-    z-index: 1;
+    z-index: 10;
 
     &.open {
         pointer-events: auto;
@@ -930,8 +944,7 @@
     }
 }
 
-
-.ripple{
+.ripple {
     top: 0;
     left: 0;
     right: 0;
@@ -945,4 +958,13 @@
     height: 100%;
     z-index: -1;
     background-color: #3848a2;
+}
+
+.search--part {
+    margin-right: 1rem;
+}
+
+.collapsable-wrap {
+    display: flex;
+    align-items: center;
 }

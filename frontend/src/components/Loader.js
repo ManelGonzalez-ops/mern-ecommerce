@@ -3,8 +3,10 @@ import React from 'react'
 
 export const Loader = () => {
     return (
-        <span className="loader-placer">
-            <CircularProgress />
+        <span className="loader-placer" >
+            <CircularProgress 
+            data-testid="loader"
+            />
         </span>
     )
 }

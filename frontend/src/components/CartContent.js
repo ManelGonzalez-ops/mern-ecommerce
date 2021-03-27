@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import CheckIcon from '@material-ui/icons/Check'
 
 export const CartContent = (
-    {   clases,
+    { clases,
         cartItems,
         toCheckout,
         updateCart,
@@ -15,6 +15,7 @@ export const CartContent = (
         <>
             <Paper className="right"
                 classes={{ root: clases.manualdark }}
+                data-testid="cart-content-view"
             >
                 <div className="header">
                     <Typography
@@ -25,12 +26,14 @@ export const CartContent = (
                 </div>
                 <Divider />
 
-                {cartItems && cartItems.map(item => {
+                {cartItems && cartItems.map((item, index) => {
 
                     return (
-                        <div key={item.id}>
+                        <div key={item.id}
+                        data-testid={`product-${index}`}
+                        >
                             <div className="cart-content">
-                                <img src={item.image} alt="pantalones" />
+                                <img src={item.image} alt="pantalones" alt={item.name} />
                                 <div className="info-cart">
                                     <Link to={`/product/${item.id}`}
                                     >

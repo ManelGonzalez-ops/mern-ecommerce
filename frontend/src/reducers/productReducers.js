@@ -59,7 +59,7 @@ function productDetailsReducer(state = { details: {} }, action) {
         case PRODUCT_DETAILS_SUCCESS:
             return { loading: false, details: action.payload }
         case PRODUCT_DETAILS_FAIL:
-            return { loading: false, details: action.payload }
+            return { loading: false, error: action.payload }
         case REVIEW_ADD_REQUEST:
             return { loading: true };
         case REVIEW_ADD_SUCCESS:

@@ -18,12 +18,13 @@ var timer
 
 const disablePointerEvents = () => {
 
-    clearTimeout(timer)
+    
     !document.body.classList.contains("no--pointers") && document.body.classList.add("no--pointers")
 
 
     timer = setTimeout(() => {
         document.body.classList.contains("no--pointers") && document.body.classList.remove("no--pointers")
+        clearTimeout(timer)
     }, 66)
 
 }

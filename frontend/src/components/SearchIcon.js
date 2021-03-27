@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import { searchProduct } from '../actions/productActions';
 import SearchSharpIcon from '@material-ui/icons/SearchSharp'
-import { Button, IconButton, Input, InputAdornment, makeStyles, TextField, ThemeProvider } from '@material-ui/core';
+import { Button, Fade, IconButton, Input, InputAdornment, makeStyles, TextField, ThemeProvider } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -15,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen
         })
         ,
-        width: 0,
-        paddingRight: "0.5rem"
+        width: 0
     },
 
     searchactive: {
@@ -24,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
         }),
+        // width: props => props.parent ? `${props.parent.getBoundingClientRect().width - props.searchIconWidth - props.selectIconWidth - 60}px`: "250px"
         width: props => props.viewport < 500 ? `${props.viewport - props.searchIconWidth - props.selectIconWidth - 60}px` : `${250}px`,
     },
 
@@ -69,7 +69,8 @@ function SearchFilter({
     handleBlur,
     isColored,
     tema,
-    handleCategorySearch
+    handleCategorySearch,
+    parent
 }) {
 
     const [searchFilter, setSearchFilter] = React.useState("")
@@ -78,6 +79,7 @@ function SearchFilter({
     const icon = useRef()
     const { category } = useSelector(state => state.filteredProducts)
     const handleClose = () => {
+        setShowCloseIcon(false)
         handleCategorySearch(category)
         handleBlur("search")
         setSearchFilter("")
@@ -120,9 +122,9 @@ function SearchFilter({
     }
 
 
-    const props = { viewport, searchIconWidth, selectIconWidth }
+    const props = { viewport, searchIconWidth, selectIconWidth, parent }
     const clases = useStyles(props)
-
+    const [showCloseIcon, setShowCloseIcon] = useState(false)
 
 
 
@@ -143,7 +145,10 @@ function SearchFilter({
                 classes={{ root: clases.button }}
                 color={isColored ? "secondary" : "default"}
                 ref={icon}
-                onMouseOver={() => { handleFocus("search") }}
+                onMouseOver={() => {
+                    setShowCloseIcon(true)
+                    handleFocus("search")
+                }}
             >
                 <span
 
@@ -170,16 +175,24 @@ function SearchFilter({
                     inputProps={{
                         style: {
                             paddingLeft: isActive ? "0.5rem" : 0
-                        }
+                        },
                     }}
+
+                    data-testid="searcher"
+
                     endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                onClick={handleClose}
-                            >
-                                <CancelIcon />
-                            </IconButton>
-                        </InputAdornment>
+                        <Fade in={showCloseIcon}
+                            unmountOnExit
+                            mountOnEnter
+                        >
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleClose}
+                                >
+                                    <CancelIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        </Fade>
                     }
 
                     onTransitionEnd={() => { isActive && searchfield.current.querySelector("input").focus() }}

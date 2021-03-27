@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import SortIcon from '@material-ui/icons/Sort';
 import { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
+import { useDataLayer } from '../Context';
 
 
 
@@ -34,7 +35,8 @@ const styles = makeStyles(theme => {
             overflow: "hidden"
         },
         desplegado: {
-            width: (props)=> props.viewport < 500 ? `${props.viewport - props.searchIconWidth - props.selectIconWidth - 60}px` : `${250}px`,
+            // width: props => props.parent ? `${props.parent.getBoundingClientRect().width - props.searchIconWidth - props.selectIconWidth - 60}px`: "250px",
+            width: (props) => props.viewport < 500 ? `${props.viewport - props.searchIconWidth - props.selectIconWidth - 60}px` : `${250}px`,
             transition: theme.transitions.create(["width"], {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen
@@ -66,32 +68,32 @@ const styles = makeStyles(theme => {
             })
         },
         triangle: {
-            fill: (props)=>props.isColored ? "white" : "black"
+            // fill: (props) => props.isColored ? "white" : "black"
         },
         underline: {
-           
-            "&:before":{
-                borderBottom: "1px solid white !important",
 
-                "&:focus":{
-                    borderBottom: "1px solid white"
-                }
-            },
-            // "&:after":{
+            // "&:before": {
+            //     borderBottom: "1px solid white !important",
+
+            //     "&:focus": {
             //         borderBottom: "1px solid white"
-                
-            // }
+            //     }
+            // },
+            // // "&:after":{
+            // //         borderBottom: "1px solid white"
+
+            // // }
         }
     }
 })
-export default function SelectFilter({ selectFilter, setSelectFilter, viewport, isActive, handleFocus, getIconsWidth, isColored, isOut, setIsOut, selectIconWidth, searchIconWidth, tema }) {
-    
+export default function SelectFilter({ selectFilter, setSelectFilter, viewport, isActive, handleFocus, getIconsWidth, isColored, isOut, setIsOut, selectIconWidth, searchIconWidth, tema, parent }) {
+
     const [filterClicked, setFilterClicked] = useState(false)
     const [hasBeenTouched, setHasBeenTouched] = useState(false)
-    
+    const {isDark} = useDataLayer()
     const icon = useRef()
     const select = useRef(null)
-   
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -116,7 +118,7 @@ export default function SelectFilter({ selectFilter, setSelectFilter, viewport, 
         setSelectFilter(e.target.value)
         if (!hasBeenTouched) setHasBeenTouched(true)
     }
-    const props = { viewport, searchIconWidth, selectIconWidth, isColored }
+    const props = { viewport, searchIconWidth, selectIconWidth, isColored,parent }
     const clases = styles(props)
 
     useEffect(() => {
@@ -130,11 +132,11 @@ export default function SelectFilter({ selectFilter, setSelectFilter, viewport, 
         select.current.focus()
     }
 
-    const theme = createMuiTheme({
-        palette: {
-            type:"dark"
-        }
-    })
+    // const theme = createMuiTheme({
+    //     palette: {
+    //         type: "dark"
+    //     }
+    // })
 
     return (
         <div className={filterClicked ? "filter-group with-hide right" : "filter-group right"}>
@@ -171,7 +173,9 @@ export default function SelectFilter({ selectFilter, setSelectFilter, viewport, 
                     </Disiper>
                 </Fade>
                 <ThemeProvider theme={tema}>
-                    <Select id="sort-by"
+                    <Select
+                        id="sort-by"
+                        data-testid="sorter"
                         ref={select}
                         onChange={(e) => { handleChangeFilter(e) }}
                         // className={filterClicked ? "animated" : ""}
@@ -181,12 +185,12 @@ export default function SelectFilter({ selectFilter, setSelectFilter, viewport, 
                         })}
                         value={selectFilter}
                         onTransitionEnd={handleTransitionEnd}
-                        style={isColored?{color: "white"}:{color: "black"}}
-                        
+                        //style={isDark ? { color: "white" } : { color: "black" }}
+
                         input={<Input classes={{
                             underline: clases.underline
                         }} />}
-                        classes={{icon: clases.triangle}}
+                        classes={{ icon: clases.triangle }}
                         color="secondary"
                     //onBlur={()=>{ handleBlur("select")}}
                     >

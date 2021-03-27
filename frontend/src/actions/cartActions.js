@@ -1,15 +1,17 @@
-import { CART_ADDD_ITEM, CART_ADD_FAIL, CART_ADD_LOADING, CART_DELETE_ITEM, CART_UPDATE_ITEM, CART_ADD_ITEM } from "../constants/productConstants"
+import { CART_ADD_FAIL, CART_ADD_LOADING, CART_DELETE_ITEM, CART_UPDATE_ITEM, CART_ADD_ITEM } from "../constants/productConstants"
 import Cookie from "js-cookie"
 
 export const cartProduct = (productId, qty) => async (dispatch, getState) => {
     try {
         dispatch({ type: CART_ADD_LOADING })
+        //that just be a confirmation route, there'r no need to resend the id
         const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
+        const {_id, ...rest} = data
         const newItem = {
-            id: data._id,
-            qty,
-            ...data
+            ...rest,
+            id: _id,
+            qty
         }
         const {cart} = getState()
         const product = cart.cartItems.find(x => x.id === newItem.id)
@@ -27,13 +29,15 @@ export const cartProduct = (productId, qty) => async (dispatch, getState) => {
                 return x
             })
             Cookie.set("cartItems", JSON.stringify(koko))
+            console.log(koko, "qjuuuuuu")
             dispatch({type: CART_ADD_ITEM, payload: koko})
             
         }
         else {
+            console.log(newItem, "newIteeem")
             const newState = [...cart.cartItems, newItem]
             
-            dispatch({type: CART_ADDD_ITEM, payload: newState})
+            dispatch({type: CART_ADD_ITEM, payload: newState})
         }
 
     }

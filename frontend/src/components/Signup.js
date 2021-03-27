@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { userActionsSignup } from "../actions/userActions"
 import { useHistory } from 'react-router-dom'
-import { Paper, TextField, Link, Box, Typography, Button, Grid, makeStyles } from '@material-ui/core'
+import { Paper, TextField, Link, Box, Typography, Button, Grid, makeStyles, useTheme } from '@material-ui/core'
 import { useDataLayer } from '../Context'
 import { Loader } from './Loader'
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
             maxWidth: "550px"
         }
     },
-  
+
     item: {
         [theme.breakpoints.up("md")]: {
             paddingRight: "1rem",
@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
 }))
 export default function Users(props) {
 
-    const {setOpenSnackbar} = useDataLayer()
+    const { setOpenSnackbar, isDark } = useDataLayer()
+    const theme = useTheme()
     const styles = useStyles()
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
@@ -57,18 +58,16 @@ export default function Users(props) {
     const userSignup = useSelector((state) => state.userSignup)
     const { userInfo, loading, error } = userSignup
     const dispatch = useDispatch()
+    const history = useHistory()
 
-    const redirect = props.location.search ? "/shipping" : "/"
+    const redirect = props.location.search ? props.location.search.split("=")[1] : "/"
     useEffect(() => {
 
-        if (props.location.search) {
+        if (redirect === "/shipping") {
             dispatch({ type: "SET_CURRENT_PATH", payload: "show" })
         }
-
-
         if (userInfo) {
-            props.history.push(redirect)
-            setOpenSnackbar(true)
+            history.push(redirect)
         }
 
     }, [userInfo])
@@ -76,6 +75,7 @@ export default function Users(props) {
     const handleSignup = (e) => {
 
         e.preventDefault()
+
         if (password === rpassword) {
             dispatch(userActionsSignup(name, email, password))
         }
@@ -84,114 +84,119 @@ export default function Users(props) {
         }
     }
 
-    const history = useHistory()
 
     const handleSignin = () => {
-        redirect === "/" ?
-            history.push("/signin") : history.push(`signin?redirect=${redirect}`)
+        history.push(`signin?redirect=${redirect}`)
     }
+
+    const textColor = isDark ? { color: "#2196f3" } : { color: theme.palette.primary.main }
     return (
         <div
             style={{ minHeight: "80vh", marginTop: "4rem" }}
         >
 
-            {loading && <Loader/>}
+            {loading && <Loader />}
 
-            <p>{error && error}</p>
+            <p
+                data-testid="signup-error"
+            >{error && error}</p>
             <Paper
                 classes={{
                     root: styles.paper
                 }}
             >
-                <form method="POST" onSubmit={handleSignup}>
+                <form method="POST" onSubmit={handleSignup}
+                    data-testid="form"
+                >
                     <Box mb={3}>
                         <Typography variant="h5" >Signup</Typography>
                     </Box>
-                    
-                        <Box mb={2}>
-                            <Grid
 
-                                container
-                                classes={{ root: styles.grid }}
-                                justify="center"
+                    <Box mb={2}>
+                        <Grid
+
+                            container
+                            classes={{ root: styles.grid }}
+                            justify="center"
+                        >
+                            <Grid xs={12} md={6} item
+                                classes={{ item: styles.item }}
                             >
-                                <Grid xs={12} md={6} item
-                                    classes={{ item: styles.item }}
-                                >
-                                    <Box mb={2}>
-                                        <TextField
-                                            fullWidth
-                                            id="email"
-                                            type="email"
-                                            label="email"
-                                            name="email"
-                                            size="small"
-                                            value={email}
-                                            onChange={(e) => { handleInput(e) }}
-                                            variant="filled"
-                                            required />
+                                <Box mb={2}>
+                                    <TextField
+                                        fullWidth
+                                        id="email"
+                                        type="email"
+                                        label="email"
+                                        name="email"
+                                        size="small"
+                                        value={email}
+                                        onChange={(e) => { handleInput(e) }}
+                                        variant="filled"
+                                        required />
 
-                                    </Box>
-                                    <Box mb={2}>
-                                        <TextField
-                                            label="name"
-                                            fullWidth
-                                            variant="filled"
-                                            size="small"
-                                            id="name"
-                                            type="text"
-                                            name="name"
-                                            value={name} onChange={(e) => { handleInput(e) }} required />
-                                    </Box>
-                                </Grid>
-                                <Grid xs={12} md={6} item
-
-                                >
-                                    <Box mb={2}>
-                                        <TextField
-                                            label="password"
-                                            fullWidth
-                                            variant="filled"
-                                            size="small"
-                                            id="password"
-                                            type="password"
-                                            name="password"
-                                            value={password} onChange={(e) => { handleInput(e) }}
-                                            required />
-                                    </Box>
-                                    <Box mb={2}>
-                                        <TextField
-                                            label="rpassword"
-                                            fullWidth
-                                            variant="filled"
-                                            size="small"
-                                            id="rpassword"
-                                            type="password"
-                                            name="rpassword"
-                                            value={rpassword}
-                                            onChange={(e) => { handleInput(e) }}
-                                            required />
-                                    </Box>
-                                </Grid>
+                                </Box>
+                                <Box mb={2}>
+                                    <TextField
+                                        label="name"
+                                        fullWidth
+                                        variant="filled"
+                                        size="small"
+                                        id="name"
+                                        type="text"
+                                        name="name"
+                                        value={name} onChange={(e) => { handleInput(e) }} required />
+                                </Box>
                             </Grid>
-                        </Box>
-                        <Box fullWidth display="flex" justifyContent="space-between" >
+                            <Grid xs={12} md={6} item
 
-                            <Button
-                                type="submit"
-                                color="primary"
-                                variant="contained"
-                            >Register</Button>
-                            <div style={{ display: "flex", flexDirection: "column" }}>
-                                <Typography variant="body2" >Already have and account?</Typography>
-                                <Link
-                                    color="primary"
-                                    component="button"
-                                    onClick={handleSignin}
-                                >Sign in</Link>
-                            </div>
-                        </Box>
-                    
+                            >
+                                <Box mb={2}>
+                                    <TextField
+                                        label="password"
+                                        fullWidth
+                                        variant="filled"
+                                        size="small"
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        value={password} onChange={(e) => { handleInput(e) }}
+                                        inputProps={{ "data-testid": "password" }}
+                                        required />
+                                </Box>
+                                <Box mb={2}>
+                                    <TextField
+                                        label="rpassword"
+                                        fullWidth
+                                        variant="filled"
+                                        size="small"
+                                        id="rpassword"
+                                        type="password"
+                                        name="rpassword"
+                                        value={rpassword}
+                                        onChange={(e) => { handleInput(e) }}
+                                        required />
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Box fullWidth display="flex" justifyContent="space-between" >
+
+                        <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                        >Register</Button>
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                            <Typography variant="body2" >Already have and account?</Typography>
+                            <Link
+                                style={{ fontWeight: "bold", ...textColor}}
+                                component="button"
+                                onClick={handleSignin}
+                            >Sign in</Link>
+                        </div>
+                    </Box>
+
 
                 </form>
             </Paper>

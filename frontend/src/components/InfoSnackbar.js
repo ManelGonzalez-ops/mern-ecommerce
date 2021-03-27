@@ -6,36 +6,38 @@ import { useDispatch } from 'react-redux';
 import { userLogout } from '../actions/userActions';
 
 
-export const InfoSnackbar = ({message}) => {
+export const InfoSnackbar = ({ message }) => {
 
     const dispatch = useDispatch()
-    const {openSnackbar, setOpenSnackbar} = useDataLayer()
-   
-    const handleClose =(logout = false)=>{
+    const { openSnackbar, setOpenSnackbar } = useDataLayer()
 
-        if(logout) dispatch(userLogout())
+    const handleSignOut = () => {
+        dispatch(userLogout())
+        setOpenSnackbar(false)
+    }
+    const handleClose = () => {
         setOpenSnackbar(false)
     }
     return (
         <Snackbar
-        anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-        }}
-        open={openSnackbar}
-        autoHideDuration={5000}
-        onClose={handleClose}
-        message={message}
-        action={
-            <React.Fragment>
-                <Button color="secondary" size="small" onClick={()=>{handleClose(true)}}>
-                    Sign out
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={openSnackbar}
+            autoHideDuration={5000}
+            onClose={handleClose}
+            message={message}
+            action={
+                <React.Fragment>
+                    <Button color="secondary" size="small" onClick={handleSignOut}>
+                        Sign out
             </Button>
-                <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                    <CloseIcon fontSize="small" />
-                </IconButton>
-            </React.Fragment>
-        }
-    />
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </React.Fragment>
+            }
+        />
     )
 }

@@ -25,11 +25,22 @@ export const ProductDispatcher = React.forwardRef(
                 <motion.div className={selection ? "img-overlay open" : "img-overlay"}
                     animate={selection ? { opacity: 1 } : { opacity: 0 }}
                     onClick={() => { setSelection("") }}
-                ></motion.div>
+                ><div
+                    className="gallery-placer"
+                >
+                        <motion.img
+                            className="image-selection"
+                            data-isOpen={!!selection.image}
+                            src={selection.image}
+                            alt={selection.name}
+                            layout
+                        />
+                    </div>
+                </motion.div>
 
                 {products && products.map(item => {
 
-                    return item && <Product setSelection={setSelection} isSelected={selection === item._id} key={item._id} item={item}
+                    return item && <Product setSelection={setSelection} isSelected={selection.id === item._id} key={item._id} item={item}
                         openAside={openAside} />
                 })
 

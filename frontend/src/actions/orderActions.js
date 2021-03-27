@@ -5,7 +5,7 @@ export const addOrderDB = (hasLogin) => async (dispatch, getState) => {
 
     const cartItems = Cookie.getJSON("cartItems")
     const shippingInfo = Cookie.getJSON("shippingInfo")
-
+    console.log(cartItems, shippingInfo, "ddddd")
 
     let userInfo = ""
     if (hasLogin) {
@@ -14,6 +14,7 @@ export const addOrderDB = (hasLogin) => async (dispatch, getState) => {
     else {
         userInfo = Cookie.getJSON("userInfoR")
     }
+    console.log(userInfo, "userInfo")
     try {
         
         dispatch({ type: ADD_ORDERDB_REQUEST })

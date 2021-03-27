@@ -4,6 +4,7 @@ import { saveShipping } from "../actions/shippingActions"
 import { addOrderDB } from "../actions/orderActions"
 import { Box, Button, FormControl, FormControlLabel, FormHelperText, FormLabel, Grid, ListItem, makeStyles, Paper, Radio, RadioGroup, TextField, Typography } from '@material-ui/core'
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import { useHistory } from 'react-router'
 
 //here we still need to handle errors, because we are not notifying errors in the UI
 
@@ -32,20 +33,22 @@ const useStyles = makeStyles(theme => ({
 export default function Shipping(props) {
 
     const styles = useStyles()
-    const [address, setAddress] = useState("")
-    const [city, setCity] = useState("")
-    const [postal, setPostal] = useState("")
-    const [country, setCountry] = useState("")
+    const shipping = useSelector(state => state.shipping)
+    const { shippingInfo } = shipping
+    const [address, setAddress] = useState(shippingInfo.address || "")
+    const [city, setCity] = useState(shippingInfo.city || "")
+    const [postal, setPostal] = useState(shippingInfo.postal || "")
+    const [country, setCountry] = useState(shippingInfo.country || "")
 
-    const [paymentP, setPaymentP] = useState("")
-    const [errur, setError] = useState(false)
+
+
 
     const addressRef = useRef(null)
     const cityRef = useRef(null)
     const postalRef = useRef(null)
     const countryRef = useRef(null)
-    
-    const labelradio = useRef(false)
+
+
     const arrayForm = [addressRef, cityRef, postalRef, countryRef]
 
 
@@ -71,6 +74,7 @@ export default function Shipping(props) {
     const { currentStep } = stepState
     const dispatch = useDispatch()
 
+    const history = useHistory()
     const handleStep = (e) => {
         e.preventDefault()
         let nextStep = true
@@ -83,6 +87,7 @@ export default function Shipping(props) {
         if (nextStep) {
             dispatch({ type: "SET_STEP", payload: 2 })
             dispatch(saveShipping({ address, city, postal, country }))
+            history.push("/payment_method")
         }
         else {
             alert("faltan campos que introducir")
@@ -95,74 +100,21 @@ export default function Shipping(props) {
 
     const order = useSelector(state => state.currentOrder)
     const { currentOrder, success, loading, error } = order
-    const shipping = useSelector(state => state.shipping)
-    const { shippingInfo } = shipping
+
     const user = useSelector(state => state.userSignin)
     const { userInfo } = user
 
-    const NextStep = () =>
-        <div className="shippingWrapper">
-            <Paper className="form" >
-                <form onSubmit={handleCheckout}>
-                    <Typography className="form-title">Payment Method</Typography>
-                    <div className="form-group small-mb">
-                        <FormControl component="fieldset" error={errur}>
-                            <FormLabel component="legend" focused={labelradio.current}>Credit Card</FormLabel>
-                            <RadioGroup aria-label="gender" name="gender1" value={paymentP} onChange={handleRadio} >
-                                <FormControlLabel value="stripe" control={<Radio />} label="stripe" />
-                            </RadioGroup>
-                           { errur && <FormHelperText>Select at least one option</FormHelperText>}
-                        </FormControl>
-                    </div>
-                    <Button variant="contained"
-                        color="primary"
-                        className="with-loader"
-                        type="submit"
-                        style={{ minWidth: "113px" }}
-                    >{(loading && <Spinner2 />) || "checkout"}</Button>
-                </form>
-            </Paper>
-        </div>
 
-const handleRadio = (e)=>{
-    labelradio.current = true
-    errur && setError(false)
-
-    setPaymentP(e.target.value)
-}
-    const handleCheckout = (e) => {
-        e.preventDefault()
-        if (paymentP){
-            errur && setError(false)
-            dispatch(addOrderDB(userInfo))
-        }
-        else{
-            setError(true)
-        }
-
-    }
+    useEffect(() => {
+        dispatch({ type: "SET_CURRENT_PATH", payload: "show" })
+        currentStep !== 1 && dispatch({ type: "SET_STEP", payload: 1 })
+    }, [])
 
     useEffect(() => {
         //si no hay user info redireccionamos al signin
-        !userInfo && props.history.push("/signin")
+        !userInfo && props.history.push("/signin?redirect=shipping")
         // si el usuario viene del checkout, saltamos la redireccion perpetua al checkout y le permitimos volver al shipping
 
-        let serialUrl = localStorage.getItem("lastUrl")
-        if (JSON.parse(serialUrl) == "/shipping") {
-
-
-            if (currentOrder && Object.keys(currentOrder).length) {
-
-                if (shippingInfo && Object.keys(shippingInfo).length) {
-
-
-                    dispatch({ type: "SET_STEP", payload: 3 })
-                    props.history.push("/checkout")
-
-                }
-            }
-
-        }
 
 
     }, [currentOrder])
@@ -171,63 +123,64 @@ const handleRadio = (e)=>{
 
 
     useEffect(() => {
-        !userInfo && props.history.push("/signin")
+        console.log(userInfo, "userInfuu")
+        !userInfo && props.history.push("/signin?redirect=shipping")
     }, [shippingInfo])
 
 
 
-    useEffect(() => {
-        let serialUrl = localStorage.getItem("lastUrl")
+    // useEffect(() => {
+    //     let serialUrl = localStorage.getItem("lastUrl")
 
-        if (JSON.parse(serialUrl) !== "/checkout") {
-
-
+    //     if (JSON.parse(serialUrl) !== "/checkout") {
 
 
 
 
-            if (currentOrder && Object.keys(currentOrder).length) {
-                if (shippingInfo && Object.keys(shippingInfo).length) {
-
-                    localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
-                    dispatch({ type: "SET_STEP", payload: 3 })
-                    props.history.push("/checkout")
-
-                }
-            }
-        }
 
 
-    }, [success])
+    //         if (currentOrder && Object.keys(currentOrder).length) {
+    //             if (shippingInfo && Object.keys(shippingInfo).length) {
+
+    //                 localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
+    //                 dispatch({ type: "SET_STEP", payload: 3 })
+    //                 props.history.push("/checkout")
+
+    //             }
+    //         }
+    //     }
+
+
+    // }, [success])
 
 
 
-    useEffect(() => {
-        let serialUrl = localStorage.getItem("lastUrl")
-        !userInfo && props.history.push("/signin")
+    // useEffect(() => {
+    //     let serialUrl = localStorage.getItem("lastUrl")
+    //     !userInfo && props.history.push("/signin?redirect=shipping")
 
-        dispatch({ type: "SET_CURRENT_PATH", payload: "show" })
+    //     dispatch({ type: "SET_CURRENT_PATH", payload: "show" })
 
-        currentStep !== 1 && dispatch({ type: "SET_STEP", payload: 1 })
+    //     
 
 
-        if (JSON.parse(serialUrl) === "/checkout") {
-            localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
+    //     if (JSON.parse(serialUrl) === "/checkout") {
+    //         localStorage.setItem("lastUrl", JSON.stringify(props.history.location.pathname))
 
-        }
-        else {
+    //     }
+    //     else {
 
-            if (currentOrder && Object.keys(currentOrder).length) {
-                if (shippingInfo && Object.keys(shippingInfo).length) {
+    //         if (currentOrder && Object.keys(currentOrder).length) {
+    //             if (shippingInfo && Object.keys(shippingInfo).length) {
 
-                    dispatch({ type: "SET_STEP", payload: 3 })
-                    props.history.push("/checkout")
+    //                 dispatch({ type: "SET_STEP", payload: 3 })
+    //                 props.history.push("/checkout")
 
-                }
-            }
-        }
+    //             }
+    //         }
+    //     }
 
-    }, [])
+    // }, [])
 
 
 
@@ -235,130 +188,105 @@ const handleRadio = (e)=>{
     return (
         <div style={{ minHeight: "80vh" }}>
 
+            <Paper
+                classes={{
+                    root: styles.paper
+                }}
+            >
+                <form onSubmit={handleStep}>
+                    <Box mb={3}>
+                        <ListItem
+                            disableGutters
+                        >
+                            <FlightTakeoffIcon
+                                style={{ marginRight: "10px" }}
+                            />
+                            <Typography variant="h5" >
+                                Shipping</Typography>
+                        </ListItem>
+                    </Box>
+                    <Box mb={2}>
 
-            {currentStep === 2 ? <NextStep />
-                :
-                <Paper
-                    classes={{
-                        root: styles.paper
-                    }}
-                >
-                    <form onSubmit={handleStep}>
-                        <Box mb={3}>
-                            <ListItem
-                                disableGutters
+                        <Grid
+
+                            container
+                            classes={{ root: styles.grid }}
+                            justify="center"
+                        >
+                            <Grid xs={12} md={6} item
+                                classes={{ item: styles.item }}
                             >
-                                <FlightTakeoffIcon
-                                    style={{ marginRight: "10px" }}
-                                />
-                                <Typography variant="h5" >
-                                    Shipping</Typography>
-                            </ListItem>
-                        </Box>
-                        <Box mb={2}>
+                                <Box mb={2}>
+                                    <TextField
+                                        fullWidth
+                                        id="address"
+                                        type="text"
+                                        label="address"
+                                        name="address"
+                                        size="small"
+                                        value={address}
+                                        onChange={(e) => { handleInput(e) }}
+                                        variant="filled"
+                                        ref={addressRef}
+                                        required />
 
-                            <Grid
+                                </Box>
+                                <Box mb={2}>
+                                    <TextField
+                                        fullWidth
+                                        id="city"
+                                        type="text"
+                                        label="city"
+                                        name="city"
+                                        size="small"
+                                        value={city}
+                                        onChange={(e) => { handleInput(e) }}
+                                        variant="filled"
+                                        ref={cityRef}
+                                        required />
 
-                                container
-                                classes={{ root: styles.grid }}
-                                justify="center"
-                            >
-                                <Grid xs={12} md={6} item
-                                    classes={{ item: styles.item }}
-                                >
-                                    <Box mb={2}>
-                                        <TextField
-                                            fullWidth
-                                            id="address"
-                                            type="text"
-                                            label="address"
-                                            name="address"
-                                            size="small"
-                                            value={address || shippingInfo && shippingInfo.address || ""}
-                                            onChange={(e) => { handleInput(e) }}
-                                            variant="filled"
-                                            ref={addressRef}
-                                            required />
-
-                                    </Box>
-                                    <Box mb={2}>
-                                        <TextField
-                                            fullWidth
-                                            id="city"
-                                            type="text"
-                                            label="city"
-                                            name="city"
-                                            size="small"
-                                            value={city || shippingInfo && shippingInfo.city || ""}
-                                            onChange={(e) => { handleInput(e) }}
-                                            variant="filled"
-                                            ref={cityRef}
-                                            required />
-
-                                    </Box>
-                                </Grid>
-                                <Grid xs={12} md={6} item
-                                >
-                                    <Box mb={2}>
-                                        <TextField
-                                            fullWidth
-                                            id="postal"
-                                            type="text"
-                                            label="postal"
-                                            name="postal"
-                                            size="small"
-                                            value={postal || shippingInfo && shippingInfo.postal || ""}
-                                            onChange={(e) => { handleInput(e) }}
-                                            variant="filled"
-                                            ref={postalRef}
-                                            required />
-
-                                    </Box>
-                                    <Box mb={2}>
-                                        <TextField
-                                            fullWidth
-                                            id="country"
-                                            type="text"
-                                            label="country"
-                                            name="country"
-                                            size="small"
-                                            value={country || shippingInfo && shippingInfo.country || ""}
-                                            onChange={(e) => { handleInput(e) }}
-                                            variant="filled"
-                                            ref={countryRef}
-                                            required />
-
-                                    </Box>
-                                </Grid>
+                                </Box>
                             </Grid>
+                            <Grid xs={12} md={6} item
+                            >
+                                <Box mb={2}>
+                                    <TextField
+                                        fullWidth
+                                        id="postal"
+                                        type="text"
+                                        label="postal"
+                                        name="postal"
+                                        size="small"
+                                        value={postal}
+                                        onChange={(e) => { handleInput(e) }}
+                                        variant="filled"
+                                        ref={postalRef}
+                                        required />
 
-                            {/* <div className="form-group">
-                            <label htmlFor="address">Address</label>
-                            <input id="address" type="text" name="address"
-                                value={address || shippingInfo && shippingInfo.address || ""} onChange={(e) => { handleInput(e) }}
-                                ref={addressRef} required />
-                        </div> */}
-                            {/* <div className="form-group">
-                            <label htmlFor="city">City</label>
-                            <input id="city" type="text" name="city" value={city || shippingInfo && shippingInfo.city || ""} onChange={(e) => { handleInput(e) }}
-                                ref={cityRef} required />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="postal">Postal Code</label>
-                            <input id="postal" type="text" name="postal" value={postal || shippingInfo && shippingInfo.postal || ""} onChange={(e) => { handleInput(e) }}
-                                ref={postalRef} required />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="country">Country</label>
-                            <input id="country" type="text" name="country" value={country || shippingInfo && shippingInfo.country || ""} onChange={(e) => { handleInput(e) }}
-                                ref={countryRef} required />
-                        </div> */}
-                        </Box>
-                        <Button variant="contained" color="primary" type="submit">Next Step</Button>
+                                </Box>
+                                <Box mb={2}>
+                                    <TextField
+                                        fullWidth
+                                        id="country"
+                                        type="text"
+                                        label="country"
+                                        name="country"
+                                        size="small"
+                                        value={country}
+                                        onChange={(e) => { handleInput(e) }}
+                                        variant="filled"
+                                        ref={countryRef}
+                                        required />
 
-                    </form>
-                </Paper>
-            }
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Button variant="contained" color="primary" type="submit">Next Step</Button>
+
+                </form>
+            </Paper>
+
         </div>
     )
 }

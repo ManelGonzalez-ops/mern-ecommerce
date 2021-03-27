@@ -8,10 +8,10 @@ export default function ContextoComp({children}){
     const [isColored, setIsColored] = useState(false)
     const [isDark, setIsDark] = useState(false)
     const [openSnackbar, setOpenSnackbar] = useState(false)
-
+    
 
     return (
-        <Context.Provider value={{viewport, setViewport, colored, isColored, isDark, setIsDark, openSnackbar, setOpenSnackbar}}>
+        <Context.Provider value={{viewport, setViewport, colored, isColored, isDark, setIsDark, openSnackbar, setOpenSnackbar, setIsColored}}>
             {children}
         </Context.Provider>
     )

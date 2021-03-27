@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import ReactDOM from "react-dom"
 import { useHistory } from "react-router-dom"
 import RatingStars from "./ratingStar"
 import { motion } from "framer-motion"
@@ -14,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     borderRadius: "4px",
     background: "white",
+    margin: "0 auto",
     [theme.breakpoints.up("xs")]: {
       //maxHeight: "200px",
       height: "200px",
@@ -47,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   card: {
-    alignSelf: "end",
+    alignSelf: "start",
     [theme.breakpoints.up("xs")]: {
       margin: "0 calc(1rem + 2%)"
     },
@@ -78,19 +80,19 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
   const transition = { duration: 0.4, ease: [0.6, 0.01, -0.05, 0.9] }
   const [imgLoaded, setImgLoaded] = useState(false)
 
-  const handlePointerEvents = (activate) => {
-    activate ?
-      imgi.current.style.pointerEvents = "auto"
-      :
-      imgi.current.style.pointerEvents = "none"
-  }
+  // const handlePointerEvents = (activate) => {
+  //   activate ?
+  //     imgi.current.style.pointerEvents = "auto"
+  //     :
+  //     imgi.current.style.pointerEvents = "none"
+  // }
 
-  useEffect(() => {
-    imgi.current.addEventListener("ontransitionstart", () => {
-      handlePointerEvents(false)
-    })
+  // useEffect(() => {
+  //   imgi.current.addEventListener("ontransitionstart", () => {
+  //     handlePointerEvents(false)
+  //   })
 
-  }, [])
+  // }, [])
 
 
 
@@ -100,14 +102,14 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
         isSelected ?
           setSelection("")
           :
-          setSelection(item._id)
+          setSelection(item)
       }, 600)
     }
     else {
       isSelected ?
         setSelection("")
         :
-        setSelection(item._id)
+        setSelection(item)
     }
 
   }
@@ -119,6 +121,7 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
     <Card
       className={classes.card}
       elevation={2}
+      aria-label={`producto-${item.category[0]}`}
     >
       <CardActionArea>
         <motion.div
@@ -126,13 +129,8 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
           onClick={handleOpen}
           style={theme.palette.type === "dark" ? { margin: "5px" } : null}
           className={clsx("img-prud", {
-            abridor: isSelected
+            //abridor: isSelected
           })}
-          //layout
-          layout={isSelected}
-          onTransitionEnd={() => {
-            handlePointerEvents(true)
-          }}
         >
           <Fade in={imgLoaded}>
             <img
@@ -144,7 +142,6 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
               style={{ display: imgLoaded ? "block" : "none" }}
             />
           </Fade>
-          {/* {!imgLoaded && <CircularProgress color="secondary" />} */}
 
 
         </motion.div>
@@ -208,7 +205,17 @@ export default function Products({ item, setSelection, isSelected, openAside }) 
   )
 }
 
-
+const ImgPortal = ({ item }) => {
+  return ReactDOM.createPortal(
+    <motion.img
+      className="image-selection"
+      data-isOpen={!!item.image}
+      src={item.image}
+      alt={item.name}
+      layout
+    />
+    , document.getElementById("img-galery"))
+}
 
 export const LoaderPnp = () => <div className="svggWrapper"><svg width="250" height="250" viewBox="0 0 312 312" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className="luader">
 

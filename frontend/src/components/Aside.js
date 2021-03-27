@@ -24,7 +24,7 @@ const styles = makeStyles(theme => ({
 
 
 
-const Aside = React.forwardRef((props, ref) => {
+export const Aside = React.forwardRef((props, ref) => {
     const { openAside, search, closeAs, setOpenAside } = props
     const asideLimit = useRef(null)
     const categoryList = [
@@ -41,9 +41,9 @@ const Aside = React.forwardRef((props, ref) => {
 
     useEffect(() => {
         const detectClickAway = (e) => {
-           e.target.className === "MuiBackdrop-root" && setOpenAside(false)
+            e.target.className === "MuiBackdrop-root" && setOpenAside(false)
         }
-        
+
         if (asideLimit.current) {
             window.addEventListener("click", detectClickAway)
         }
@@ -58,12 +58,16 @@ const Aside = React.forwardRef((props, ref) => {
     return (
         <div
             ref={asideLimit}
+            data-testid="aside"
         >
             <Drawer
                 open={openAside}
                 ref={ref}
+
             >
-                <List>
+                <List
+                    data-testid="sidebar"
+                >
                     <div className={clases.drawerHeader}>
                         <IconButton
                             onClick={closeAs}
@@ -75,7 +79,10 @@ const Aside = React.forwardRef((props, ref) => {
                     {categoryList && categoryList.map((item, index) => <ListItem
                         button
                         key={index}
-                        onClick={() => { search(item.text) }}>
+                        onClick={() => { search(item.text) }}
+                        role="link"
+                        aria-label={`link-${item.text}`}
+                    >
                         <ListItemIcon><item.icon className="icon-category" /></ListItemIcon>
                         <ListItemText primary={item.text} />
 
@@ -86,8 +93,6 @@ const Aside = React.forwardRef((props, ref) => {
     )
 })
 
-
-export default Aside
 
 
 Aside.propTypes = {

@@ -5,7 +5,7 @@ import { listProducts, searchByCartegory } from '../actions/productActions';
 
 import { ProductDispatcher } from "./ProductDispatcher"
 
-import Aside from './Aside';
+import {Aside} from './Aside';
 
 import { Box, Button, makeStyles, MenuItem, Select, Typography, useTheme } from '@material-ui/core';
 
@@ -44,7 +44,7 @@ export const ProductSection2 = () => {
 
     const [openAside, setOpenAside] = React.useState(false)
     //const [category, setCategory] = React.useState("")
-    const { viewport, isDark } = useDataLayer()
+    const { viewport, isDark, isColored } = useDataLayer()
     const productList = useSelector(state => state.productList)
     const { products, loading, error } = productList
     const { filteredProducts, category } = useSelector(state => state.filteredProducts)
@@ -61,15 +61,14 @@ export const ProductSection2 = () => {
     const isMounted = useRef(null)
     const [isLoading, setIsLoading] = React.useState(true)
     const [data, setData] = React.useState([])
-    const [isColored, setIsColored] = React.useState(false)
-    //const [resultsPerPage, setResultPerPage] = React.useState(20)
+    
     const resultsPerPage = useRef(20)
     const [pagination, setPagination] = React.useState({ data: [], page: 1 })
     const [totalPages, setTotalPages] = React.useState(1)
     const [currentPage, setCurrentPage] = React.useState(1)
-    const [count, setCount] = React.useState(0)
-    const rerenders = useRef(0)
-    const [kiki, setKiki] = React.useState(false)
+
+
+
     useEffect(() => {
         let timer
         console.log("que cjones", loading)
@@ -84,20 +83,8 @@ export const ProductSection2 = () => {
             clearTimeout(timer)
         }
     }, [loading])
-    rerenders.current = rerenders.current + 1
-    console.log(rerenders.current, "rerenders")
-    // useEffect(()=>{
-    //     setInterval(()=>{
-    //         setCount(prev=>prev + 1)
-    //         console.log(count, "cuentq")
-    //     },100)
 
-    //     setKiki(true)
-    //     console.log(kiki, "coño")
-    // },[])
 
-    console.log(kiki, "mama")
-    console.log(viewport, isDark, "tetsing")
     const closeAside = () => {
         setOpenAside(false)
     }
@@ -142,7 +129,7 @@ export const ProductSection2 = () => {
                     stickyLabel.current.style.boxShadow = "rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px"
                     stickyLabel.current.style.backgroundColor = "#3f51b5"
                     galerie.current.style.transition = "none"
-                    setIsColored(true)
+                    //setIsColored(true)
 
                 }
 
@@ -161,7 +148,7 @@ export const ProductSection2 = () => {
                     stickyLabel.current.style.transform = "translateX(0)"
                     stickyLabel.current.style.position = "static"
                     galerie.current.style.height = 0
-                    setIsColored(false)
+                    //setIsColored(false)
 
                 }
 
@@ -181,13 +168,7 @@ export const ProductSection2 = () => {
             navHeight.current = barra.current.getBoundingClientRect()
         }
 
-        // stickyLabel.current.style.transition = "none"
-        //window.addEventListener("scroll", handleStikyPosition)
-
-
-        return () => {
-            window.removeEventListener("scroll", handleStikyPosition)
-        }
+       
     }, [isDark])
 
 
@@ -202,8 +183,9 @@ export const ProductSection2 = () => {
         })
     }
     //category
-    const handleCategorySearch = (categoryType) => {
+   const handleCategorySearch = (categoryType) => {
         //whn we close searcher and category is not selected
+        console.log(categoryType, "fiired beibe")
         if (!categoryType) {
             showAllProducts()
             return
@@ -250,6 +232,7 @@ export const ProductSection2 = () => {
     }, [active])
 
     const updatePageNumber = () => {
+        console.log(filteredProducts, "qu webs")
         if (!filteredProducts.length) {
             setTotalPages(1)
             setPagination({ page: 1, data: [] })
@@ -270,15 +253,9 @@ export const ProductSection2 = () => {
     }, [pagination])
 
 
-    useEffect(() => {
-        console.log(filteredProducts, "la datua2")
-        if (!isMounted.current) {
-            return
-        }
-        updatePageNumber()
+    
 
-    }, [filteredProducts])
-
+   
     //meant to run once on component initilization
     useEffect(() => {
         console.log(products, "product updated")
@@ -291,6 +268,14 @@ export const ProductSection2 = () => {
         }
     }, [products])
 
+    useEffect(() => {
+        console.log(filteredProducts, "la datua2")
+        if (!isMounted.current) {
+            return
+        }
+        updatePageNumber()
+
+    }, [filteredProducts])
     
 
     const handleUpdatePagination = (e) => {
@@ -306,7 +291,6 @@ export const ProductSection2 = () => {
         <div
             style={{ minHeight: "80vh" }}
         >
-            <div className="test">{count}</div>
             <StickyBar
                 ref={stickyLabel}
                 setOpenAside={setOpenAside}
@@ -349,7 +333,9 @@ export const ProductSection2 = () => {
 
 
             {isLoading ? <ResponsiveSkeleton
-                viewport={viewport} />
+                viewport={viewport}
+                
+                />
                 :
                 error ? <ErrorMsg error={error} goBack={goBack} />
                     :
@@ -418,11 +404,13 @@ export const ResponsiveSkeleton = ({ viewport }) => {
 
     if (viewport < 500) {
 
-        return <Skeleton width="95vw" height="100vh" />
+        return <Skeleton width="95vw" height="100vh" aria-label="loading" />
     }
 
     return (
-        <div className="product-grid">
+        <div className="product-grid"
+        aria-label="loading"
+        >
             {Array(8).fill(0).map((item, index) => (
                 <div style={{ marginBottom: "1.5rem" }} key={index}>
                     <Skeleton variant="rect" animation="wave" height={200}

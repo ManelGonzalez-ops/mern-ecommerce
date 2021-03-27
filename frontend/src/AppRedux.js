@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import './App.css';
 // import Products from "./data"
-import DetailsRedux from "./components/DetailsRedux"
+import { Details } from "./components/DetailsRedux"
 import { HashRouter, Route, Switch } from "react-router-dom"
 import Nav from "./components/Nav"
 import Cart from "./components/Cart"
@@ -18,13 +18,14 @@ import { Stepper2 } from './components/Stepper2';
 import { useDataLayer } from './Context';
 import { createMuiTheme, Paper, ThemeProvider, Typography } from "@material-ui/core";
 import { InfoSnackbar } from './components/InfoSnackbar';
-
+import { PaymentMethod } from './components/PaymentMethod';
+import { InView } from 'react-intersection-observer';
 
 
 function App() {
 
-    const { setViewport, isDark } = useDataLayer()
-    
+    const { setViewport, isDark, setIsColored } = useDataLayer()
+
 
     const theme = createMuiTheme({
         palette: {
@@ -56,7 +57,7 @@ function App() {
     //tenemos que renderizar dodicionalmente StepTimeline
 
     const { currentPath } = useSelector(state => state.currentPath)
-console.log(setViewport, isDark, "teste")
+    console.log(setViewport, isDark, "teste")
 
 
     return (
@@ -65,8 +66,18 @@ console.log(setViewport, isDark, "teste")
             <ThemeProvider theme={theme}>
                 <Paper>
                     <div className="app-wrapper">
-                        <Nav />
-                    <div onClick={()=>setViewport(400)}></div>
+                        <InView
+                            onChange={(inView) => {
+                                inView ? setIsColored(false)
+                                    :
+                                    setIsColored(true)
+                            }}
+                        >
+                            {({ ref, inView }) => (
+                                <Nav ref={ref} inView={inView} />
+                            )}
+                        </InView>
+                        <div onClick={() => setViewport(400)}></div>
                     </div>
                     {currentPath === "show" && <Stepper2 />}
 
@@ -81,29 +92,27 @@ console.log(setViewport, isDark, "teste")
 
 
                     <Switch>
-                        <Route path="/product/:productId" exact component={DetailsRedux} />
-                    </Switch>
-                    <Switch>
+                        <Route path="/product/:productId" exact component={Details} />
+
                         <Route path="/user" exact component={UserView} />
-                    </Switch>
-                    <Switch>
+
                         <Route path="/order/:id" exact component={OrderDetails} />
-                    </Switch>
-                    <Switch>
+
                         <Route path="/cart/:productId?" exact component={Cart} />
-                    </Switch>
-                    <Switch>
+
                         <Route path="/addstore" exact component={ProductCreator} />
-                    </Switch>
-                    <Switch>
+
                         <Route path="/" exact component={Hall}>
                         </Route>
+                        <Route path="/payment_method">
+                            <PaymentMethod />
+                        </Route>
                     </Switch>
-                   <InfoSnackbar message="you are already signin"/>
+                    <InfoSnackbar message="you are already signin" />
 
                     <footer className="footer">
-                       <Typography> All rights reserved	&copy;</Typography>
-            </footer>
+                        <Typography> All rights reserved	&copy;</Typography>
+                    </footer>
                 </Paper>
             </ThemeProvider>
 

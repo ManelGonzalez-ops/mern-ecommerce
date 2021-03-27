@@ -6,7 +6,9 @@ export const shippingReducer = ((state = { shippingInfo: {} }, action) => {
     switch (action.type) {
 
         case SHIPPING_SAVE_REQUEST:
-            return { loading: true }
+            return { 
+                ...state,
+                loading: true }
         case SHIPPING_SAVE_SUCCESS:
             return { loading: false, shippingInfo: action.payload }
         case SHIPPING_SAVE_FAIL:
@@ -16,13 +18,3 @@ export const shippingReducer = ((state = { shippingInfo: {} }, action) => {
     }
 })
 
-export const setStepReducer = (state = { currentStep: 0 }, action) => {
-
-    switch (action.type) {
-        case "SET_STEP":
-            Cookie.set("currentStep", JSON.stringify(action.payload))
-            return { currentStep: action.payload }
-        default:
-            return state
-    }
-}

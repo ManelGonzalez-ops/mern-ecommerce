@@ -87,25 +87,23 @@
 .reviews-container {
   position: relative;
   margin-bottom: -3rem;
+  padding: 1rem;
 }
 
 .reviews-container h1 {
   margin-bottom: 0;
-  text-align: center;
 }
 
 .reviews-container .reviews {
-  padding: 0.5rem;
-  padding-bottom: 0;
-  padding-top: 0;
+  padding: 0;
 }
 
 .reviews-container .reviews li {
   background-color: lightgoldenrodyellow;
   border-radius: 0.5rem;
   list-style: none;
-  margin: 1rem auto;
   padding: 0.5rem;
+  margin-bottom: 0.8rem;
 }
 
 .reviews-container .reviews li .comment {
@@ -134,10 +132,8 @@
 }
 
 @media (min-width: 600px) {
-  .reviews-container .reviews {
-    padding: 2rem;
-    padding-bottom: 0;
-    padding-top: 0;
+  .reviews-container {
+    padding: 1.5rem;
   }
 }
 
@@ -145,15 +141,16 @@
   .reviews-container .reviews li {
     width: 900px;
     padding: 1rem;
-    margin: 1.8rem auto;
+    margin-bottom: 1.8rem;
   }
 }
 
 @media (min-width: 1200px) {
+  .reviews-container {
+    padding: 2rem;
+  }
   .reviews-container .reviews {
-    padding: 4rem;
-    padding-bottom: 0;
-    padding-top: 0;
+    padding: 0;
   }
   .reviews-container h1 {
     font-size: 3rem;

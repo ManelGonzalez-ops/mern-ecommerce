@@ -111,14 +111,9 @@ export default function Cart(props) {
 
     const user = useSelector(state => state.userSignin)
     const { userInfo } = user
+    
     const toCheckout = () => {
-
-        if (isEmpty(userInfo)) {
-            props.history.push("/signin?redirect=shipping")
-        }
-        else {
             props.history.push("/shipping")
-        }
     }
 
     const { currentOrder } = useSelector(state => state.currentOrder)
@@ -126,9 +121,11 @@ export default function Cart(props) {
     const history = useHistory()
 
     return (
-        <div className="cart-wrapper">
+        <div className="cart-wrapper"
+        data-testid="cart-view"
+        >
 
-            {cartItems && cartItems.length === 0 &&
+            {!loading && cartItems && cartItems.length === 0 &&
                 <Zoom in={true} timeout={300}>
                     <Alert
                         variant="filled"
@@ -156,11 +153,12 @@ export default function Cart(props) {
                 {
                     loading ? <Loader/>
                         :
-                        error ? <p>{error.message}</p>
+                        error ? <p
+                        >{error.message}</p>
                             :
 
                             (
-                                <CartContent  {...{ clases, productId, cartItems, loading, toCheckout, updateCart,deleteItem, currentOrder }} />
+                                <CartContent  {...{ clases, cartItems, toCheckout, updateCart,deleteItem, currentOrder }} />
                             )
                 }
             </div>

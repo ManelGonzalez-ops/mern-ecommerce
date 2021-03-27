@@ -206,6 +206,7 @@ header nav .dropdown-list {
 
 .product-grid .img-prud {
   min-height: 200px;
+  background: white;
 }
 
 .product-grid .img-product {
@@ -243,6 +244,20 @@ header nav .dropdown-list {
   margin-bottom: 1.5rem;
   position: sticky;
   top: 0;
+}
+
+.gallery-placer {
+  position: relative;
+  height: 90%;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gallery-placer .image-selection {
+  max-height: 80%;
+  max-width: 100%;
 }
 
 @media (min-width: 500px) {
@@ -379,9 +394,6 @@ header nav .dropdown-list {
 }
 
 @media (min-width: 800px) {
-  .hall__container {
-    margin: 1rem;
-  }
   .product-grid {
     width: 85%;
   }
@@ -654,7 +666,7 @@ header nav .dropdown-list {
   pointer-events: none;
   opacity: 0;
   background: rgba(0, 0, 0, 0.9);
-  z-index: 1;
+  z-index: 10;
 }
 
 .img-overlay.open {
@@ -736,6 +748,15 @@ header nav .dropdown-list {
   height: 100%;
   z-index: -1;
   background-color: #3848a2;
+}
+
+.search--part {
+  margin-right: 1rem;
+}
+
+.collapsable-wrap {
+  display: flex;
+  align-items: center;
 }
 
 .cart-wrapper {
@@ -1357,25 +1378,23 @@ header nav .dropdown-list {
 .reviews-container {
   position: relative;
   margin-bottom: -3rem;
+  padding: 1rem;
 }
 
 .reviews-container h1 {
   margin-bottom: 0;
-  text-align: center;
 }
 
 .reviews-container .reviews {
-  padding: 0.5rem;
-  padding-bottom: 0;
-  padding-top: 0;
+  padding: 0;
 }
 
 .reviews-container .reviews li {
   background-color: lightgoldenrodyellow;
   border-radius: 0.5rem;
   list-style: none;
-  margin: 1rem auto;
   padding: 0.5rem;
+  margin-bottom: 0.8rem;
 }
 
 .reviews-container .reviews li .comment {
@@ -1404,10 +1423,8 @@ header nav .dropdown-list {
 }
 
 @media (min-width: 600px) {
-  .reviews-container .reviews {
-    padding: 2rem;
-    padding-bottom: 0;
-    padding-top: 0;
+  .reviews-container {
+    padding: 1.5rem;
   }
 }
 
@@ -1415,15 +1432,16 @@ header nav .dropdown-list {
   .reviews-container .reviews li {
     width: 900px;
     padding: 1rem;
-    margin: 1.8rem auto;
+    margin-bottom: 1.8rem;
   }
 }
 
 @media (min-width: 1200px) {
+  .reviews-container {
+    padding: 2rem;
+  }
   .reviews-container .reviews {
-    padding: 4rem;
-    padding-bottom: 0;
-    padding-top: 0;
+    padding: 0;
   }
   .reviews-container h1 {
     font-size: 3rem;

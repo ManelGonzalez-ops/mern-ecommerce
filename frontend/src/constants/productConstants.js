@@ -28,7 +28,6 @@ export const SHOW_SEARCH_FAIL = "SHOW_SEARCH_FAIL"
 
 export const CART_ADD_LOADING = "CART_ADD_LOADING"
 export const CART_ADD_ITEM = "CART_ADD_ITEM"
-export const CART_ADDD_ITEM = "CART_ADD_ITEM"
 export const CART_ADD_FAIL = "CART_ADD_FAIL"
 
 //hemos perdido media hora por dejar pueso CART_DELETE_ITEM = "CART_DELETE_ITEM"

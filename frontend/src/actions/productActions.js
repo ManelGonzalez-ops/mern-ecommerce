@@ -21,7 +21,7 @@ const listProducts = () => async (dispatch) => {
     }
 }
 
-const helpers = {
+export const helpers = {
     parseDates: (data) => data.map(item => {
         item.date_added = Date.parse(item.date_added)
         return item
@@ -29,7 +29,8 @@ const helpers = {
 }
 
 
-const detailsProduct = (productId) => async (dispatch) => {
+const detailsProduct = (action) => async (dispatch) => {
+    const { productId } = action
     try {
         dispatch({ type: PRODUCT_DETAILS_REQUEST })
         const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)

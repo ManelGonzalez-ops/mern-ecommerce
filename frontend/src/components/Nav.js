@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import {  useHistory, useLocation } from "react-router-dom"
+import React, { useState, useEffect } from 'react'
+import { useHistory, useLocation } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { userLogout } from "../actions/userActions"
 import { AppBar, Badge, Box, IconButton, ListItemIcon, ListItemText, makeStyles, Menu, MenuItem, Tab, Tabs, Toolbar, Typography, withStyles } from '@material-ui/core'
@@ -11,6 +11,8 @@ import FaceIcon from '@material-ui/icons/Face';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import { Switcher } from './Switcher'
 import { useDataLayer } from '../Context'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useInView } from 'react-intersection-observer';
 
 const styles = makeStyles(theme => ({
 
@@ -66,23 +68,39 @@ const styles = makeStyles(theme => ({
 }))
 
 
-export default function Nav() {
+const Nav = React.forwardRef(({ inView }, ref) => {
 
 
     const [qty, setQty] = useState(0)
-    const taba = useRef(null)
+    //const taba = useRef(null)
     const { userInfo } = useSelector(state => state.userSignin)
     const [tabVal, setTabVal] = useState(1)
     const windowwidth = useWindowWidth()[0]
     const history = useHistory()
     const location = useLocation()
     const dispatch = useDispatch()
-    const { viewport } = useDataLayer()
-    const logout = () => {
-        dispatch(userLogout())
-    }
+    const { viewport, setIsColored, setOpenSnackbar } = useDataLayer()
+    // const navRef = useRef(null)
 
     const { cartItems } = useSelector(state => state.cart)
+
+
+    // const [ ref, inView, entry ] = useInView({
+    //     threshold: 0,
+
+    // })
+
+    // useEffect(() => {
+
+    //     if (inView) {
+    //         setIsColored(false)
+    //     }
+    //     else {
+    //         setIsColored(true)
+    //     }
+
+
+    // }, [inView])
 
     useEffect(() => {
         const total = cartItems.reduce((x, y) => x + parseInt(y.qty), 0)
@@ -105,8 +123,13 @@ export default function Nav() {
 
 
     const handleTabChange = (e, val) => {
-        // history.push(val)
-
+        const routeName = e.currentTarget.name
+        if (userInfo &&
+            routeName === "/signin"
+            || routeName === "/singup") {
+            setOpenSnackbar(true)
+            return
+        }
         history.push(e.currentTarget.name)
         setTabVal(val)
     }
@@ -122,9 +145,9 @@ export default function Nav() {
     return (
 
 
-        <>
+       
             <AppBar position="static"
-
+ref={ref}
                 //style={{background: "white"}}
                 classes={{ root: clases.nav }}
             >
@@ -135,7 +158,7 @@ export default function Nav() {
                     <Typography variant="h6" noWrap
                         className={clases.logo}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" viewBox="0 0 16 16" style={{marginRight: "7px"}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" viewBox="0 0 16 16" style={{ marginRight: "7px" }}>
                             <path fill="white" d="M16 16h-16l16-16z" />
                         </svg>
                         Corner Shop
@@ -149,7 +172,7 @@ export default function Nav() {
 
                             <Tabs
                                 value={tabVal}
-                                ref={taba}
+                                //ref={taba}
                                 indicatorColor="secondary"
                                 textColor="inherit"
                                 onChange={handleTabChange}
@@ -168,7 +191,8 @@ export default function Nav() {
                                 {
                                     userInfo ? <Tab
                                         classes={{ root: clases.tab }}
-                                        label="Sign in" {...all11props(2)} name="/signin" />
+                                        label="Sign in" {...all11props(2)} name="/signin"
+                                    />
                                         :
                                         <Tab
                                             classes={{ root: clases.tab }}
@@ -210,10 +234,8 @@ export default function Nav() {
                 </Toolbar>
             </AppBar>
 
-        </>
     )
-}
-
+})
 
 const StyledMenu = withStyles({
     paper: {
@@ -233,7 +255,7 @@ const StyledMenu = withStyles({
         }}
         {...props}
     />
-));
+))
 
 const StyledMenuItem = withStyles((theme) => ({
     root: {
@@ -250,6 +272,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 function CustomizedMenus({ viewport }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const dispatch = useDispatch()
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -303,13 +326,21 @@ function CustomizedMenus({ viewport }) {
                     </ListItemIcon>
                     <ListItemText primary="Add product" />
                 </StyledMenuItem>
+                <StyledMenuItem
+                    onClick={() => { dispatch(userLogout()) }}
+                >
+                    <ListItemIcon>
+                        <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Log out" />
+                </StyledMenuItem>
 
             </StyledMenu>
         </div>
     );
 }
 
-
+export default Nav
 
 export const CloseBtn = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" /></svg>
 

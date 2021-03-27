@@ -4,7 +4,7 @@ import isEmpty from "../utils/emptyObject"
 
 //we update user info so we should indicate it
 export const saveShipping = (shipping) => async (dispatch) =>{
-
+    console.log(shipping, "shippi")
     try{
         dispatch({type: SHIPPING_SAVE_REQUEST})
         let info = ""
@@ -21,6 +21,7 @@ export const saveShipping = (shipping) => async (dispatch) =>{
         //console.log(shipping, "esta mierda tendria que estar vacia sin login")
         //ojo el orden, ya que info y shipping comparten atributos..
         const allInfo = { ...info, ...shipping }
+        console.log(allInfo, "shippia")
         const rawData = await fetch("https://mern-ecomerce.herokuapp.com/users/update", {
             headers: {
                 "Content-Type": "application/json",
