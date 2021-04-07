@@ -38,7 +38,7 @@ export default function CheckoutForm(props) {
       return;
     }
     setLoading(true)
-    const payment = await fetch("https://mern-ecomerce.herokuapp.com/secret", {
+    const payment = await fetch("http://localhost:8000/secret", {
       headers: {
         "Content-Type": "application/json"
       },
@@ -93,7 +93,7 @@ export default function CheckoutForm(props) {
 
   const fechar = async () => {
     try {
-      const rawData = await fetch("https://mern-ecomerce.herokuapp.com/secret/success", {
+      const rawData = await fetch("http://localhost:8000/secret/success", {
         headers: {
           "Content-Type": "application/json"
         },
