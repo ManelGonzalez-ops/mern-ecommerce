@@ -154,7 +154,7 @@ export default function CheckoutForm(props) {
   return (
     <form onSubmit={handleSubmit}>
       <CardSection />
-      <button disabled={!stripe}
+      <button disabled={!stripe || !elements}
         className={success ? "pay-btn closed" : "pay-btn"}
       >
         Confirm Payment

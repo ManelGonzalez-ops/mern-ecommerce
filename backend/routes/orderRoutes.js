@@ -16,10 +16,13 @@ router.post("/", async (req, res) => {
         const user = await User.findOne({ _id: req.body.userInfo._id })
         if (user) {
 
+            //we should save the order after orderItems hava been save correctly
             const order = new Order({
                 user: user._id,
                 shipping: req.body.shippingInfo
             })
+
+            // we should split orderItems and Orders in differnet funcitons
 
             const newOrder = await order.save()
             if (newOrder) {
@@ -38,7 +41,7 @@ router.post("/", async (req, res) => {
 
                                 const orderItem = new OrderItem({
                                     order: newOrder._id,
-                                    product: item._id,
+                                    product: item.id,
                                     quantity: item.qty
                                 })
                                 await orderItem.save()
@@ -125,7 +128,7 @@ router.get("/order/:id", async (req, res) => {
         const orderItems = await OrderItem.find({ order: req.params.id })
         if (orderItems) {
             let orderItemsArray = [];
-            const loopInBlock =()=> new Promise(resolve=>{
+            const loopInBlock = () => new Promise(resolve => {
                 orderItems.map(async (item) => {
                     const product = await Product.findById(item.product)
                     if (product) {
@@ -134,7 +137,7 @@ router.get("/order/:id", async (req, res) => {
                             price: product.price, quantity: item.quantity
                         }
                         orderItemsArray = [...orderItemsArray, orderItemObject]
-                        if(orderItemsArray.length === orderItems.length){
+                        if (orderItemsArray.length === orderItems.length) {
                             resolve()
                         }
                     }
@@ -146,12 +149,12 @@ router.get("/order/:id", async (req, res) => {
             await loopInBlock()
             console.log(orderItemsArray, "looos orderIIIIIItems")
             const order = await Order.findById(req.params.id)
-            if(order){
-console.log(order, "THEEE ORDEEER")
-                res.status(200).send({data: {orderItemsArray, order}})
+            if (order) {
+                console.log(order, "THEEE ORDEEER")
+                res.status(200).send({ data: { orderItemsArray, order } })
             }
-            else{
-                res.status(401).send({data: "order not found"})
+            else {
+                res.status(401).send({ data: "order not found" })
             }
         }
         else {

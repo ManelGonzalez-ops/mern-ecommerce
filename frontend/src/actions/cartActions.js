@@ -36,6 +36,7 @@ export const cartProduct = (productId, qty) => async (dispatch, getState) => {
         else {
             console.log(newItem, "newIteeem")
             const newState = [...cart.cartItems, newItem]
+            Cookie.set("cartItems", JSON.stringify(newState))
             
             dispatch({type: CART_ADD_ITEM, payload: newState})
         }

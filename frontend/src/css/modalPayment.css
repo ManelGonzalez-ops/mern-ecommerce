@@ -101,3 +101,86 @@
     transform: scale(0, 0);
   }
 }
+
+#successAnimation {
+  margin: 0 auto;
+  display: block;
+}
+
+@keyframes scaleAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drawCircle {
+  0% {
+    stroke-dashoffset: 300px;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawCheck {
+  0% {
+    stroke-dashoffset: 35px;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+#successAnimationCircle {
+  stroke-dasharray: 300px 300px;
+  stroke: #005596;
+}
+
+#successAnimationCheck {
+  stroke-dasharray: 35px 35px;
+  stroke: #005596;
+}
+
+#successAnimation.animated {
+  animation: 1s ease-out 0s 1 both scaleAnimation;
+}
+
+#successAnimation.animated #successAnimationCircle {
+  animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCircle;
+}
+
+#successAnimation.animated #successAnimationCheck {
+  animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCheck;
+}
+
+#animate {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  border: 0;
+  border-radius: 3px;
+  bottom: 100px;
+  color: #005596;
+  left: 50%;
+  outline: 0;
+  padding: 10px 30px;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+#animate:active {
+  background: rgba(255, 255, 255, 0.1);
+}
