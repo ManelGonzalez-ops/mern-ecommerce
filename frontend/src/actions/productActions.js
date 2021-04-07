@@ -5,7 +5,7 @@ const listProducts = () => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST })
         console.log("productlist() ejectued")
-        const rawData = await fetch("http://localhost:8000/products");
+        const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products");
         //extraemos directamente el valor de la key products 
         const { data } = await rawData.json();
         //console.log("MMMMMMMMMMMMMAMAMAMAMAMAM", data)     
@@ -33,7 +33,7 @@ const detailsProduct = (action) => async (dispatch) => {
     const { productId } = action
     try {
         dispatch({ type: PRODUCT_DETAILS_REQUEST })
-        const rawData = await fetch(`http://localhost:8000/products/${productId}`)
+        const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
         dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
     }
@@ -50,7 +50,7 @@ const saveProduct = (product) => async (dispatch, getState) => {
         const { userSignin: { userInfo } } = getState()
 
         if (product.delete) {
-            const rawData = await fetch("http://localhost:8000/products", {
+            const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products", {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${userInfo.token}`
@@ -68,7 +68,7 @@ const saveProduct = (product) => async (dispatch, getState) => {
             if (product._id) {
 
                 //console.log(product._id, "thee id")
-                const rawData = await fetch("http://localhost:8000/products/update", {
+                const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products/update", {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${userInfo.token}`
@@ -82,7 +82,7 @@ const saveProduct = (product) => async (dispatch, getState) => {
 
             else {
 
-                const rawData = await fetch("http://localhost:8000/products", {
+                const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products", {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${userInfo.token}`
@@ -109,7 +109,7 @@ const addReview = (productId, review, rating, author) => async (dispatch) => {
         dispatch({ type: REVIEW_ADD_REQUEST })
 
         const autorChecked = typeof author === "string" ? author : author.name
-        const rawData = await fetch("http://localhost:8000/products/review", {
+        const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products/review", {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -184,7 +184,7 @@ const searchByCartegory = (category) => async (dispatch, getState) => {
     try {
 
         dispatch({ type: "CATEGORY_LOOKUP_REQUEST" })
-        const rawData = await fetch("http://localhost:8000/products");
+        const rawData = await fetch("https://mern-ecomerce.herokuapp.com/products");
         const { data } = await rawData.json()
 
         const newArr = data.filter(item => item.category[0] === category)

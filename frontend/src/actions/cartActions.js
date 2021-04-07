@@ -5,7 +5,7 @@ export const cartProduct = (productId, qty) => async (dispatch, getState) => {
     try {
         dispatch({ type: CART_ADD_LOADING })
         //that just be a confirmation route, there'r no need to resend the id
-        const rawData = await fetch(`http://localhost:8000/products/${productId}`)
+        const rawData = await fetch(`https://mern-ecomerce.herokuapp.com/products/${productId}`)
         const data = await rawData.json()
         const {_id, ...rest} = data
         const newItem = {

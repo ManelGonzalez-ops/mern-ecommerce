@@ -120,6 +120,7 @@ $check-length: 35px;
 #successAnimation{
   margin: 0 auto;
   display: block;
+  opacity: 0;
 }
 
 @keyframes scaleAnimation {

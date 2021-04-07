@@ -1169,6 +1169,7 @@ header nav .dropdown-list {
 #successAnimation {
   margin: 0 auto;
   display: block;
+  opacity: 0;
 }
 
 @keyframes scaleAnimation {

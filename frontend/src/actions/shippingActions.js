@@ -22,7 +22,7 @@ export const saveShipping = (shipping) => async (dispatch) =>{
         //ojo el orden, ya que info y shipping comparten atributos..
         const allInfo = { ...info, ...shipping }
         console.log(allInfo, "shippia")
-        const rawData = await fetch("http://localhost:8000/users/update", {
+        const rawData = await fetch("https://mern-ecomerce.herokuapp.com/users/update", {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
